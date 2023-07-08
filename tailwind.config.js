@@ -10,7 +10,6 @@ module.exports = {
   theme: {
     container: {
       center: true,
-      padding: '2rem',
       screens: {
         '2xl': '1400px',
       },
@@ -23,6 +22,10 @@ module.exports = {
           'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
       },
       colors: {
+        mainLight: 'hsl(var(--main-lighter))',
+        mainDark: 'hsl(var(--main-darker))',
+        main: 'hsl(var(--main))',
+        hover: 'hsl(var(--hover))',
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
         ring: 'hsl(var(--ring))',
