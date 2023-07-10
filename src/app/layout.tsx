@@ -10,7 +10,11 @@ export const metadata = {
   description: '미국 거주하는 한인 커뮤니티',
 };
 
-export default function RootLayout({ children }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html
       lang='ko'
@@ -19,9 +23,13 @@ export default function RootLayout({ children }) {
         inter.className,
       )}
     >
-      <body className='min-h-screen pt-12 bg-slate-50 h-full'>
+      <body
+        suppressContentEditableWarning={true}
+        className='min-h-screen pt-12 bg-slate-50 antialiased'
+      >
         <NavBar />
-        <div className='container max-w-7xl mx-auto h-full pt-8'>
+
+        <div className='container max-w-7xl mx-auto h-full pt-12'>
           {children}
         </div>
       </body>

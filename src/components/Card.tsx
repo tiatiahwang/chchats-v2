@@ -1,6 +1,10 @@
+import { FC } from 'react';
 import { Icons } from './Icons';
 
-const Card = ({ category }) => {
+interface CardProps {
+  category: string;
+}
+const Card: FC<CardProps> = ({ category }) => {
   return (
     <div className='border rounded-md w-full p-4'>
       <div className='flex justify-between border-b pb-2 cursor-pointer pt-2'>

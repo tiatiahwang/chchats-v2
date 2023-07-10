@@ -1,5 +1,5 @@
 export const Icons = {
-  user: (props) => (
+  user: (props: any) => (
     <svg
       {...props}
       fill='none'
@@ -15,7 +15,7 @@ export const Icons = {
       ></path>
     </svg>
   ),
-  hamburger: (props) => (
+  hamburger: (props: any) => (
     <svg
       {...props}
       fill='none'
@@ -31,7 +31,7 @@ export const Icons = {
       ></path>
     </svg>
   ),
-  close: (props) => (
+  close: (props: any) => (
     <svg
       {...props}
       fill='none'
@@ -47,7 +47,7 @@ export const Icons = {
       ></path>
     </svg>
   ),
-  chevRight: (props) => (
+  chevRight: (props: any) => (
     <svg
       {...props}
       fill='none'
@@ -63,7 +63,7 @@ export const Icons = {
       ></path>
     </svg>
   ),
-  comment: (props) => (
+  comment: (props: any) => (
     <svg
       {...props}
       fill='none'

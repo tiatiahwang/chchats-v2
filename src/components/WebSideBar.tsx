@@ -1,3 +1,5 @@
+'use client';
+
 import { useState } from 'react';
 import { Icons } from '@/components/Icons';
 
@@ -6,13 +8,13 @@ const WebSideBar = () => {
   const [secondHover, setSecondHover] = useState(false);
   const [thirdHover, setThirdHover] = useState(false);
   const [fourthHover, setFourthHover] = useState(false);
-  const onHover = (index) => {
+  const onHover = (index: number) => {
     if (index === 1) setFirstHover(true);
     else if (index === 2) setSecondHover(true);
     else if (index === 3) setThirdHover(true);
     else setFourthHover(true);
   };
-  const onLeave = (index) => {
+  const onLeave = (index: number) => {
     if (index === 1) setFirstHover(false);
     else if (index === 2) setSecondHover(false);
     else if (index === 3) setThirdHover(false);

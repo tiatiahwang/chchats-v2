@@ -1,8 +1,5 @@
-'use client';
 import Card from '@/components/Card';
-import { Icons } from '@/components/Icons';
 import WebSideBar from '@/components/WebSideBar';
-import { useState } from 'react';
 
 export default function Home() {
   return (
