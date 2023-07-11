@@ -1,6 +1,8 @@
 'use client';
 
+import axios from 'axios';
 import { useForm } from 'react-hook-form';
+import { useRouter } from 'next/navigation';
 
 interface FormProps {
   email: string;
@@ -9,18 +11,30 @@ interface FormProps {
 }
 
 const Join = () => {
+  const router = useRouter();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
-  const onValid = (formData: FormProps) => {
-    console.log(formData);
+  const onValid = async (formData: FormProps) => {
+    const { email, password, username } = formData;
+
+    const { data } = await axios.post('/api/join', {
+      email,
+      password,
+      username,
+    });
+
+    if (data === 'OK') {
+      router.push('/');
+    }
   };
   return (
     <form
-      // onClick={handleSubmit(onValid)}
+      // @ts-ignore
+      onClick={handleSubmit(onValid)}
       className='space-y-8'
     >
       <div>

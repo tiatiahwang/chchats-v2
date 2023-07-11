@@ -1,4 +1,5 @@
 import NavBar from '@/components/NavBar';
+import Providers from '@/components/Providers';
 import { cls } from '@/lib/utils';
 import '@/styles/globals.css';
 import { Inter } from 'next/font/google';
@@ -27,11 +28,12 @@ export default function RootLayout({
         suppressContentEditableWarning={true}
         className='min-h-screen pt-12 bg-slate-50 antialiased'
       >
-        <NavBar />
-
-        <div className='container max-w-7xl mx-auto h-full pt-12'>
-          {children}
-        </div>
+        <Providers>
+          <NavBar />
+          <div className='container max-w-7xl mx-auto h-full pt-12'>
+            {children}
+          </div>
+        </Providers>
       </body>
     </html>
   );

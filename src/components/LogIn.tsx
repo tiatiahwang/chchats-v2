@@ -1,5 +1,6 @@
 'use client';
 
+import { signIn } from 'next-auth/react';
 import { useForm } from 'react-hook-form';
 
 interface FormProps {
@@ -16,10 +17,12 @@ const LogIn = () => {
 
   const onValid = (formData: FormProps) => {
     console.log(formData);
+    //signIn();
   };
   return (
     <form
-      // onClick={handleSubmit(onValid)}
+      // @ts-ignore
+      onClick={handleSubmit(onValid)}
       className='space-y-8'
     >
       <div>
