@@ -38,22 +38,22 @@ const MobileSideMenu = () => {
               iconClicked ? '' : 'hidden'
             }`}
           >
-            <Link href='/board'>
+            <Link href='/board' onClick={onIconClick}>
               <p className='px-2 leading-10 font-semibold hover:text-white hover:bg-main hover:rounded-md'>
                 자유게시판
               </p>
             </Link>
-            <Link href='/qna'>
+            <Link href='/qna' onClick={onIconClick}>
               <p className='px-2 leading-10 font-semibold hover:text-white hover:bg-main hover:rounded-md'>
                 묻고답하기
               </p>
             </Link>
-            <Link href='/market'>
+            <Link href='/market' onClick={onIconClick}>
               <p className='px-2 leading-10 font-semibold hover:text-white hover:bg-main hover:rounded-md'>
                 온라인마켓
               </p>
             </Link>
-            <Link href='/region'>
+            <Link href='/region' onClick={onIconClick}>
               <p className='px-2 leading-10 font-semibold hover:text-white hover:bg-main hover:rounded-md'>
                 지역소모임
               </p>
