@@ -21,7 +21,8 @@ const MobileSideMenu = () => {
         <div className='top-[56px] left-0 absolute z-10 w-full shadow-md bg-slate-50'>
           <div className='border-b px-4 py-6 space-x-4 text-sm'>
             <Link
-              href='/'
+              href='/login'
+              onClick={onIconClick}
               className='py-2 px-4 rounded-2xl bg-main text-white hover:bg-mainDark'
             >
               로그인
@@ -58,7 +59,7 @@ const MobileSideMenu = () => {
                 지역소모임
               </p>
             </Link>
-            <Link href='/notice'>
+            <Link href='/notice' onClick={onIconClick}>
               <p className='px-2 leading-10 font-semibold hover:text-white hover:bg-main hover:rounded-md'>
                 공지사항
               </p>
