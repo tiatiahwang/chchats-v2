@@ -1,12 +1,10 @@
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
-import { NextAuthOptions, User } from 'next-auth';
+import { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { db } from './db';
 import * as bcrypt from 'bcrypt';
-import { UserLoginValidator } from './validator/user';
-import axios from 'axios';
-import { JWT } from 'next-auth/jwt';
-// import GoogleProvider from 'next-auth/providers/google';
+import GoogleProvider from 'next-auth/providers/google';
+import { nanoid } from 'nanoid';
 
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(db),
@@ -48,10 +46,10 @@ export const authOptions: NextAuthOptions = {
         return userWithoutPassword;
       },
     }),
-    // GoogleProvider({
-    //   clientId: process.env.GOOGLE_ID,
-    //   clientSecret: process.env.GOOGLE_SECRET,
-    // }),
+    GoogleProvider({
+      clientId: process.env.GOOGLE_ID!,
+      clientSecret: process.env.GOOGLE_SECRET!,
+    }),
   ],
   pages: {
     signIn: '/login',
@@ -63,7 +61,45 @@ export const authOptions: NextAuthOptions = {
   },
   secret: process.env.JWT_SECRET,
   callbacks: {
-    async jwt({ token }) {
+    async jwt({ token, user }) {
+      // 로그인 시도한 이메일로 db에 저장되어 있는지 확인
+      const checkUser = await db.user.findFirst({
+        where: {
+          email: token.email,
+        },
+      });
+      // db에 없다면 일단 token에 user.id 정보 담아서 리턴
+      if (!checkUser) {
+        token.id = user.id;
+      }
+      if (checkUser && !checkUser.username) {
+        // google 로그인시 가져오는 name이 db에 있는 username인지 확인
+        const checkUsername = await db.user.findFirst({
+          where: { username: token.name },
+        });
+
+        if (checkUsername) {
+          // 만약에 username이 이미 존재한다면, random으로 username 업데이트
+          await db.user.update({
+            where: {
+              id: checkUser.id!,
+            },
+            data: {
+              username: nanoid(8),
+            },
+          });
+        } else {
+          // username이 존재하지 않는 경우, google 로그인시 가져오는 name으로 db의 username 업데이트
+          await db.user.update({
+            where: {
+              id: checkUser.id!,
+            },
+            data: {
+              username: user.name,
+            },
+          });
+        }
+      }
       return token;
     },
     async session({ session }) {
