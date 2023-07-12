@@ -29,8 +29,8 @@ const LogIn = () => {
     useState(false);
 
   const onValid = async (formData: FormProps) => {
-    setIsLoading(true);
     if (errorMessage !== '') setErrorMessage('');
+    setIsLoading(true);
 
     const { email, password } = formData;
 

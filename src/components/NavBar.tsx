@@ -4,6 +4,7 @@ import Link from 'next/link';
 import MobileSideMenu from './MobileSideMenu';
 import Avatar from './Avatar';
 import { useSession } from 'next-auth/react';
+import Image from 'next/image';
 
 const NavBar = () => {
   // const { data: session, status } = useSession();
@@ -15,9 +16,10 @@ const NavBar = () => {
       <div className='max-w-7xl h-full mx-auto flex items-center justify-between gap-2'>
         {/* 로고 */}
         <div className='md:flex'>
-          <Link href='/' className='cursor-pointer'>
-            <img
-              className='w-[100px]'
+          <Link href='/'>
+            <Image
+              width={100}
+              height={50}
               src='/logo_light.png'
               alt='logo'
             />
