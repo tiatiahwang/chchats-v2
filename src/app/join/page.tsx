@@ -22,6 +22,7 @@ const Page = () => {
           미주 한인 커뮤니티 사이트 입니다.
         </p>
         <div className='pt-12 w-full'>
+          {/* 구글 로그인 */}
           <GoogleLogIn />
           <div className='mt-8'>
             <div className='relative'>
@@ -33,6 +34,7 @@ const Page = () => {
               </div>
             </div>
           </div>
+          {/* 회원 가입 */}
           <Join />
         </div>
         <div className='text-sm mt-8'>
