@@ -3,6 +3,7 @@ import { z } from 'zod';
 export const UserValidator = z.object({
   email: z
     .string()
+    .min(1, '필수 입력 사항 입니다.')
     .regex(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g, {
       message: '이메일 형식에 맞게 입력해 주세요.',
     }),

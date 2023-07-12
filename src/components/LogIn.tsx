@@ -22,7 +22,7 @@ const LogIn = () => {
   return (
     <form
       // @ts-ignore
-      onClick={handleSubmit(onValid)}
+      onSubmit={handleSubmit(onValid)}
       className='space-y-8'
     >
       <div>
@@ -49,7 +49,10 @@ const LogIn = () => {
         </div>
       </div>
       {/* 비밀번호 오류 안내 문구 */}
-      <button className='bg-main w-full rounded-lg p-2 mt-4 text-white'>
+      <button
+        type='submit'
+        className='bg-main w-full rounded-lg p-2 mt-4 text-white'
+      >
         로그인
       </button>
     </form>

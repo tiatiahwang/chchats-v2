@@ -17,19 +17,19 @@ export async function POST(req: Request) {
 
   if (checkEmail && checkUsername) {
     return new Response(
-      '다른 이메일과 닉네임을 입력해 주세요.',
+      '이미 사용중인 이메일과 닉네임 입니다.',
       { status: 409 },
     );
   }
 
   if (checkEmail) {
-    return new Response('다른 이메일을 입력해 주세요.', {
+    return new Response('이미 사용중인 이메일 입니다.', {
       status: 409,
     });
   }
 
   if (checkUsername) {
-    return new Response('다른 닉네임을 입력해 주세요.', {
+    return new Response('이미 사용중인 닉네임 입니다.', {
       status: 409,
     });
   }
