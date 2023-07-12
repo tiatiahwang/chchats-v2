@@ -13,10 +13,8 @@ export const metadata = {
 
 export default function RootLayout({
   children,
-  session,
 }: {
   children: React.ReactNode;
-  session: any;
 }) {
   return (
     <html
@@ -30,7 +28,7 @@ export default function RootLayout({
         suppressContentEditableWarning={true}
         className='min-h-screen pt-12 bg-slate-50 antialiased'
       >
-        <Providers session={session}>
+        <Providers>
           <NavBar />
           <div className='container max-w-7xl mx-auto h-full pt-12'>
             {children}

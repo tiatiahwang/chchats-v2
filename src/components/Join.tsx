@@ -3,7 +3,7 @@
 import axios, { AxiosError } from 'axios';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { UserJoinValidator } from '@/lib/validator/user';
 import { Icons } from './Icons';
@@ -26,9 +26,6 @@ const Join = () => {
   });
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-  const [errorFromServer, setErrorFromServer] =
-    useState(false);
-
   const onValid = async (formData: FormProps) => {
     if (errorMessage !== '') setErrorMessage('');
     setIsLoading(true);
@@ -44,14 +41,12 @@ const Join = () => {
 
       // TODO: 회원가입 완료시, 모달 띄운 후에 이동하는게 낫지 않을까? - 일단 고려해보기
       if (data === 'OK') {
-        setIsLoading(false);
         router.push('/login');
       }
     } catch (error) {
       if (error instanceof AxiosError) {
         if (error.response?.status === 409) {
           setIsLoading(false);
-          setErrorFromServer(true);
           setErrorMessage(error.response.data);
         }
       }
@@ -77,7 +72,6 @@ const Join = () => {
                 : 'focus:border-main'
             }`}
             aria-invalid={Boolean(errors.email)}
-            onChange={() => setErrorFromServer(false)}
           />
           {errors?.email?.message && (
             <span className='text-red-500 text-sm'>
@@ -99,7 +93,6 @@ const Join = () => {
                 : 'focus:border-main'
             }`}
             aria-invalid={Boolean(errors.password)}
-            onChange={() => setErrorFromServer(false)}
           />
           {errors?.password?.message && (
             <span className='text-red-500 text-sm'>
@@ -123,7 +116,6 @@ const Join = () => {
                 : 'focus:border-main'
             }`}
             aria-invalid={Boolean(errors.username)}
-            onChange={() => setErrorFromServer(false)}
           />
           {errors?.username?.message && (
             <span className='text-red-500 text-sm'>
@@ -140,9 +132,9 @@ const Join = () => {
       )}
       <button
         type='submit'
-        disabled={!isValid || isLoading || errorFromServer}
+        disabled={!isValid || isLoading}
         className={`w-full rounded-lg p-2 mt-4 text-white ${
-          isValid && !isLoading && !errorFromServer
+          isValid && !isLoading
             ? 'bg-main cursor-pointer'
             : 'bg-gray-300'
         }`}

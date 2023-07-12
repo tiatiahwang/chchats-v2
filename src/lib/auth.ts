@@ -1,10 +1,11 @@
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
-import { NextAuthOptions } from 'next-auth';
+import { NextAuthOptions, User } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { db } from './db';
 import * as bcrypt from 'bcrypt';
 import { UserLoginValidator } from './validator/user';
 import axios from 'axios';
+import { JWT } from 'next-auth/jwt';
 // import GoogleProvider from 'next-auth/providers/google';
 
 export const authOptions: NextAuthOptions = {
@@ -17,41 +18,34 @@ export const authOptions: NextAuthOptions = {
         password: { label: '비밀번호', type: 'password' },
       },
       async authorize(credentials, req) {
-        // const res = await fetch(
-        //   `${process.env.NEXTAUTH_URL}/api/login`,
-        //   {
-        //     method: 'POST',
-        //     headers: {
-        //       'Content-Type': 'application/json',
-        //     },
-        //     body: JSON.stringify({
-        //       email: credentials?.email,
-        //       password: credentials?.password,
-        //     }),
-        //   },
-        // );
+        if (!credentials) {
+          throw new Error(
+            '잘못된 요청으로 인해 오류가 발생했습니다.',
+          );
+        }
 
-        // const user = await res.json();
-        // console.log('CREDENTIAL LOGIN', user);
+        const user = await db.user.findFirst({
+          where: { email: credentials?.email },
+        });
 
-        // if (user) {
-        //   return user;
-        // }
-        // return Promise.reject(new Error());
+        if (!user) {
+          throw new Error(
+            '가입되어 있지 않은 이메일 입니다.',
+          );
+        }
 
-        const { data: user } = await axios.post(
-          `${process.env.NEXTAUTH_URL}/api/login`,
-          {
-            email: credentials?.email,
-            password: credentials?.password,
-          },
+        const checkPassword = await bcrypt.compare(
+          credentials?.password,
+          user?.password!,
         );
 
-        if (user) {
-          return user;
-        } else {
-          return null;
+        if (!checkPassword) {
+          throw new Error('비밀번호를 다시 확인해주세요.');
         }
+
+        const { password, ...userWithoutPassword } = user;
+
+        return userWithoutPassword;
       },
     }),
     // GoogleProvider({
@@ -69,11 +63,23 @@ export const authOptions: NextAuthOptions = {
   },
   secret: process.env.JWT_SECRET,
   callbacks: {
-    async jwt({ token, user }) {
-      return { ...token, ...user };
+    async jwt({ token }) {
+      return token;
     },
-    async session({ session, token }) {
-      session.user = token as any;
+    async session({ session }) {
+      const user = await db.user.findUnique({
+        where: {
+          email: session.user?.email!,
+        },
+        select: {
+          id: true,
+          email: true,
+          image: true,
+          username: true,
+          emailVerified: true,
+        },
+      });
+      session.user = user!;
       return session;
     },
   },

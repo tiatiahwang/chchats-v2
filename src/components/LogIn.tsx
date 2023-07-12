@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { UserLoginValidator } from '@/lib/validator/user';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Icons } from './Icons';
 
 interface FormProps {
@@ -25,8 +25,6 @@ const LogIn = () => {
   });
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-  const [errorFromServer, setErrorFromServer] =
-    useState(false);
 
   const onValid = async (formData: FormProps) => {
     if (errorMessage !== '') setErrorMessage('');
@@ -40,20 +38,12 @@ const LogIn = () => {
       redirect: false,
     });
 
-    if (signInResponse?.error?.includes('401')) {
+    if (signInResponse?.error) {
       setIsLoading(false);
-      setErrorFromServer(true);
-      setErrorMessage('가입되어 있지 않은 이메일 입니다.');
+      setErrorMessage(signInResponse.error);
     }
-    if (signInResponse?.error?.includes('500')) {
-      setIsLoading(false);
-      setErrorFromServer(true);
-      setErrorMessage('비밀번호가 일치하지 않습니다.');
-    }
-    // TODO: 로그인 완료시, 모달 띄운 후에 이동하는게 낫지 않을까? - 일단 고려해보기
+    // TODO: 로그인 완료시, 모달 or 토스트 띄운 후에 이동하는게 낫지 않을까? - 일단 고려해보기
     if (!signInResponse?.error) {
-      setIsLoading(false);
-      setErrorFromServer(false);
       router.push('/');
     }
   };
@@ -76,7 +66,6 @@ const LogIn = () => {
                 : 'focus:border-main'
             }`}
             aria-invalid={Boolean(errors.email)}
-            onChange={() => setErrorFromServer(false)}
           />
           {errors?.email?.message && (
             <span className='text-red-500 text-sm'>
@@ -98,7 +87,6 @@ const LogIn = () => {
                 : 'focus:border-main'
             }`}
             aria-invalid={Boolean(errors.password)}
-            onChange={() => setErrorFromServer(false)}
           />
           {errors?.password?.message && (
             <span className='text-red-500 text-sm'>
@@ -115,9 +103,9 @@ const LogIn = () => {
       )}
       <button
         type='submit'
-        disabled={!isValid || isLoading || errorFromServer}
+        disabled={!isValid || isLoading}
         className={`w-full rounded-lg p-2 mt-4 text-white ${
-          isValid && !isLoading && !errorFromServer
+          isValid && !isLoading
             ? 'bg-main cursor-pointer'
             : 'bg-gray-300'
         }`}
