@@ -1,11 +1,11 @@
 import { db } from '@/lib/db';
-import { UserValidator } from '@/lib/validator/user';
+import { UserJoinValidator } from '@/lib/validator/user';
 import * as bcrypt from 'bcrypt';
 
 export async function POST(req: Request) {
   const body = await req.json();
   const { email, password, username } =
-    UserValidator.parse(body);
+    UserJoinValidator.parse(body);
 
   const checkEmail = await db.user.findUnique({
     where: { email },

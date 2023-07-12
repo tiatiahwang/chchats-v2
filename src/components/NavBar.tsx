@@ -3,8 +3,11 @@
 import Link from 'next/link';
 import MobileSideMenu from './MobileSideMenu';
 import Avatar from './Avatar';
+import { useSession } from 'next-auth/react';
 
 const NavBar = () => {
+  const { data: session, status } = useSession();
+  console.log('session', session);
   return (
     <div className='fixed top-0 inset-x-0 h-14 border-b border-zinc-200 z-[10] p-2 bg-slate-50'>
       {/* 모바일 - 로고/햄버거아이콘 */}
