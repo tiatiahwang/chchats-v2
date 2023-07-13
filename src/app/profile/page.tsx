@@ -1,4 +1,6 @@
+import ProfileNav from '@/components/profile/ProfileNav';
+
 const Page = () => {
-  return <div>profile</div>;
+  return <ProfileNav />;
 };
 export default Page;
