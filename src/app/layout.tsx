@@ -1,4 +1,4 @@
-import NavBar from '@/components/NavBar';
+import NavBar from '@/components/nav/NavBar';
 import Providers from '@/components/Providers';
 import { cls } from '@/lib/utils';
 import '@/styles/globals.css';

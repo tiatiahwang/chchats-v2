@@ -1,10 +1,10 @@
 import { FC } from 'react';
-import { Icons } from './Icons';
+import { Icons } from '../Icons';
 
-interface CardProps {
+interface PostListProps {
   category: string;
 }
-const Card: FC<CardProps> = ({ category }) => {
+const PostList: FC<PostListProps> = ({ category }) => {
   return (
     <div className='border rounded-md w-full p-4'>
       <div className='flex justify-between border-b pb-2 cursor-pointer pt-2'>
@@ -137,4 +137,4 @@ const Card: FC<CardProps> = ({ category }) => {
   );
 };
 
-export default Card;
+export default PostList;

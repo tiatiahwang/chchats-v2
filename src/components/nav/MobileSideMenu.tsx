@@ -1,13 +1,15 @@
 'use client';
 
 import { useState } from 'react';
-import { Icons } from './Icons';
+import { Icons } from '../Icons';
 import Link from 'next/link';
 import { signOut, useSession } from 'next-auth/react';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 
 const MobileSideMenu = () => {
   const { data: session } = useSession();
+  const router = useRouter();
 
   const [iconClicked, setIconClicked] = useState(false);
   const onIconClick = () => setIconClicked(!iconClicked);
@@ -53,12 +55,23 @@ const MobileSideMenu = () => {
                     </div>
                   </div>
                 </div>
-                <button
-                  className='p-2 rounded-md bg-main text-white hover:bg-mainDark'
-                  onClick={() => signOut()}
-                >
-                  로그아웃
-                </button>
+                <div className='space-x-2'>
+                  <button
+                    className='p-2 rounded-md bg-main text-white hover:bg-mainDark'
+                    onClick={() => {
+                      setIconClicked(!iconClicked);
+                      router.push('/profile');
+                    }}
+                  >
+                    내 계정
+                  </button>
+                  <button
+                    className='p-2 rounded-md bg-main text-white hover:bg-mainDark'
+                    onClick={() => signOut()}
+                  >
+                    로그아웃
+                  </button>
+                </div>
               </div>
             ) : (
               <>
