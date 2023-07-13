@@ -26,6 +26,7 @@ export default function RootLayout({
     >
       <body
         suppressContentEditableWarning={true}
+        suppressHydrationWarning={true}
         className='min-h-screen pt-12 bg-slate-50 antialiased'
       >
         <Providers>
