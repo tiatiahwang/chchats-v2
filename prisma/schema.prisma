@@ -44,14 +44,27 @@ model Session {
 model User {
   id            String    @id @default(cuid())
   name          String?
-  username      String?   @unique
+  username      String?   @unique   
   email         String?   @unique
   emailVerified DateTime?
   password      String?
   image         String?
+  provider      ProviderType @default(CREDENTIALS)
+  role          RoleType     @default(USER)
   accounts      Account[]
   sessions      Session[]
 }
+
+enum ProviderType {
+  CREDENTIALS
+  GOOGLE
+}
+
+enum RoleType {
+  USER
+  ADMIN
+}
+
 
 model VerificationToken {
   identifier String

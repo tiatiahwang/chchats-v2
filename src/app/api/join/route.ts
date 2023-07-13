@@ -36,9 +36,9 @@ export async function POST(req: Request) {
 
   await db.user.create({
     data: {
-      email: email,
+      email,
       password: await bcrypt.hash(password, 10),
-      username: username,
+      username,
     },
   });
 

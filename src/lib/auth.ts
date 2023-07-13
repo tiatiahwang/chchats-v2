@@ -57,47 +57,47 @@ export const authOptions: NextAuthOptions = {
   },
   session: {
     strategy: 'jwt',
-    maxAge: 30 * 24 * 60 * 60, // 30일
+    //maxAge: 30 * 24 * 60 * 60, // 30일
+    maxAge: 10,
   },
   secret: process.env.JWT_SECRET,
   callbacks: {
-    async jwt({ token, user }) {
-      // 로그인 시도한 이메일로 db에 저장되어 있는지 확인
-      const checkUser = await db.user.findFirst({
-        where: {
-          email: token.email,
-        },
-      });
-      // db에 없다면 일단 token에 user.id 정보 담아서 리턴
-      if (!checkUser) {
-        token.id = user.id;
-      }
-      if (checkUser && !checkUser.username) {
-        // google 로그인시 가져오는 name이 db에 있는 username인지 확인
-        const checkUsername = await db.user.findFirst({
-          where: { username: token.name },
+    async jwt({ token, account }) {
+      if (account?.provider === 'google') {
+        // 로그인 시도한 이메일로 db에 저장되어 있는지 확인
+        const checkUser = await db.user.findFirst({
+          where: { email: token.email! },
         });
 
-        if (checkUsername) {
-          // 만약에 username이 이미 존재한다면, random으로 username 업데이트
-          await db.user.update({
-            where: {
-              id: checkUser.id!,
-            },
-            data: {
-              username: nanoid(8),
-            },
+        if (checkUser && !checkUser.username) {
+          // google 로그인시 가져오는 name이 db에 있는 username인지 확인
+          const checkUsername = await db.user.findFirst({
+            where: { username: token.name },
           });
-        } else {
-          // username이 존재하지 않는 경우, google 로그인시 가져오는 name으로 db의 username 업데이트
-          await db.user.update({
-            where: {
-              id: checkUser.id!,
-            },
-            data: {
-              username: user.name,
-            },
-          });
+
+          if (checkUsername) {
+            // 만약에 username이 이미 존재한다면, random으로 username 업데이트
+            await db.user.update({
+              where: {
+                id: checkUser.id!,
+              },
+              data: {
+                username: nanoid(8),
+                provider: 'GOOGLE',
+              },
+            });
+          } else {
+            // username이 존재하지 않는 경우, google 로그인시 가져오는 name으로 db의 username 업데이트
+            await db.user.update({
+              where: {
+                id: checkUser.id!,
+              },
+              data: {
+                username: token.name,
+                provider: 'GOOGLE',
+              },
+            });
+          }
         }
       }
       return token;
@@ -112,7 +112,8 @@ export const authOptions: NextAuthOptions = {
           email: true,
           image: true,
           username: true,
-          emailVerified: true,
+          provider: true,
+          role: true,
         },
       });
       session.user = user!;

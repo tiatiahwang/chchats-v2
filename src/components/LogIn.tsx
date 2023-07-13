@@ -49,7 +49,6 @@ const LogIn = () => {
   };
   return (
     <form
-      // @ts-ignore
       onSubmit={handleSubmit(onValid)}
       className='space-y-8'
     >

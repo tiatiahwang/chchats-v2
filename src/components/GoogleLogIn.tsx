@@ -12,21 +12,26 @@ const GoogleLogIn = () => {
     try {
       await signIn('google');
     } catch (e) {
-      console.log(e);
       // TODO : PRINT ERROR
+      console.log(e);
     }
   };
 
   return (
-    <div
+    <button
+      disabled={isLoading}
       onClick={onClickGoogleLogin}
-      className='text-sm mx-auto flex justify-center items-center space-x-2 py-2 px-4 border-[1px] rounded-lg cursor-pointer hover:border-main'
+      className={`w-full text-sm mx-auto flex justify-center items-center space-x-2 py-2 px-4 border-[1px] rounded-lg ${
+        isLoading
+          ? 'bg-gray-300'
+          : 'bg-transparent cursor-pointer hover:border-main '
+      }`}
     >
       <Icons.google className='w-4 h-4' />
       <span>
         {isLoading ? '로딩중' : 'Google 계정으로 로그인'}
       </span>
-    </div>
+    </button>
   );
 };
 
