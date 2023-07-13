@@ -1,18 +1,13 @@
-'use client';
-
 import Link from 'next/link';
 import MobileSideMenu from './MobileSideMenu';
-import Avatar from './Avatar';
-import { useSession } from 'next-auth/react';
 import Image from 'next/image';
+import WebSideMenu from './WebSideMenu';
 
 const NavBar = () => {
-  // const { data: session, status } = useSession();
-  // console.log('session', session);
   return (
     <div className='fixed top-0 inset-x-0 h-14 border-b border-zinc-200 z-[10] p-2 bg-slate-50'>
       {/* 모바일 - 로고/햄버거아이콘 */}
-      {/* 웹 - 로고/서칭인풋+프로필 */}
+      {/* 웹 - 로고/서치인풋+프로필 */}
       <div className='max-w-7xl h-full mx-auto flex items-center justify-between gap-2'>
         {/* 로고 */}
         <div className='md:flex'>
@@ -29,11 +24,9 @@ const NavBar = () => {
         <div className='md:hidden'>
           <MobileSideMenu />
         </div>
+        {/* 웹 - 우측 서칭인풋+프로필 */}
         <div className='hidden md:flex md:items-center md:space-x-6'>
-          {/* search input */}
-          <div className=''>서치인풋</div>
-          {/* 프로필 */}
-          <Avatar className='md:w-10 md:h-10' user={''} />
+          <WebSideMenu />
         </div>
       </div>
     </div>
