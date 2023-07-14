@@ -1,5 +1,7 @@
+import ProfileEdit from '@/components/profile/ProfileEdit';
+
 const Page = () => {
-  return <div>profile edit</div>;
+  return <ProfileEdit />;
 };
 
 export default Page;

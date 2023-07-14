@@ -109,6 +109,7 @@ export const authOptions: NextAuthOptions = {
         select: {
           id: true,
           email: true,
+          emailVerified: true,
           image: true,
           username: true,
           provider: true,

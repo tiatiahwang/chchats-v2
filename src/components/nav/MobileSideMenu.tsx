@@ -67,7 +67,11 @@ const MobileSideMenu = () => {
                   </button>
                   <button
                     className='p-2 rounded-md bg-main text-white hover:bg-mainDark'
-                    onClick={() => signOut()}
+                    onClick={() =>
+                      signOut({
+                        callbackUrl: '/',
+                      })
+                    }
                   >
                     로그아웃
                   </button>

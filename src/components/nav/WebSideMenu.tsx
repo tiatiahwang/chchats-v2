@@ -4,10 +4,11 @@ import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import { Icons } from '../Icons';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 const WebSideMenu = () => {
+  const router = useRouter();
   const { data: session } = useSession();
-  console.log(session);
   return (
     <>
       {/* search input */}
@@ -16,7 +17,10 @@ const WebSideMenu = () => {
       <div className='cursor-pointer'>
         {session?.user ? (
           session?.user?.image ? (
-            <div className='relative aspect-square h-8 w-8 rounded-full md:w-10 md:h-10'>
+            <div
+              onClick={() => router.push('/profile')}
+              className='relative aspect-square h-8 w-8 rounded-full md:w-10 md:h-10'
+            >
               <Image
                 fill
                 src={session.user.image!}
@@ -26,7 +30,10 @@ const WebSideMenu = () => {
               />
             </div>
           ) : (
-            <Icons.user className='w-8 h-8 border-[1.5px] p-1 rounded-full border-slate-900 md:w-10 md:h-10' />
+            <Icons.user
+              onClick={() => router.push('/profile')}
+              className='w-8 h-8 border-[1.5px] p-1 rounded-full border-slate-900 md:w-10 md:h-10'
+            />
           )
         ) : (
           <div className='space-x-4'>
