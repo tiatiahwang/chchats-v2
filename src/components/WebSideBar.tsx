@@ -2,8 +2,10 @@
 
 import { useState } from 'react';
 import { Icons } from '@/components/Icons';
+import { useRouter } from 'next/navigation';
 
 const WebSideBar = () => {
+  const router = useRouter();
   // TODO: 로직 하나로 합치기
   const [firstHover, setFirstHover] = useState(false);
   const [secondHover, setSecondHover] = useState(false);
@@ -32,7 +34,10 @@ const WebSideBar = () => {
             role='button'
           >
             {firstHover ? (
-              <div className='flex justify-between items-center relative'>
+              <div
+                className='flex justify-between items-center relative'
+                onClick={() => router.push('/board')}
+              >
                 <span>자유게시판</span>
                 <Icons.chevRight className='h-4 w-4 absolute -right-2' />
               </div>

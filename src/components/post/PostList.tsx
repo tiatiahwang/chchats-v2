@@ -1,13 +1,20 @@
+'use client';
+
 import { FC } from 'react';
 import { Icons } from '../Icons';
+import { useRouter } from 'next/navigation';
 
 interface PostListProps {
   category: string;
 }
 const PostList: FC<PostListProps> = ({ category }) => {
+  const router = useRouter();
   return (
     <div className='border rounded-md w-full p-4'>
-      <div className='flex justify-between border-b pb-2 cursor-pointer pt-2'>
+      <div
+        className='flex justify-between border-b pb-2 cursor-pointer pt-2 hover:text-main'
+        onClick={() => router.push('/board')}
+      >
         <div className='text-2xl font-bold'>{category}</div>
         <span className='text-xs self-end'>전체보기</span>
       </div>
