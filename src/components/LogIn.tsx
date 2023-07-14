@@ -45,6 +45,7 @@ const LogIn = () => {
     // TODO: 로그인 완료시, 모달 or 토스트 띄운 후에 이동하는게 낫지 않을까? - 일단 고려해보기
     if (!signInResponse?.error) {
       router.push('/');
+      router.refresh();
     }
   };
   return (

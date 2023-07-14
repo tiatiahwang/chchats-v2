@@ -10,7 +10,6 @@ import { useRouter } from 'next/navigation';
 const MobileSideMenu = () => {
   const { data: session } = useSession();
   const router = useRouter();
-
   const [iconClicked, setIconClicked] = useState(false);
   const onIconClick = () => setIconClicked(!iconClicked);
   return (
