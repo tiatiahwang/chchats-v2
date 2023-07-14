@@ -5,7 +5,7 @@ import Link from 'next/link';
 
 const Page = () => {
   return (
-    <div className='absolute inset-0'>
+    <div className='my-20'>
       <div className='h-full max-w-md w-full mx-auto flex flex-col items-center justify-center'>
         <div className='relative aspect-square h-14 w-14'>
           <Image
