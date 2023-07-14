@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { Icons } from '../Icons';
 
 const PostCard = () => {
@@ -25,16 +26,16 @@ const PostCard = () => {
                 <Icons.comment className='h-3 w-3' />0
               </div>
             </div>
-            {/* 글 제목 */}
-            <a href='/'>
-              <h1 className='text-lg font-semibold pb-2 pt-4 leading-6 text-gray-900'>
+            <Link href='/' className='hover:text-main'>
+              {/* 글 제목 */}
+              <h1 className='text-lg font-semibold pb-2 pt-4 leading-6'>
                 글 제목이 여기다
               </h1>
-            </a>
-            {/* 글 내용 */}
-            <div className='relative text-sm max-h-40 w-full overflow-clip'>
-              안녕하세요 반가워요 고민이 있어요...
-            </div>
+              {/* 글 내용 */}
+              <div className='relative text-sm max-h-40 w-full overflow-clip'>
+                안녕하세요 반가워요 고민이 있어요...
+              </div>
+            </Link>
           </div>
         </div>
       </div>
