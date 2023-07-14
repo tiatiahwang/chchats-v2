@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { Icons } from '@/components/Icons';
 
 const WebSideBar = () => {
+  // TODO: 로직 하나로 합치기
   const [firstHover, setFirstHover] = useState(false);
   const [secondHover, setSecondHover] = useState(false);
   const [thirdHover, setThirdHover] = useState(false);
@@ -21,8 +22,8 @@ const WebSideBar = () => {
     else setFourthHover(false);
   };
   return (
-    <div className='hidden md:flex md:flex-col space-y-1 cursor-pointer shrink-0'>
-      <div className='sticky top-16'>
+    <div className='hidden md:flex md:flex-col cursor-pointer shrink-0'>
+      <div className='sticky top-16 space-y-2'>
         <div className='flex flex-col w-[150px] rounded-lg h-fit border'>
           <div
             className='rounded-t-lg font-bold bg-main text-white py-2 px-4 hover:bg-mainDark'
@@ -67,15 +68,31 @@ const WebSideBar = () => {
               <span>묻고답하기</span>
             )}
           </div>
-          <div className='px-4 space-y-3 py-3'>
-            <div>비자</div>
-            <div>법률</div>
-            <div>건강</div>
-            <div>교육</div>
-            <div>육아</div>
-            <div>취업</div>
-            <div>부동산</div>
-            <div>기타</div>
+          <div>
+            <div className='px-4 hover:bg-mainLight py-2'>
+              비자
+            </div>
+            <div className='px-4 hover:bg-mainLight py-2'>
+              법률
+            </div>
+            <div className='px-4 hover:bg-mainLight py-2'>
+              건강
+            </div>
+            <div className='px-4 hover:bg-mainLight py-2'>
+              교육
+            </div>
+            <div className='px-4 hover:bg-mainLight py-2'>
+              육아
+            </div>
+            <div className='px-4 hover:bg-mainLight py-2'>
+              취업
+            </div>
+            <div className='px-4 hover:bg-mainLight py-2'>
+              부동산
+            </div>
+            <div className='px-4 hover:bg-mainLight py-2'>
+              기타
+            </div>
           </div>
         </div>
         <div className='flex flex-col w-[150px] rounded-lg h-fit border'>
@@ -94,11 +111,19 @@ const WebSideBar = () => {
               <span>온라인마켓</span>
             )}
           </div>
-          <div className='px-4 space-y-3 py-3'>
-            <div>팔아요</div>
-            <div>살게요</div>
-            <div>나눔</div>
-            <div>렌트</div>
+          <div>
+            <div className='px-4 hover:bg-mainLight py-2'>
+              팔아요
+            </div>
+            <div className='px-4 hover:bg-mainLight py-2'>
+              살게요
+            </div>
+            <div className='px-4 hover:bg-mainLight py-2'>
+              나눔
+            </div>
+            <div className='px-4 hover:bg-mainLight py-2'>
+              렌트
+            </div>
           </div>
         </div>
         <div className='flex flex-col w-[150px] rounded-lg h-fit border'>
@@ -117,10 +142,16 @@ const WebSideBar = () => {
               <span>지역소모임</span>
             )}
           </div>
-          <div className='px-4 space-y-3 py-3'>
-            <div>산호세</div>
-            <div>샌프란</div>
-            <div>LA</div>
+          <div>
+            <div className='px-4 hover:bg-mainLight py-2'>
+              산호세
+            </div>
+            <div className='px-4 hover:bg-mainLight py-2'>
+              샌프란
+            </div>
+            <div className='px-4 hover:bg-mainLight py-2'>
+              LA
+            </div>
           </div>
         </div>
       </div>
