@@ -1,9 +1,13 @@
 import Link from 'next/link';
 import MobileSideMenu from './MobileSideMenu';
 import Image from 'next/image';
+import Search from './Search';
+import { getAuthSession } from '@/lib/auth';
 import WebSideMenu from './WebSideMenu';
 
-const NavBar = () => {
+const NavBar = async () => {
+  // const { data: session, status } = useSession();
+  const session = await getAuthSession();
   return (
     <div className='fixed top-0 inset-x-0 h-14 border-b border-zinc-200 z-[10] p-2 bg-slate-50'>
       {/* 모바일 - 로고/햄버거아이콘 */}
@@ -25,8 +29,9 @@ const NavBar = () => {
           <MobileSideMenu />
         </div>
         {/* 웹 - 우측 서칭인풋+프로필 */}
-        <div className='hidden md:flex md:items-center md:space-x-6'>
-          <WebSideMenu />
+        <div className='hidden md:flex md:items-center md:space-x-4'>
+          <Search />
+          <WebSideMenu session={session} />
         </div>
       </div>
     </div>

@@ -5,9 +5,11 @@ import Image from 'next/image';
 import { Icons } from '../Icons';
 import NewComment from '../comment/NewComment';
 import CommentList from '../comment/CommentList';
+import Loader from '../ui/Loader';
 
 const PostDetail = () => {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
+  if (status === 'loading') return <Loader />;
   return (
     <div className='space-y-6'>
       {/* 상단 - 카테고리  */}
