@@ -12,6 +12,7 @@ interface category extends Category {
 interface WebSideBarProps {
   categories: category[];
 }
+
 const WebSideBar: FC<WebSideBarProps> = ({
   categories,
 }) => {
@@ -50,19 +51,14 @@ const WebSideBar: FC<WebSideBarProps> = ({
               <div>
                 {category?.subcategories.map(
                   (subcategory) => (
-                    <div
+                    <Link
                       key={subcategory.id}
-                      className='px-4 hover:bg-mainLight py-2'
+                      href={`${subcategory.url}`}
                     >
-                      <Link
-                        href={{
-                          pathname:
-                            category.url + subcategory.url,
-                        }}
-                      >
+                      <div className='px-4 hover:bg-mainLight py-2'>
                         {subcategory.name}
-                      </Link>
-                    </div>
+                      </div>
+                    </Link>
                   ),
                 )}
               </div>
