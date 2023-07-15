@@ -1,13 +1,11 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { Icons } from '../Icons';
 
 const Search = () => {
   // TODO: 1. search query 가져오기
   // TODO: 2. server에서 가져온 정보 있으면 redirect to search page
-  const router = useRouter();
   const { register, handleSubmit } = useForm();
   const onValid = ({ keyword }: { keyword: string }) => {
     console.log(keyword);

@@ -1,14 +1,9 @@
 import PostList from '@/components/post/PostList';
 import WebSideBar from '@/components/WebSideBar';
-import { db } from '@/lib/db';
+import { getAllCategories } from '@/lib/utils';
 
 export default async function Home() {
-  const categories = await db.category.findMany({
-    where: { isDefault: true },
-    include: {
-      subcategories: true,
-    },
-  });
+  const categories = await getAllCategories();
   return (
     <div className='flex text-sm px-2 pb-2'>
       <WebSideBar categories={categories} />

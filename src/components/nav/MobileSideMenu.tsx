@@ -5,11 +5,9 @@ import { Icons } from '../Icons';
 import Link from 'next/link';
 import { signOut, useSession } from 'next-auth/react';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
 
 const MobileSideMenu = () => {
   const { data: session } = useSession();
-  const router = useRouter();
   const [iconClicked, setIconClicked] = useState(false);
   const onIconClick = () => setIconClicked(!iconClicked);
   return (
@@ -55,15 +53,15 @@ const MobileSideMenu = () => {
                   </div>
                 </div>
                 <div className='space-x-2'>
-                  <button
+                  <Link
+                    href='/profile'
                     className='p-2 rounded-md bg-main text-white hover:bg-mainDark'
-                    onClick={() => {
-                      setIconClicked(!iconClicked);
-                      router.push('/profile');
-                    }}
+                    onClick={() =>
+                      setIconClicked(!iconClicked)
+                    }
                   >
                     내 계정
-                  </button>
+                  </Link>
                   <button
                     className='p-2 rounded-md bg-main text-white hover:bg-mainDark'
                     onClick={() =>
