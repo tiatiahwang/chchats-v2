@@ -3,7 +3,7 @@ const Layout = async ({
 }: {
   children: React.ReactNode;
 }) => {
-  return <div>{children}</div>;
+  return <div className='flex'>{children}</div>;
 };
 
 export default Layout;

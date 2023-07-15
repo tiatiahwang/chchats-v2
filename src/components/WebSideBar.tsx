@@ -22,7 +22,7 @@ const WebSideBar: FC<WebSideBarProps> = ({
   const onLeave = () => setOnHoverIndex(0);
 
   return (
-    <div className='hidden md:flex md:flex-col cursor-pointer shrink-0'>
+    <div className='hidden md:flex md:flex-col cursor-pointer shrink-0 text-sm'>
       <div className='sticky top-16 space-y-2'>
         {categories.map((category) => {
           return (
