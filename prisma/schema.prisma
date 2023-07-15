@@ -84,6 +84,8 @@ model Post {
   author    User      @relation(fields: [authorId], references: [id])
   authorId  String
   comments  Comment[]
+  category  Category[]
+  subCategory Subcategory[]
 
   @@index([authorId])
 }
@@ -105,4 +107,33 @@ model Comment {
   @@index([authorId])
   @@index([postId])
   @@index([replyToId])
+}
+
+model Category {
+  id            Int       @id @default(autoincrement())
+  name          String    @unique
+  url           String
+  description   String?
+  ref           String?
+  isDefault     Boolean   @default(false)
+  post          Post?     @relation(fields: [postId], references: [id])
+  postId        String?
+  subcategories Subcategory[]
+
+  @@index([postId])
+}
+
+model Subcategory {
+  id          Int       @id @default(autoincrement())
+  name        String    @unique
+  url         String
+  ref         String?
+  isDefault   Boolean   @default(false)
+  post        Post?     @relation(fields: [postId], references: [id])
+  postId      String?
+  category    Category  @relation(fields: [categoryId], references: [id])
+  categoryId  Int
+
+  @@index([postId])
+  @@index([categoryId])
 }
