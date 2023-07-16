@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { UserJoinValidator } from '@/lib/validator/user';
+import { UserJoinValidator } from '@/lib/validator/auth';
 import { Icons } from './Icons';
 
 interface FormProps {

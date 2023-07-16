@@ -3,7 +3,7 @@
 import { signIn } from 'next-auth/react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { UserLoginValidator } from '@/lib/validator/user';
+import { UserLoginValidator } from '@/lib/validator/auth';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { Icons } from './Icons';

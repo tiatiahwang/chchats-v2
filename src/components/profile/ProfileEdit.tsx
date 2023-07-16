@@ -3,9 +3,68 @@
 import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import { Icons } from '../Icons';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { PasswordChangeValidator } from '@/lib/validator/profile';
+import axios, { AxiosError } from 'axios';
+
+interface FormProps {
+  currentPassword: string;
+  newPassword: string;
+}
 
 const ProfileEdit = () => {
   const { data: session } = useSession();
+  const [isChecked, setIsChecked] = useState(false);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormProps>({
+    mode: 'onChange',
+    resolver: zodResolver(PasswordChangeValidator),
+  });
+  const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const onValid = async ({
+    currentPassword,
+    newPassword,
+  }: FormProps) => {
+    setIsLoading(true);
+    if (errorMessage !== '') setErrorMessage('');
+
+    // 현재 비밀번호와 새로운 비밀번호가 같으면 오류 메세지 출력
+    if (currentPassword === newPassword) {
+      setErrorMessage(
+        '현재 비밀번호와 새로운 비밀번호가 일치합니다. 다시 입력해주세요.',
+      );
+    }
+    try {
+      const { data } = await axios.post(
+        '/api/profile/password',
+        {
+          currentPassword,
+          newPassword,
+        },
+      );
+      if (data === 'OK') {
+        console.log('password changed.');
+      }
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        if (error.response?.status === 401) {
+          //TODO: 로그인을 해주세요 모달? 근데 사실 이런 오류 나면 안되긴 하는데
+        }
+        if (error?.response) {
+          setIsLoading(false);
+          setErrorMessage(error.response.data);
+        }
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div className='mx-auto max-w-screen-7xl'>
@@ -99,40 +158,77 @@ const ProfileEdit = () => {
               비밀번호 변경
             </div>
             <div className='bg-slate-100 md:col-span-2 rounded-md p-8'>
-              <form>
+              <form onSubmit={handleSubmit(onValid)}>
                 <div className='space-y-4'>
                   <div>
                     <label
-                      htmlFor='current-password'
+                      htmlFor='currentPassword'
                       className='block text-sm font-medium leading-5 text-gray-700'
                     >
                       현재 비밀번호
                     </label>
                     <input
+                      {...register('currentPassword')}
                       type='password'
-                      id='current-password'
-                      name='current-password'
-                      className='block flex-1 w-full bg-transparent border-b py-2 px-4 mt-1 outline-none focus:border-main'
+                      id='currentPassword'
+                      name='currentPassword'
+                      className={`block flex-1 w-full bg-transparent border-b py-2 px-4 mt-1 outline-none ${
+                        errors?.currentPassword
+                          ? 'focus:border-red-500'
+                          : 'focus:border-main '
+                      }`}
+                      aria-invalid={Boolean(
+                        errors.currentPassword,
+                      )}
                     />
+                    {errors?.currentPassword?.message && (
+                      <span className='text-red-500 text-sm'>
+                        {errors.currentPassword.message}
+                      </span>
+                    )}
                   </div>
                   <div>
                     <label
-                      htmlFor='current-password'
+                      htmlFor='newPassword'
                       className='block text-sm font-medium leading-5 text-gray-700'
                     >
                       새로운 비밀번호
                     </label>
                     <input
+                      {...register('newPassword')}
                       type='password'
-                      id='new-password'
-                      name='new-password'
-                      className='block flex-1 w-full bg-transparent border-b py-2 px-4 mt-1 outline-none focus:border-main'
+                      id='newPassword'
+                      name='newPassword'
+                      className={`block flex-1 w-full bg-transparent border-b py-2 px-4 mt-1 outline-none ${
+                        errors?.newPassword
+                          ? 'focus:border-red-500'
+                          : 'focus:border-main '
+                      }`}
                     />
+                    {errors?.newPassword?.message && (
+                      <span className='text-red-500 text-sm leading-8'>
+                        {errors.newPassword.message}
+                      </span>
+                    )}
                   </div>
                 </div>
+                {errorMessage && (
+                  <div className='text-red-500 text-sm flex space-x-1 justify-center items-center font-bold pt-4 pb-2'>
+                    <Icons.exclamation className='h-4 w-4 text-red-500' />
+                    <span>{errorMessage}</span>
+                  </div>
+                )}
                 <div className='flex justify-end items-center w-full'>
-                  <button className='w-fit bg-main text-white p-2 mt-2 rounded-md text-sm hover:bg-mainDark'>
-                    비밀번호 변경
+                  <button
+                    type='submit'
+                    disabled={isLoading}
+                    className={`w-fit text-white p-2 mt-2 rounded-md text-sm  ${
+                      isLoading
+                        ? 'bg-gray-300'
+                        : 'bg-main hover:bg-mainDark'
+                    }`}
+                  >
+                    {isLoading ? '로딩중' : '비밀번호 변경'}
                   </button>
                 </div>
               </form>
@@ -143,8 +239,8 @@ const ProfileEdit = () => {
         <div className='md:col-span-1 font-medium border-b py-4  md:py-0'>
           회원 탈퇴
         </div>
-        {/* TODO: 문구 변경 필요 */}
         <div className='bg-slate-100 md:col-span-2 rounded-md p-8 space-y-6'>
+          {/* TODO: 문구 변경 필요 */}
           <div className='text-gray-400 text-sm'>
             회원 탈퇴 후, 계정 복구는 불가능 합니다.
             <br />
@@ -157,12 +253,21 @@ const ProfileEdit = () => {
                 type='checkbox'
                 id='delete-account'
                 name='delete-account'
+                defaultChecked={isChecked}
+                onClick={() => setIsChecked(!isChecked)}
               />
               <label htmlFor='delete-account'>
                 해당 사항을 숙지하였으며, 동의합니다.
               </label>
             </div>
-            <button className='w-fit bg-red-500 text-white p-2 mt-2 rounded-md text-sm hover:bg-red-600'>
+            <button
+              disabled={!isChecked}
+              className={`w-fit text-white p-2 mt-2 rounded-md text-sm ${
+                isChecked
+                  ? 'bg-red-500 cursor-pointer hover:bg-red-600'
+                  : 'bg-gray-300'
+              }`}
+            >
               회원 탈퇴
             </button>
           </div>

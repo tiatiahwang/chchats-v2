@@ -1,5 +1,5 @@
 import { db } from '@/lib/db';
-import { UserJoinValidator } from '@/lib/validator/user';
+import { UserJoinValidator } from '@/lib/validator/auth';
 import * as bcrypt from 'bcrypt';
 
 export async function POST(req: Request) {

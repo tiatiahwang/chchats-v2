@@ -45,6 +45,7 @@ export const UserLoginValidator = z.object({
 export type UserJoinRequest = z.infer<
   typeof UserJoinValidator
 >;
+
 export type UserLoginRequest = z.infer<
   typeof UserLoginValidator
 >;

@@ -48,6 +48,7 @@ const WebSideMenu = ({ session }: any) => {
           </Link>
         </div>
       )}
+      {/* TODO: CSS 드롭다운 메뉴 위치 조절 필요 */}
       {avatarClicked ? (
         <div className='top-[56px] origin-top-right right-0 w-48 absolute z-10 shadow-md bg-slate-50'>
           <div
