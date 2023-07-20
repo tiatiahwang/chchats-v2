@@ -2,24 +2,26 @@
 
 import { ExtendedCategory } from '@/types/db';
 import { useSession } from 'next-auth/react';
-import { FC, useState } from 'react';
+import { Dispatch, FC, SetStateAction } from 'react';
 
 interface PostCategoryProps {
   categories: ExtendedCategory[];
-  currentCategory: ExtendedCategory;
+  selectedCategory: ExtendedCategory;
+  setSelectedCategory: Dispatch<
+    SetStateAction<ExtendedCategory>
+  >;
+  selectedSubcategory: number;
+  setSelectedsubcategory: Dispatch<SetStateAction<number>>;
 }
 
 const PostCategory: FC<PostCategoryProps> = ({
   categories,
-  currentCategory,
+  selectedCategory,
+  setSelectedCategory,
+  selectedSubcategory,
+  setSelectedsubcategory,
 }) => {
   const { data: session } = useSession();
-  const [selectedCategory, setSelectedCategory] =
-    useState(currentCategory);
-
-  const [selectedSubcategory, setSelectedsubcategory] =
-    useState(0);
-
   return (
     <div className='w-full py-4 space-y-2'>
       <h3 className='text-base'>카테고리 선택</h3>

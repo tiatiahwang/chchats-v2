@@ -3,6 +3,8 @@
 import { useMutation } from '@tanstack/react-query';
 import axios from 'axios';
 import {
+  Dispatch,
+  SetStateAction,
   useCallback,
   useEffect,
   useMemo,
@@ -30,14 +32,22 @@ const QuillNoSSRWrapper = dynamic(
   },
 ) as typeof ReactQuill;
 
-const Editor = () => {
-  const quillRef = useRef();
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
+interface EditorProps {
+  title: string;
+  setTitle: Dispatch<SetStateAction<string>>;
+  content: string;
+  setContent: Dispatch<SetStateAction<string>>;
+}
 
-  const [isUploading, setIsUploading] = useState(false);
+const Editor = ({
+  title,
+  setTitle,
+  content,
+  setContent,
+}: EditorProps) => {
+  const quillRef = useRef();
+
   const [error, setError] = useState('');
-  const [file, setFile] = useState();
 
   const router = useRouter();
 
@@ -143,37 +153,27 @@ const Editor = () => {
   );
 
   return (
-    <div className='w-full'>
-      <form
-        onSubmit={async (e) => {
-          e.preventDefault();
-        }}
-        className='w-full'
-      >
-        <div className='w-full'>
-          <input
-            className='border-b pb-4 w-full resize-none overflow-hidden bg-transparent text-xl md:text-3xl font-bold focus:outline-none'
-            id='title'
-            type='text'
-            placeholder='제목'
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-          />
-          <div className='py-4'>
-            <QuillNoSSRWrapper
-              // @ts-ignore
-              forwardedRef={quillRef}
-              theme='snow'
-              className='w-full'
-              value={content}
-              onChange={setContent}
-              modules={modules}
-            />
-          </div>
-        </div>
-        <button>작성하기</button>
-      </form>
-    </div>
+    <>
+      <input
+        className='border-b pb-4 w-full resize-none overflow-hidden bg-transparent text-xl md:text-3xl font-bold focus:outline-none'
+        id='title'
+        type='text'
+        placeholder='제목'
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+      />
+      <div className='py-4'>
+        <QuillNoSSRWrapper
+          // @ts-ignore
+          forwardedRef={quillRef}
+          theme='snow'
+          className='w-full'
+          value={content}
+          onChange={setContent}
+          modules={modules}
+        />
+      </div>
+    </>
   );
 };
 
