@@ -21,6 +21,7 @@ const ProfileEdit = () => {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm<FormProps>({
     mode: 'onChange',
     resolver: zodResolver(PasswordChangeValidator),
@@ -49,7 +50,9 @@ const ProfileEdit = () => {
         },
       );
       if (data === 'OK') {
+        // TODO: 비밀번호 변경 완료시 ??
         console.log('password changed.');
+        reset();
       }
     } catch (error) {
       if (error instanceof AxiosError) {

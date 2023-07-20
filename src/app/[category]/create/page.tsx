@@ -1,3 +1,4 @@
+import Editor from '@/components/post/Editor';
 import PostCategory from '@/components/post/PostCategory';
 import { getAllCategories } from '@/lib/utils';
 
@@ -11,10 +12,14 @@ const Page = async ({
     (cate) => cate.ref === category,
   );
   return (
-    <PostCategory
-      categories={categories}
-      currentCategory={currentCategory!}
-    />
+    <>
+      <div className='flex justify-end w-full'></div>
+      <PostCategory
+        categories={categories}
+        currentCategory={currentCategory!}
+      />
+      <Editor />
+    </>
   );
 };
 
