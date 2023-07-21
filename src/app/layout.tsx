@@ -1,11 +1,10 @@
 import Footer from '@/components/Footer';
 import NavBar from '@/components/nav/NavBar';
 import Providers from '@/components/Providers';
-import { cls } from '@/lib/utils';
-import '@/styles/globals.css';
-import { Inter } from 'next/font/google';
+import ToastProvider from '@/components/ToastProvider';
 
-const inter = Inter({ subsets: ['latin'] });
+import '@/styles/globals.css';
+import 'react-toastify/dist/ReactToastify.css';
 
 export const metadata = {
   title: 'CHCHATS',
@@ -20,10 +19,7 @@ export default function RootLayout({
   return (
     <html
       lang='ko'
-      className={cls(
-        'bg-white text-slate-900 antialiased light',
-        inter.className,
-      )}
+      className='bg-white text-slate-900 antialiased light'
     >
       <body
         suppressContentEditableWarning={true}
@@ -31,11 +27,13 @@ export default function RootLayout({
         className='min-h-screen pt-12 bg-slate-50 antialiased'
       >
         <Providers>
-          <NavBar />
-          <div className='container max-w-7xl mx-auto h-full pt-12'>
-            {children}
-          </div>
-          <Footer />
+          <ToastProvider>
+            <NavBar />
+            <div className='container max-w-7xl mx-auto h-full pt-12'>
+              {children}
+            </div>
+            <Footer />
+          </ToastProvider>
         </Providers>
       </body>
     </html>

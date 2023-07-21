@@ -1,4 +1,4 @@
-const Layout = async ({
+const Layout = ({
   children,
 }: {
   children: React.ReactNode;

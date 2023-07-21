@@ -8,6 +8,8 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { PasswordChangeValidator } from '@/lib/validator/profile';
 import axios, { AxiosError } from 'axios';
+import { toast } from 'react-toastify';
+import { useCustomToast } from '@/hooks/use-custom-toast';
 
 interface FormProps {
   currentPassword: string;
@@ -28,6 +30,8 @@ const ProfileEdit = () => {
   });
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const { loginToast } = useCustomToast();
+
   const onValid = async ({
     currentPassword,
     newPassword,
@@ -50,14 +54,16 @@ const ProfileEdit = () => {
         },
       );
       if (data === 'OK') {
-        // TODO: 비밀번호 변경 완료시 ??
-        console.log('password changed.');
+        toast.success('비밀번호가 변경되었습니다.', {
+          theme: 'light',
+          className: 'text-sm',
+        });
         reset();
       }
     } catch (error) {
       if (error instanceof AxiosError) {
         if (error.response?.status === 401) {
-          //TODO: 로그인을 해주세요 모달? 근데 사실 이런 오류 나면 안되긴 하는데
+          loginToast();
         }
         if (error?.response) {
           setIsLoading(false);

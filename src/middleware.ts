@@ -28,6 +28,8 @@ export async function middleware(
       return NextResponse.redirect(new URL('/', req.url));
     }
   }
+
+  // TODO: 로그인 안한 상태에서, 로그인이 필요한 페이지들 이동시 강제 이동 필요함
 }
 
 export const config = {
