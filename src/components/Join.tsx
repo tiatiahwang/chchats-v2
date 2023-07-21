@@ -7,6 +7,8 @@ import { useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { UserJoinValidator } from '@/lib/validator/auth';
 import { Icons } from './Icons';
+import Button from './ui/Button';
+import { toast } from 'react-toastify';
 
 interface FormProps {
   email: string;
@@ -39,9 +41,17 @@ const Join = () => {
         username,
       });
 
-      // TODO: 회원가입 완료시, 모달 띄운 후에 이동하는게 낫지 않을까? - 일단 고려해보기
       if (data === 'OK') {
-        router.push('/login');
+        toast.success(
+          '회원가입 완료!\n잠시 후 로그인 화면으로 이동합니다.',
+          {
+            hideProgressBar: true,
+            autoClose: 1000,
+            theme: 'light',
+            className: 'text-sm whitespace-pre-line',
+          },
+        );
+        setTimeout(() => router.push('/login'), 2500);
       }
     } catch (error) {
       if (error instanceof AxiosError) {
@@ -130,17 +140,14 @@ const Join = () => {
           <span>{errorMessage}</span>
         </div>
       )}
-      <button
-        type='submit'
+      <Button
+        type='auth'
+        text='회원가입'
+        className='mt-4'
+        width='w-full'
         disabled={!isValid || isLoading}
-        className={`w-full rounded-lg p-2 mt-4 text-white ${
-          isValid && !isLoading
-            ? 'bg-main cursor-pointer'
-            : 'bg-gray-300'
-        }`}
-      >
-        {isLoading ? '로딩중' : '회원 가입'}
-      </button>
+        isLoading={isLoading}
+      />
     </form>
   );
 };

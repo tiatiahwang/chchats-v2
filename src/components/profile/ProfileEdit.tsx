@@ -10,6 +10,7 @@ import { PasswordChangeValidator } from '@/lib/validator/profile';
 import axios, { AxiosError } from 'axios';
 import { toast } from 'react-toastify';
 import { useCustomToast } from '@/hooks/use-custom-toast';
+import Button from '../ui/Button';
 
 interface FormProps {
   currentPassword: string;
@@ -100,9 +101,14 @@ const ProfileEdit = () => {
                   <Icons.user className='border-[2px] p-1 rounded-full border-slate-900' />
                 </div>
               )}
-              <button className='w-fit bg-main text-white p-2 mt-4 rounded-md text-sm hover:bg-mainDark'>
-                사진 변경
-              </button>
+              <Button
+                type='base'
+                disabled={isLoading}
+                isLoading={isLoading}
+                width='w-fit'
+                className='mt-2'
+                text='사진 변경'
+              />
             </div>
             {/* 이메일 인증 */}
             <div>
@@ -132,9 +138,14 @@ const ProfileEdit = () => {
               {session?.user?.emailVerified === null &&
               session?.user?.provider === 'CREDENTIALS' ? (
                 <div className='flex justify-end items-center w-full'>
-                  <button className='w-fit bg-main text-white p-2 mt-2 rounded-md text-sm hover:bg-mainDark'>
-                    이메일 인증
-                  </button>
+                  <Button
+                    type='base'
+                    disabled={isLoading}
+                    isLoading={isLoading}
+                    width='w-fit'
+                    className='mt-2'
+                    text='이메일 인증'
+                  />
                 </div>
               ) : null}
             </div>
@@ -153,9 +164,14 @@ const ProfileEdit = () => {
                 defaultValue={session?.user?.username!}
               />
               <div className='flex justify-end items-center w-full'>
-                <button className='w-fit bg-main text-white p-2 mt-2 rounded-md text-sm hover:bg-mainDark'>
-                  닉네임 변경
-                </button>
+                <Button
+                  type='base'
+                  disabled={isLoading}
+                  isLoading={isLoading}
+                  width='w-fit'
+                  className='mt-2'
+                  text='닉네임 변경'
+                />
               </div>
             </div>
           </div>
@@ -228,17 +244,14 @@ const ProfileEdit = () => {
                   </div>
                 )}
                 <div className='flex justify-end items-center w-full'>
-                  <button
-                    type='submit'
+                  <Button
+                    type='base'
                     disabled={isLoading}
-                    className={`w-fit text-white p-2 mt-2 rounded-md text-sm  ${
-                      isLoading
-                        ? 'bg-gray-300'
-                        : 'bg-main hover:bg-mainDark'
-                    }`}
-                  >
-                    {isLoading ? '로딩중' : '비밀번호 변경'}
-                  </button>
+                    isLoading={isLoading}
+                    width='w-fit'
+                    className='mt-2'
+                    text='비밀번호 변경'
+                  />
                 </div>
               </form>
             </div>
