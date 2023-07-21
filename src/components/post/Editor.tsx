@@ -46,7 +46,7 @@ const Editor = ({
   setContent,
 }: EditorProps) => {
   const quillRef = useRef();
-
+  const [isMounted, setIsMounted] = useState<boolean>();
   const [error, setError] = useState('');
 
   const router = useRouter();
@@ -152,6 +152,13 @@ const Editor = ({
     [imageHandler],
   );
 
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setIsMounted(true);
+    }
+  }, []);
+
+  if (!isMounted) return;
   return (
     <>
       <input

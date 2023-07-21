@@ -11,7 +11,7 @@ const WebSideMenu = ({ session }: any) => {
   const onClickAvatar = () =>
     setAvatarClicked(!avatarClicked);
   return (
-    <div className='cursor-pointer'>
+    <div className='cursor-pointer relative'>
       {session?.user ? (
         session?.user?.image ? (
           <div
@@ -48,11 +48,10 @@ const WebSideMenu = ({ session }: any) => {
           </Link>
         </div>
       )}
-      {/* TODO: CSS 드롭다운 메뉴 위치 조절 필요 */}
-      {avatarClicked ? (
-        <div className='top-[56px] origin-top-right right-0 w-48 absolute z-10 shadow-md bg-slate-50'>
+      {avatarClicked && (
+        <div className='top-[44px] border origin-top-right right-0 w-44 absolute z-10 shadow-md bg-slate-50'>
           <div
-            className={`py-2 text-sm ${
+            className={`text-sm ${
               avatarClicked ? '' : 'hidden'
             }`}
           >
@@ -81,7 +80,7 @@ const WebSideMenu = ({ session }: any) => {
             </div>
           </div>
         </div>
-      ) : null}
+      )}
     </div>
   );
 };

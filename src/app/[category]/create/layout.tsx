@@ -1,4 +1,9 @@
-const Layout = async ({
+'use client';
+
+import { Suspense } from 'react';
+import Loading from './loading';
+
+const Layout = ({
   children,
 }: {
   children: React.ReactNode;
@@ -9,7 +14,9 @@ const Layout = async ({
         <h1 className='font-bold text-2xl md:text-4xl h-14'>
           새로운 글 작성하기
         </h1>
-        {children}
+        <Suspense fallback={<Loading />}>
+          {children}
+        </Suspense>
       </div>
     </div>
   );

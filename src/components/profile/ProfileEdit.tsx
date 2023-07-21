@@ -72,7 +72,7 @@ const ProfileEdit = () => {
   return (
     <div className='mx-auto max-w-screen-7xl'>
       <div className='md:grid md:grid-cols-3 gap-4 sm:space-y-4 md:space-y-0'>
-        <div className='md:col-span-1 font-medium border-b-[1px] pb-4'>
+        <div className='md:col-span-1 font-medium md:border-b-[1px] pb-4'>
           계정 정보
         </div>
         <div className='bg-slate-100 md:col-span-2 rounded-md p-8'>
@@ -157,7 +157,7 @@ const ProfileEdit = () => {
         {/* 일반 로그인 한 경우, 비밀번호 변경 내용 출력 */}
         {session?.user?.provider === 'CREDENTIALS' ? (
           <>
-            <div className='md:col-span-1 font-medium border-b-[1px] py-4 md:py-0'>
+            <div className='md:col-span-1 font-medium md:border-b-[1px] py-4 md:py-0'>
               비밀번호 변경
             </div>
             <div className='bg-slate-100 md:col-span-2 rounded-md p-8'>
@@ -239,7 +239,7 @@ const ProfileEdit = () => {
           </>
         ) : null}
         {/* 회원 탈퇴 */}
-        <div className='md:col-span-1 font-medium border-b py-4  md:py-0'>
+        <div className='md:col-span-1 font-medium py-4 md:py-0'>
           회원 탈퇴
         </div>
         <div className='bg-slate-100 md:col-span-2 rounded-md p-8 space-y-6'>

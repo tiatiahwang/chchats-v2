@@ -36,12 +36,12 @@ export async function POST(req: Request) {
       include: {
         category: {
           select: {
-            name: true,
+            url: true,
           },
         },
         subCategory: {
           select: {
-            name: true,
+            url: true,
           },
         },
       },
@@ -50,8 +50,8 @@ export async function POST(req: Request) {
     return new Response(
       JSON.stringify({
         postId: post.id,
-        category: post.category[0].name,
-        subcategory: post.subCategory[0].name,
+        category: post.category[0].url,
+        subcategory: post.subCategory[0].url,
       }),
     );
   } catch (error) {
