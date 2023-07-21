@@ -1,11 +1,12 @@
 interface ButtonProps {
   type?: 'auth' | 'base' | 'transparent';
-  onClick?: () => void;
+  onClick?: any;
   className?: string;
   disabled?: boolean;
   width: string;
   isLoading?: boolean;
   text: string;
+  form?: string;
 }
 
 const textSize = {
@@ -32,6 +33,7 @@ const Button = ({
   width,
   isLoading = false,
   text,
+  form = '',
 }: ButtonProps) => {
   const disalbedStyle =
     !disabled && !isLoading && type !== 'transparent'
@@ -55,6 +57,7 @@ const Button = ({
 
   return (
     <button
+      form={form}
       onClick={onClick}
       className={basicStyle.join(' ')}
       disabled={disabled}

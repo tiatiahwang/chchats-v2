@@ -14,7 +14,7 @@ const Providers = ({
   const queryClient = new QueryClient();
   return (
     <QueryClientProvider client={queryClient}>
-      <SessionProvider>{children}</SessionProvider>;
+      <SessionProvider>{children}</SessionProvider>
     </QueryClientProvider>
   );
 };
