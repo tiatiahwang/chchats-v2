@@ -31,6 +31,7 @@ export const ChangeUsernameValidator = z.object({
 });
 
 export const EditProfileValidator = z.object({
+  avatar: z.any(),
   currentPassword: z
     .string()
     .min(6, {

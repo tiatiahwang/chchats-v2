@@ -3,7 +3,7 @@
 import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import { Icons } from '../Icons';
-import { useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import axios, { AxiosError } from 'axios';
 import { toast } from 'react-toastify';
@@ -15,6 +15,8 @@ import {
   EditProfileRequest,
   EditProfileValidator,
 } from '@/lib/validator/profile';
+import Loader from '../ui/Loader';
+import { ProfileEditLoading } from '@/app/(profile)/profile/edit/page';
 
 // interface FormProps {
 //   avatar?: string;
@@ -36,8 +38,47 @@ const ProfileEdit = () => {
     mode: 'onChange',
     resolver: zodResolver(EditProfileValidator),
   });
+  const [avatarPreview, setAvatarPreview] = useState('');
+
   const [errorMessage, setErrorMessage] = useState('');
   const { loginToast } = useCustomToast();
+
+  const {
+    mutate: changeAvatar,
+    isLoading: isAvatarLoading,
+  } = useMutation({
+    mutationFn: async ({ avatar }: EditProfileRequest) => {
+      const { data } = await axios.post(
+        '/api/profile/edit/avatar',
+        {
+          avatar,
+        },
+      );
+      return data;
+    },
+    onError: (error) => {
+      if (error instanceof AxiosError) {
+        if (error.response?.status === 401) {
+          loginToast();
+        }
+        if (error.response?.status === 500) {
+          toast.error(error.response.data, {
+            theme: 'light',
+            className: 'text-sm whitespace-pre-line',
+          });
+        }
+      }
+    },
+    onSuccess: (data) => {
+      if (data === 'OK') {
+        console.log(data);
+        // toast.success('닉네임이 변경되었습니다.', {
+        //   theme: 'light',
+        //   className: 'text-sm',
+        // });
+      }
+    },
+  });
 
   const {
     mutate: changeUsername,
@@ -127,10 +168,65 @@ const ProfileEdit = () => {
     },
   });
 
+  const onChangeAvatar = async (
+    event: ChangeEvent<HTMLInputElement>,
+  ) => {
+    if (!event.target.files) {
+      return toast.error(
+        '알 수 없는 오류가 발생했습니다.\n잠시 후 다시 시도해 주세요',
+        {
+          theme: 'light',
+          className: 'text-sm whitespace-pre-line',
+        },
+      );
+    }
+
+    try {
+      const {
+        data: { uploadURL },
+      } = await axios.post('/api/files');
+      const form = new FormData();
+      form.append(
+        'file',
+        event.target.files[0],
+        new Date().toJSON().slice(0, 10) + session?.user.id,
+      );
+      const {
+        data: {
+          result: { variants },
+        },
+      } = await axios.post(uploadURL, form);
+      console.log('variants', variants);
+      if (!variants) {
+        return toast.error(
+          '알 수 없는 오류가 발생했습니다.\n잠시 후 다시 시도해 주세요',
+          {
+            theme: 'light',
+            className: 'text-sm whitespace-pre-line',
+          },
+        );
+      }
+
+      const url =
+        variants[0].split('/').slice(0, 5).join('/') +
+        '/avatar';
+      console.log('url', url);
+      setAvatarPreview(url);
+      changeAvatar({ avatar: url });
+    } catch (error) {
+      return toast.error(
+        '알 수 없는 오류가 발생했습니다.\n잠시 후 다시 시도해 주세요',
+        {
+          theme: 'light',
+          className: 'text-sm whitespace-pre-line',
+        },
+      );
+    }
+  };
+
   const onChangeUsername = () => {
     const username = getValues('username');
-    console.log('username', username);
-    console.log('session', session?.user.username);
+
     if (username === session?.user.username) {
       return setError('username', {
         message: '새로운 닉네임을 입력해주세요',
@@ -171,6 +267,10 @@ const ProfileEdit = () => {
     }
   };
 
+  if (!session) {
+    return <ProfileEditLoading />;
+  }
+
   return (
     <div className='mx-auto max-w-screen-7xl'>
       <div className='md:grid md:grid-cols-3 gap-4 sm:space-y-4 md:space-y-0'>
@@ -182,7 +282,7 @@ const ProfileEdit = () => {
             {/* 아바타 변경 */}
             <div className='flex items-center justify-center flex-col mb-4'>
               {session?.user?.image ? (
-                <div className='relative aspect-square w-20 h-20 md:w-32 md:h-32 rounded-full'>
+                <div className='relative aspect-square w-20 h-20 rounded-full'>
                   <Image
                     fill
                     src={session.user.image!}
@@ -196,13 +296,20 @@ const ProfileEdit = () => {
                   <Icons.user className='border-[2px] p-1 rounded-full border-slate-900' />
                 </div>
               )}
-              <Button
-                type='base'
-                disabled={false}
-                isLoading={false}
-                width='w-fit'
-                className='mt-2'
-                text='사진 변경'
+
+              <label
+                htmlFor='avatar'
+                className='text-sm p-2 text-white rounded-md bg-main hover:bg-mainDark cursor-pointer mt-2 w-fit'
+              >
+                사진 변경
+              </label>
+              <input
+                id='avatar'
+                name='avatar'
+                type='file'
+                accept='image/*'
+                className='sr-only'
+                onChange={(event) => onChangeAvatar(event)}
               />
             </div>
             {/* 이메일 인증 */}

@@ -79,7 +79,6 @@ const Editor = ({
       const quill = quillRef?.current?.getEditor();
       const range = quill.getSelection(true);
 
-      const loader = 'https://i.gifer.com/ZC9Y.gif';
       quill.insertEmbed(
         range.index,
         'image',

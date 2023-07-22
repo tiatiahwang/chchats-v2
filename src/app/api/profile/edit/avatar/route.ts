@@ -1,7 +1,6 @@
 import { getAuthSession } from '@/lib/auth';
 import { db } from '@/lib/db';
-import { PasswordChangeValidator } from '@/lib/validator/profile';
-import * as bcrypt from 'bcrypt';
+import { ChangeUsernameValidator } from '@/lib/validator/profile';
 
 export async function POST(req: Request) {
   try {
@@ -12,9 +11,8 @@ export async function POST(req: Request) {
       });
     }
 
-    const body = await req.json();
-    const { currentPassword, newPassword } =
-      PasswordChangeValidator.parse(body);
+    const { avatar } = await req.json();
+    console.log(avatar);
 
     const user = await db.user.findFirst({
       where: { id: session?.user.id },
@@ -27,25 +25,12 @@ export async function POST(req: Request) {
       );
     }
 
-    // db에 저장된 비밀번호와 유저가 입력한 현재 비밀번호 일치 여부 확인
-    const checkPassword = await bcrypt.compare(
-      currentPassword,
-      user?.password!,
-    );
-
-    if (!checkPassword) {
-      return new Response(
-        '현재 비밀번호를 다시 확인해주세요.',
-        { status: 400 },
-      );
-    }
-
     await db.user.update({
       where: {
         id: session?.user.id,
       },
       data: {
-        password: await bcrypt.hash(newPassword, 10),
+        image: avatar,
       },
     });
 
