@@ -51,6 +51,7 @@ const LogIn = () => {
   };
   return (
     <form
+      id='form-submit'
       onSubmit={handleSubmit(onValid)}
       className='space-y-8'
     >
@@ -109,6 +110,7 @@ const LogIn = () => {
         width='w-full'
         disabled={!isValid || isLoading}
         isLoading={isLoading}
+        id='form-submit'
       />
     </form>
   );

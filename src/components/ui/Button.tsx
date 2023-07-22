@@ -6,7 +6,7 @@ interface ButtonProps {
   width: string;
   isLoading?: boolean;
   text: string;
-  form?: string;
+  id?: string;
 }
 
 const textSize = {
@@ -33,7 +33,7 @@ const Button = ({
   width,
   isLoading = false,
   text,
-  form = '',
+  id = '',
 }: ButtonProps) => {
   const disalbedStyle =
     !disabled && !isLoading && type !== 'transparent'
@@ -57,7 +57,7 @@ const Button = ({
 
   return (
     <button
-      form={form}
+      id={id}
       onClick={onClick}
       className={basicStyle.join(' ')}
       disabled={disabled}

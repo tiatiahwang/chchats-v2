@@ -76,18 +76,22 @@ model VerificationToken {
 }
 
 model Post {
-  id        String    @id @default(cuid())
-  title     String
-  content   String
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @default(now())
-  author    User      @relation(fields: [authorId], references: [id])
-  authorId  String
-  comments  Comment[]
-  category  Category[]
-  subCategory Subcategory[]
+  id              String      @id @default(cuid())
+  title           String
+  content         String
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @default(now())
+  author         User         @relation(fields: [authorId], references: [id])
+  authorId       String
+  comments       Comment[]
+  category       Category     @relation(fields: [categoryId], references: [id])
+  categoryId     Int 
+  subcategory    Subcategory  @relation(fields: [subcategoryId], references: [id])
+  subcategoryId  Int 
 
   @@index([authorId])
+  @@index([categoryId])
+  @@index([subcategoryId])
 }
 
 model Comment {
@@ -116,11 +120,8 @@ model Category {
   description   String?
   ref           String?
   isDefault     Boolean   @default(false)
-  post          Post?     @relation(fields: [postId], references: [id])
-  postId        String?
+  posts         Post[]    
   subcategories Subcategory[]
-
-  @@index([postId])
 }
 
 model Subcategory {
@@ -129,11 +130,9 @@ model Subcategory {
   url         String
   ref         String?
   isDefault   Boolean   @default(false)
-  post        Post?     @relation(fields: [postId], references: [id])
-  postId      String?
+  posts       Post[]
   category    Category  @relation(fields: [categoryId], references: [id])
   categoryId  Int
 
-  @@index([postId])
   @@index([categoryId])
 }

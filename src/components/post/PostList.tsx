@@ -1,23 +1,25 @@
-'use client';
-
-import { FC } from 'react';
 import { Icons } from '../Icons';
 import { useRouter } from 'next/navigation';
+import { Category } from '@prisma/client';
+import { db } from '@/lib/db';
 
 interface PostListProps {
-  category: string;
+  categoryId: number;
 }
-const PostList: FC<PostListProps> = ({ category }) => {
-  const router = useRouter();
+const PostList = async ({ categoryId }: PostListProps) => {
+  console.log(categoryId);
+  const posts = await db.category.findMany({
+    where: {
+      id: categoryId,
+    },
+    include: {
+      posts: true,
+    },
+    take: 10,
+  });
+  console.log(posts);
   return (
-    <div className='border rounded-md w-full p-4'>
-      <div
-        className='flex justify-between border-b pb-2 cursor-pointer pt-2 hover:text-main'
-        onClick={() => router.push('/board')}
-      >
-        <div className='text-2xl font-bold'>{category}</div>
-        <span className='text-xs self-end'>전체보기</span>
-      </div>
+    <div>
       <div className='py-2 space-y-2'>
         <div className='flex justify-between items-center'>
           <div className='flex space-x-2 items-center hover:text-main cursor-pointer'>
