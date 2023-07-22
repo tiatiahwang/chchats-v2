@@ -1,8 +1,3 @@
-'use client';
-
-import { Suspense } from 'react';
-import Loading from './loading';
-
 const Layout = ({
   children,
 }: {
@@ -14,9 +9,8 @@ const Layout = ({
         <h1 className='font-bold text-2xl md:text-4xl h-14'>
           새로운 글 작성하기
         </h1>
-        <Suspense fallback={<Loading />}>
-          {children}
-        </Suspense>
+
+        {children}
       </div>
     </div>
   );

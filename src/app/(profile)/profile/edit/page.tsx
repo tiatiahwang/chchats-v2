@@ -2,26 +2,6 @@ import ProfileEdit from '@/components/profile/ProfileEdit';
 import Skeleton from '@/components/ui/Skeleton';
 import { Suspense } from 'react';
 //import { getAuthSession } from '@/lib/auth';
-const Page = async () => {
-  // TODO: 여기서 session 받아오고, 없는 경우 로그인페이지로 강제이동?
-
-  // const session = await getAuthSession();
-  // if (!session) {
-  //   return {
-  //     redirect: {
-  //       desitation: '/login',
-  //       permanent: false,
-  //     },
-  //   };
-  // }
-  return (
-    <Suspense fallback={<ProfileEditLoading />}>
-      <ProfileEdit />
-    </Suspense>
-  );
-};
-
-export default Page;
 
 export const ProfileEditLoading = () => {
   return (
@@ -53,3 +33,24 @@ export const ProfileEditLoading = () => {
     </div>
   );
 };
+
+const Page = async () => {
+  // TODO: 여기서 session 받아오고, 없는 경우 로그인페이지로 강제이동?
+
+  // const session = await getAuthSession();
+  // if (!session) {
+  //   return {
+  //     redirect: {
+  //       desitation: '/login',
+  //       permanent: false,
+  //     },
+  //   };
+  // }
+  return (
+    <Suspense fallback={<ProfileEditLoading />}>
+      <ProfileEdit />
+    </Suspense>
+  );
+};
+
+export default Page;

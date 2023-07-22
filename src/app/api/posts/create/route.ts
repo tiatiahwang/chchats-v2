@@ -17,6 +17,7 @@ export async function POST(req: Request) {
     const { title, content, categoryId, subcategoryId } =
       body;
 
+    // TODO: zodError 추가?
     const post = await db.post.create({
       data: {
         title,
@@ -46,14 +47,8 @@ export async function POST(req: Request) {
         },
       },
     });
-
-    return new Response(
-      JSON.stringify({
-        postId: post.id,
-        category: post.category[0].url,
-        subcategory: post.subCategory[0].url,
-      }),
-    );
+    const url = `${post.subCategory[0].url}/${post.id}`;
+    return new Response(url);
   } catch (error) {
     return new Response(
       '알 수 없는 에러가 발생했습니다. 잠시 후 다시 시도해 주세요',

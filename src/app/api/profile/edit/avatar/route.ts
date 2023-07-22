@@ -12,7 +12,6 @@ export async function POST(req: Request) {
     }
 
     const { avatar } = await req.json();
-    console.log(avatar);
 
     const user = await db.user.findFirst({
       where: { id: session?.user.id },
