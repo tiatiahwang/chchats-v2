@@ -38,7 +38,6 @@ const NewPost = ({
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [contentError, setContentError] = useState('');
-  const [isEditable, setIsEditable] = useState(true);
 
   const handleOnChangeContent = ({ editor }: any) => {
     if (!(editor as Editor).isEmpty) setContentError('');
@@ -56,7 +55,6 @@ const NewPost = ({
     ],
     onUpdate: handleOnChangeContent,
     content: '',
-    editable: isEditable,
     editorProps: {
       attributes: {
         class:
@@ -261,15 +259,7 @@ const NewPost = ({
         value={title}
         onChange={(e) => setTitle(e.target.value)}
       />
-      <TipTapEditor
-        title={title}
-        setTitle={setTitle}
-        content={content}
-        setContent={setContent}
-        isEditable={isEditable}
-        contentError={contentError}
-        editor={editor}
-      />
+      <TipTapEditor editor={editor} />
       <button
         type='submit'
         className='my-4 p-2 text-md bg-main rounded-md text-white hover:bg-mainDark'

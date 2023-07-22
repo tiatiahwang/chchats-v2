@@ -1,26 +1,13 @@
 import { Editor, EditorContent } from '@tiptap/react';
+import Skeleton from '../ui/Skeleton';
 
 interface TipTapEditorProps {
-  title: string;
-  setTitle: (title: string) => void;
-  content: string;
-  setContent: (content: string) => void;
-  isEditable: boolean;
-  contentError: string;
   editor: Editor | null;
 }
 
-const TipTapEditor = ({
-  title,
-  setTitle,
-  content,
-  setContent,
-  isEditable,
-  contentError,
-  editor,
-}: TipTapEditorProps) => {
+const TipTapEditor = ({ editor }: TipTapEditorProps) => {
   if (!editor) {
-    return null;
+    return <Skeleton className='w-full h-[450px]' />;
   }
   return (
     <div className='border'>

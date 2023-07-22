@@ -2,7 +2,6 @@ import WebSideBar from '@/components/WebSideBar';
 import PostCard from '@/components/post/PostCard';
 import { getAllCategories } from '@/lib/utils';
 import Link from 'next/link';
-import { notFound } from 'next/navigation';
 
 const Page = async ({
   params: { category },
@@ -14,7 +13,6 @@ const Page = async ({
     (cate) => cate.ref === category,
   );
 
-  if (!currentCategory) return notFound();
   return (
     <>
       <WebSideBar categories={categories} />
