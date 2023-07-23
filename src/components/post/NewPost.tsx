@@ -59,76 +59,76 @@ const NewPost = ({
           'prose prose-sm xl:prose-2xl leading-8 focus:outline-none w-full max-w-full',
       },
       // @ts-ignore
-      handleDrop: async (view, event, slice, moved) => {
-        if (
-          !moved &&
-          event.dataTransfer &&
-          event.dataTransfer.files &&
-          event.dataTransfer.files[0]
-        ) {
-          // TODO: 여러장의 사진을 드랍하는 경우
-          // 사진이 1개 일 경우
-          if (event.dataTransfer.files.length === 1) {
-            let file = event.dataTransfer.files[0];
-            let fileSize = (
-              file.size /
-              1024 /
-              1024
-            ).toFixed(4);
-            // TODO: file.type 안 맞는 경우 안내 토스트
-            if (
-              (file.type === 'image/jpeg' ||
-                file.type === 'image/png') &&
-              +fileSize < 10
-            ) {
-              // 10MB 이하 사진만 업로드 가능하게
+      // handleDrop: async (view, event, slice, moved) => {
+      //   if (
+      //     !moved &&
+      //     event.dataTransfer &&
+      //     event.dataTransfer.files &&
+      //     event.dataTransfer.files[0]
+      //   ) {
+      //     // TODO: 여러장의 사진을 드랍하는 경우
+      //     // 사진이 1개 일 경우
+      //     if (event.dataTransfer.files.length === 1) {
+      //       let file = event.dataTransfer.files[0];
+      //       let fileSize = (
+      //         file.size /
+      //         1024 /
+      //         1024
+      //       ).toFixed(4);
+      //       // TODO: file.type 안 맞는 경우 안내 토스트
+      //       if (
+      //         (file.type === 'image/jpeg' ||
+      //           file.type === 'image/png') &&
+      //         +fileSize < 10
+      //       ) {
+      //         // 10MB 이하 사진만 업로드 가능하게
 
-              try {
-                const {
-                  data: { uploadURL },
-                } = await axios.post('/api/files');
-                const image = new FormData();
-                image.append(
-                  'file',
-                  file,
-                  new Date().toJSON().slice(0, 10) +
-                    Math.random() * 100,
-                );
-                const {
-                  data: {
-                    result: { variants },
-                  },
-                } = await axios.post(uploadURL, image);
-                console.log(variants);
-                const url =
-                  variants[0]
-                    .split('/')
-                    .slice(0, 5)
-                    .join('/') + '/public';
+      //         try {
+      //           const {
+      //             data: { uploadURL },
+      //           } = await axios.post('/api/files');
+      //           const image = new FormData();
+      //           image.append(
+      //             'file',
+      //             file,
+      //             new Date().toJSON().slice(0, 10) +
+      //               Math.random() * 100,
+      //           );
+      //           const {
+      //             data: {
+      //               result: { variants },
+      //             },
+      //           } = await axios.post(uploadURL, image);
+      //           console.log(variants);
+      //           const url =
+      //             variants[0]
+      //               .split('/')
+      //               .slice(0, 5)
+      //               .join('/') + '/public';
 
-                const { schema } = view.state;
-                const coordinates = view.posAtCoords({
-                  left: event.clientX,
-                  top: event.clientY,
-                });
-                const node = schema.nodes.image.create({
-                  src: url,
-                }); // creates the image element
-                const transaction = view.state.tr.insert(
-                  coordinates?.pos!,
-                  node,
-                ); // places it in the correct position
-                return view.dispatch(transaction);
-              } catch (error) {
-                console.log(error);
-                // TODO: error handling
-              }
-            }
-          }
-          return true;
-        }
-        return false;
-      },
+      //           const { schema } = view.state;
+      //           const coordinates = view.posAtCoords({
+      //             left: event.clientX,
+      //             top: event.clientY,
+      //           });
+      //           const node = schema.nodes.image.create({
+      //             src: url,
+      //           }); // creates the image element
+      //           const transaction = view.state.tr.insert(
+      //             coordinates?.pos!,
+      //             node,
+      //           ); // places it in the correct position
+      //           return view.dispatch(transaction);
+      //         } catch (error) {
+      //           console.log(error);
+      //           // TODO: error handling
+      //         }
+      //       }
+      //     }
+      //     return true;
+      //   }
+      //   return false;
+      // },
     },
   });
 
