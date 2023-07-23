@@ -37,7 +37,7 @@ const NewComment = () => {
           </div>
           <div className='flex items-center justify-end'>
             <button className='p-2 rounded-md bg-main text-white text-sm hover:bg-mainDark'>
-              댓글 작성
+              작성하기
             </button>
           </div>
         </form>

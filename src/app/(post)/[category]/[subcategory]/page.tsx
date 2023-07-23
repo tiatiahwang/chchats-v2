@@ -22,25 +22,23 @@ const Page = async ({
     <>
       <WebSideBar categories={categories} />
       <div className='w-full px-4'>
-        <div className='border rounded-md w-full p-4'>
-          <div>
-            <h1 className='font-bold text-3xl md:text-4xl h-14'>
-              {currentSubcategory?.name}
-            </h1>
-            <div className='flex items-center justify-end'>
-              <Link
-                href={`${currentSubcategory?.url}/create`}
-                className='p-2 rounded-md bg-main hover:bg-mainDark text-white'
-              >
-                글 남기기
-              </Link>
-            </div>
+        <div className='pb-4'>
+          <h1 className='font-bold text-3xl md:text-4xl h-14'>
+            {currentSubcategory?.name}
+          </h1>
+          <div className='flex items-center justify-end'>
+            <Link
+              href={`${currentSubcategory?.url}/create`}
+              className='p-2 rounded-md bg-main hover:bg-mainDark text-white'
+            >
+              글쓰기
+            </Link>
           </div>
-          <ul className='py-2 space-y-2'>
-            <PostCard
-              subcategoryId={currentSubcategory?.id}
-            />
-          </ul>
+        </div>
+        <div className='space-y-2'>
+          <PostCard
+            subcategoryId={currentSubcategory?.id}
+          />
         </div>
       </div>
     </>

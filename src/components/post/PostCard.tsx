@@ -20,7 +20,7 @@ const PostCard = async ({
       },
       include: {
         author: {
-          select: { id: true, name: true },
+          select: { id: true, username: true },
         },
         subcategory: {
           select: { name: true },
@@ -35,7 +35,7 @@ const PostCard = async ({
       },
       include: {
         author: {
-          select: { id: true, name: true },
+          select: { id: true, username: true },
         },
         subcategory: {
           select: { name: true },
@@ -43,7 +43,7 @@ const PostCard = async ({
       },
     });
   }
-
+  console.log(posts);
   if (!posts) return;
   return (
     <>
@@ -62,7 +62,7 @@ const PostCard = async ({
                     {subcategoryId === undefined &&
                     post?.subcategory ? (
                       <a
-                        className='text-[10px] bg-main p-1 rounded-sm text-white'
+                        className='text-[10px] border p-1 rounded-sm text-main'
                         href='/'
                       >
                         <span>{post.subcategory.name}</span>
@@ -75,7 +75,7 @@ const PostCard = async ({
                           : ''
                       }`}
                     >
-                      {post.author.name}
+                      {post.author.username}
                     </span>
                     <span className='px-1'>•</span>
                     {formatTime(post.createdAt)}

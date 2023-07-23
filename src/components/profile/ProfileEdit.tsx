@@ -280,7 +280,7 @@ const ProfileEdit = () => {
         <div className='bg-slate-100 md:col-span-2 rounded-md p-8'>
           <div className='flex flex-col'>
             {/* 아바타 변경 */}
-            <div className='flex items-center justify-center flex-col mb-4'>
+            <div className='flex items-center justify-center flex-col mb-6'>
               {session?.user?.image ? (
                 <div className='relative aspect-square w-20 h-20 rounded-full'>
                   <Image
@@ -313,7 +313,7 @@ const ProfileEdit = () => {
               />
             </div>
             {/* 이메일 인증 */}
-            <div>
+            <div className='py-4'>
               <label
                 htmlFor='email'
                 className='block text-sm font-medium leading-5 text-gray-700'
@@ -323,38 +323,40 @@ const ProfileEdit = () => {
                   (변경불가)
                 </span>
               </label>
-              <input
-                type='email'
-                id='email'
-                name='email'
-                className='block flex-1 w-full bg-transparent border-b py-2 px-4 mt-1 outline-none focus:border-main'
-                defaultValue={session?.user?.email!}
-                disabled={true}
-              />
-              {/* 구글 로그인한 유저에게만 보이는 문구 */}
-              {session?.user.provider === 'GOOGLE' && (
-                <div className='flex justify-end items-center w-full'>
-                  <span className='w-fit text-main p-2 mt-2 rounded-md text-sm'>
-                    google 계정으로 로그인
-                  </span>
+              <div className='flex justify-between items-center'>
+                <div className='w-[85%]'>
+                  <input
+                    type='email'
+                    id='email'
+                    name='email'
+                    className='w-full bg-transparent border-b py-2 px-4 mt-1 outline-none focus:border-main'
+                    defaultValue={session?.user?.email!}
+                    disabled={true}
+                  />
                 </div>
-              )}
-              {/* 일반 로그인 한 경우 이메일 인증 버튼 출력 */}
-              {/* TODO: 이메일 인증 로직 필요 */}
-              {session?.user?.emailVerified === null &&
-                session?.user?.provider ===
-                  'CREDENTIALS' && (
-                  <div className='flex justify-end items-center w-full'>
-                    <Button
-                      type='base'
-                      disabled={false}
-                      isLoading={false}
-                      width='w-fit'
-                      className='mt-2'
-                      text='이메일 인증'
-                    />
+                {/* 구글 로그인한 유저에게만 보이는 문구 */}
+                {session?.user.provider === 'GOOGLE' && (
+                  <div className='w-fit bg-gray-300 text-white p-2 rounded-md text-sm cursor-default'>
+                    인증 완료
                   </div>
                 )}
+                {/* 일반 로그인 한 경우 이메일 인증 버튼 출력 */}
+                {/* TODO: 이메일 인증 로직 필요 */}
+                {session?.user?.emailVerified === null &&
+                  session?.user?.provider ===
+                    'CREDENTIALS' && (
+                    <div className='w-fit'>
+                      <Button
+                        type='base'
+                        disabled={false}
+                        isLoading={false}
+                        width='w-fit'
+                        className='mt-2'
+                        text='인증하기'
+                      />
+                    </div>
+                  )}
+              </div>
             </div>
             {/* 닉네임 변경 */}
             <div>
@@ -364,37 +366,41 @@ const ProfileEdit = () => {
               >
                 닉네임
               </label>
-              <input
-                {...register('username')}
-                type='text'
-                id='username'
-                name='username'
-                className={`block flex-1 w-full bg-transparent border-b py-2 px-4 mt-1 outline-none ${
-                  errors?.username
-                    ? 'focus:border-red-500'
-                    : 'focus:border-main '
-                }`}
-                defaultValue={session?.user?.username!}
-                aria-invalid={Boolean(errors.username)}
-              />
-              {errors?.username?.message && (
-                <span className='text-red-500 text-xs leading-8'>
-                  {errors.username.message}
-                </span>
-              )}
-              <div className='flex justify-end items-center w-full'>
-                <Button
-                  type='base'
-                  disabled={
-                    isUsernameLoading ||
-                    Boolean(errors.username)
-                  }
-                  isLoading={isUsernameLoading}
-                  width='w-fit'
-                  className='mt-2'
-                  text='닉네임 변경'
-                  onClick={onChangeUsername}
-                />
+              <div className='flex justify-between items-center'>
+                <div className='w-[85%]'>
+                  <input
+                    {...register('username')}
+                    type='text'
+                    id='username'
+                    name='username'
+                    className={`block flex-1 w-full bg-transparent border-b py-2 px-4 mt-1 outline-none ${
+                      errors?.username
+                        ? 'focus:border-red-500'
+                        : 'focus:border-main '
+                    }`}
+                    defaultValue={session?.user?.username!}
+                    aria-invalid={Boolean(errors.username)}
+                  />
+                  {errors?.username?.message && (
+                    <span className='text-red-500 text-xs leading-8'>
+                      {errors.username.message}
+                    </span>
+                  )}
+                </div>
+                <div className='w-fit'>
+                  <Button
+                    type='base'
+                    disabled={
+                      isUsernameLoading ||
+                      Boolean(errors.username)
+                    }
+                    isLoading={isUsernameLoading}
+                    width='w-fit'
+                    className='mt-2'
+                    text='변경하기'
+                    onClick={onChangeUsername}
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -476,7 +482,7 @@ const ProfileEdit = () => {
                   isLoading={isPasswordLoading}
                   width='w-fit'
                   className='mt-2'
-                  text='비밀번호 변경'
+                  text='변경하기'
                   onClick={onChangePassword}
                 />
               </div>

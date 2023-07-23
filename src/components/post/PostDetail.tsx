@@ -11,14 +11,10 @@ const PostDetail = () => {
   const { data: session, status } = useSession();
   if (status === 'loading') return <Loader />;
   return (
-    <div className='space-y-6'>
+    <div className='space-y-6 border rounded-md w-full ml-4 p-4'>
       {/* 상단 - 카테고리  */}
-      <div className='text-xs text-gray-500'>
-        <span>자유게시판</span>
-        <span> / </span>
-        <a href='/'>
-          <span>고민상담</span>
-        </a>
+      <div className=' text-gray-500 '>
+        자유게시판 {'>'} 고민상담
       </div>
       {/* 유저정보 및 글 */}
       <div>
@@ -50,9 +46,9 @@ const PostDetail = () => {
           </div>
           <div className='flex items-center space-x-2'>
             {/* TODO: edit/delete는 내 글인 경우에만 화면에 노출되게 설정해야함 */}
-            <Icons.edit className='w-5 h-5 hover:text-main cursor-pointer' />
-            <Icons.delete className='w-5 h-5 hover:text-main cursor-pointer' />
-            <Icons.scrap className='w-5 h-5 hover:text-main cursor-pointer' />
+            <Icons.edit className='w-6 h-6 hover:text-main cursor-pointer' />
+            <Icons.delete className='w-6 h-6 hover:text-main cursor-pointer' />
+            <Icons.scrap className='w-6 h-6 hover:text-main cursor-pointer' />
           </div>
         </div>
         <h1 className='text-4xl font-bold py-8 leading-6'>

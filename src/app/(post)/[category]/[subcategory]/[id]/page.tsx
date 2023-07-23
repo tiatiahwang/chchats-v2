@@ -1,10 +1,14 @@
+import WebSideBar from '@/components/WebSideBar';
 import PostDetail from '@/components/post/PostDetail';
+import { getAllCategories } from '@/lib/utils';
 
-const Page = () => {
+const Page = async () => {
+  const categories = await getAllCategories();
   return (
-    <div className='border rounded-md w-full p-4'>
+    <>
+      <WebSideBar categories={categories} />
       <PostDetail />
-    </div>
+    </>
   );
 };
 

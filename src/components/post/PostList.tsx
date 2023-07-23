@@ -29,7 +29,7 @@ const PostList = async ({ categoryId }: PostListProps) => {
             className='flex justify-between items-center'
           >
             <div className='flex space-x-2 items-center hover:text-main cursor-pointer'>
-              <div className='text-[10px] bg-main px-1 rounded-md text-white'>
+              <div className='text-[10px] border px-1 rounded-md text-main'>
                 {post.subcategory.name}
               </div>
               <div>{post.title}</div>
