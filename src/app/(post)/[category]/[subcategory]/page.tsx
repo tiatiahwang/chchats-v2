@@ -14,9 +14,6 @@ const Page = async ({
     {
       where: {
         ref: subcategory,
-        category: {
-          ref: category,
-        },
       },
     },
   );
@@ -40,7 +37,9 @@ const Page = async ({
             </div>
           </div>
           <ul className='py-2 space-y-2'>
-            <PostCard />
+            <PostCard
+              subcategoryId={currentSubcategory?.id}
+            />
           </ul>
         </div>
       </div>

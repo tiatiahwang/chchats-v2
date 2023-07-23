@@ -8,7 +8,7 @@ import {
   PostValidator,
 } from '@/lib/validator/post';
 import { useMutation } from '@tanstack/react-query';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { useRouter } from 'next/navigation';
 import { Editor, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
@@ -37,10 +37,8 @@ const NewPost = ({
 
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
-  const [contentError, setContentError] = useState('');
 
   const handleOnChangeContent = ({ editor }: any) => {
-    if (!(editor as Editor).isEmpty) setContentError('');
     setContent((editor as Editor).getHTML());
   };
 
@@ -152,6 +150,16 @@ const NewPost = ({
         payload,
       );
       return data;
+    },
+    onError: (error) => {
+      if (error instanceof AxiosError) {
+        if (error.response?.status === 500) {
+          toast.error(error.response.data, {
+            theme: 'light',
+            className: 'text-sm whitespace-pre-line',
+          });
+        }
+      }
     },
     onSuccess: (url) => {
       router.push(`${url}`);

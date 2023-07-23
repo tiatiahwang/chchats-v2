@@ -13,6 +13,7 @@ const Page = async ({
     (cate) => cate.ref === category,
   );
 
+  //TODO: loading
   return (
     <>
       <WebSideBar categories={categories} />
@@ -23,17 +24,19 @@ const Page = async ({
               {currentCategory?.name}
             </h1>
             <div className='flex items-center justify-end'>
-              <Link
-                href={`${currentCategory?.url}/create`}
-                className='p-2 rounded-md bg-main hover:bg-mainDark text-white'
-              >
-                글 남기기
-              </Link>
+              {currentCategory?.id !== 5 && (
+                <Link
+                  href={`${currentCategory?.url}/create`}
+                  className='p-2 rounded-md bg-main hover:bg-mainDark text-white'
+                >
+                  글 남기기
+                </Link>
+              )}
             </div>
           </div>
-          <ul className='py-2 space-y-2'>
-            <PostCard />
-          </ul>
+          <div className='py-2 space-y-2'>
+            <PostCard categoryId={currentCategory?.id} />
+          </div>
         </div>
       </div>
     </>
