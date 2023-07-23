@@ -1,13 +1,50 @@
 import WebSideBar from '@/components/WebSideBar';
 import PostDetail from '@/components/post/PostDetail';
-import { getAllCategories } from '@/lib/utils';
+import { db } from '@/lib/db';
+import { formatTime, getAllCategories } from '@/lib/utils';
 
-const Page = async () => {
+interface PageProps {
+  params: {
+    id: string;
+  };
+}
+
+const Page = async ({ params: { id } }: PageProps) => {
+  console.log('id', id);
   const categories = await getAllCategories();
+  const post = await db.post.findFirst({
+    where: {
+      id,
+    },
+    include: {
+      category: {
+        select: {
+          name: true,
+        },
+      },
+      subcategory: {
+        select: {
+          name: true,
+        },
+      },
+      author: {
+        select: {
+          id: true,
+          username: true,
+          image: true,
+        },
+      },
+    },
+  });
+  if (!post) return;
   return (
     <>
       <WebSideBar categories={categories} />
-      <PostDetail />
+      {/* TODO: loading */}
+      <PostDetail
+        post={post}
+        formattedTime={formatTime(post?.createdAt!)}
+      />
     </>
   );
 };
