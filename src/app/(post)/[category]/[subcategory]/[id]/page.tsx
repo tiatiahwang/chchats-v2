@@ -10,7 +10,6 @@ interface PageProps {
 }
 
 const Page = async ({ params: { id } }: PageProps) => {
-  console.log('id', id);
   const categories = await getAllCategories();
   const post = await db.post.findFirst({
     where: {

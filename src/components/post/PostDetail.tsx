@@ -33,7 +33,7 @@ const PostDetail = ({
 }: PostDetailProps) => {
   const { data: session, status } = useSession();
   if (status === 'loading') return <Loader />;
-  console.log(post);
+
   return (
     <div className='space-y-6 border rounded-md w-full ml-4 p-4'>
       {/* 상단 - 카테고리  */}

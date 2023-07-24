@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { Icons } from '../Icons';
 import { db } from '@/lib/db';
 
@@ -11,9 +12,16 @@ const PostList = async ({ categoryId }: PostListProps) => {
       categoryId,
     },
     include: {
+      category: {
+        select: {
+          name: true,
+          ref: true,
+        },
+      },
       subcategory: {
         select: {
           name: true,
+          ref: true,
         },
       },
     },
@@ -26,18 +34,24 @@ const PostList = async ({ categoryId }: PostListProps) => {
         posts.map((post) => (
           <div
             key={post.id}
-            className='flex justify-between items-center'
+            className='flex items-center space-x-2 w-full'
           >
-            <div className='flex space-x-2 items-center hover:text-main cursor-pointer'>
-              <div className='text-[10px] border px-1 rounded-md text-main'>
-                {post.subcategory.name}
-              </div>
+            <Link
+              href={`${post.category.ref}/${post.subcategory.ref}`}
+              className='text-[10px] border px-1 rounded-md text-main hover:bg-main hover:border-main hover:text-white'
+            >
+              {post.subcategory.name}
+            </Link>
+            <Link
+              href={`/${post.category.name}/${post.subcategory.name}/${post.id}`}
+              className='flex flex-1 justify-between items-center hover:text-main'
+            >
               <div>{post.title}</div>
-            </div>
-            <div className='flex items-center space-x-1'>
-              <Icons.comment className='w-3 h-3' />
-              <span className='text-xs'>2</span>
-            </div>
+              <div className='flex items-center space-x-1'>
+                <Icons.comment className='w-3 h-3' />
+                <span className='text-xs'>2</span>
+              </div>
+            </Link>
           </div>
         ))
       ) : (

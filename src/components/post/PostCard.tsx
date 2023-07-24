@@ -22,8 +22,11 @@ const PostCard = async ({
         author: {
           select: { id: true, username: true },
         },
+        category: {
+          select: { ref: true },
+        },
         subcategory: {
-          select: { name: true },
+          select: { name: true, ref: true },
         },
       },
     });
@@ -37,20 +40,23 @@ const PostCard = async ({
         author: {
           select: { id: true, username: true },
         },
+        category: {
+          select: { ref: true },
+        },
         subcategory: {
-          select: { name: true },
+          select: { name: true, ref: true },
         },
       },
     });
   }
-  console.log(posts);
+
   if (!posts) return;
   return (
     <>
       {posts.length > 0 ? (
         posts?.map((post) => (
           <div
-            key='post.id'
+            key={post.id}
             className='rounded-md bg-shite shadow'
           >
             <div className='px-6 py-4 flex justify-between'>
@@ -61,12 +67,12 @@ const PostCard = async ({
                   <div className='text-gray-500'>
                     {subcategoryId === undefined &&
                     post?.subcategory ? (
-                      <a
-                        className='text-[10px] border p-1 rounded-sm text-main'
-                        href='/'
+                      <Link
+                        className='text-[10px] border p-1 rounded-sm text-main hover:border-main hover:bg-main hover:text-white'
+                        href={`/${post.category.ref}/${post.subcategory.ref}`}
                       >
                         <span>{post.subcategory.name}</span>
-                      </a>
+                      </Link>
                     ) : null}
                     <span
                       className={` ${
@@ -86,7 +92,14 @@ const PostCard = async ({
                     <Icons.comment className='h-3 w-3' />0
                   </div>
                 </div>
-                <Link href='/' className='hover:text-main'>
+                <Link
+                  href={
+                    categoryId
+                      ? `${post.category.ref}/${post.subcategory.ref}/${post.id}`
+                      : '/'
+                  }
+                  className='hover:text-main'
+                >
                   {/* 글 제목 */}
                   <h1 className='text-lg font-semibold pb-2 pt-4 leading-6'>
                     {post.title}
