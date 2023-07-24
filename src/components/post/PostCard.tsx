@@ -28,6 +28,11 @@ const PostCard = async ({
         subcategory: {
           select: { name: true, ref: true },
         },
+        _count: {
+          select: {
+            comments: true,
+          },
+        },
       },
     });
   }
@@ -45,6 +50,11 @@ const PostCard = async ({
         },
         subcategory: {
           select: { name: true, ref: true },
+        },
+        _count: {
+          select: {
+            comments: true,
+          },
         },
       },
     });
@@ -86,10 +96,10 @@ const PostCard = async ({
                     <span className='px-1'>•</span>
                     {formatTime(post.createdAt)}
                   </div>
-                  {/* 댓글 */}
-                  {/* TODO: here */}
+                  {/* 댓글 갯수 */}
                   <div className='w-fit flex items-center justify-end gap-1'>
-                    <Icons.comment className='h-3 w-3' />0
+                    <Icons.comment className='h-3 w-3' />
+                    {post._count.comments}
                   </div>
                 </div>
                 <Link

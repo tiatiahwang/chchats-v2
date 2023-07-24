@@ -35,6 +35,24 @@ const Page = async ({ params: { id } }: PageProps) => {
       },
     },
   });
+  const comments = await db.comment.findMany({
+    where: { postId: id },
+    include: {
+      author: {
+        select: {
+          id: true,
+          username: true,
+          image: true,
+        },
+      },
+    },
+  });
+  const commentsWithFormattedTime = comments.map(
+    (comment) => ({
+      ...comment,
+      createdAt: formatTime(comment.createdAt),
+    }),
+  );
   if (!post) return;
   return (
     <>
@@ -42,6 +60,7 @@ const Page = async ({ params: { id } }: PageProps) => {
       {/* TODO: loading */}
       <PostDetail
         post={post}
+        comments={commentsWithFormattedTime}
         formattedTime={formatTime(post?.createdAt!)}
       />
     </>

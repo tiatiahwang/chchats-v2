@@ -24,6 +24,11 @@ const PostList = async ({ categoryId }: PostListProps) => {
           ref: true,
         },
       },
+      _count: {
+        select: {
+          comments: true,
+        },
+      },
     },
     take: 10,
   });
@@ -49,7 +54,9 @@ const PostList = async ({ categoryId }: PostListProps) => {
               <div>{post.title}</div>
               <div className='flex items-center space-x-1'>
                 <Icons.comment className='w-3 h-3' />
-                <span className='text-xs'>2</span>
+                <span className='text-xs'>
+                  {post._count.comments}
+                </span>
               </div>
             </Link>
           </div>

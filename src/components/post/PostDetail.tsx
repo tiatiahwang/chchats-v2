@@ -8,6 +8,21 @@ import CommentList from '../comment/CommentList';
 import Loader from '../ui/Loader';
 import { Post } from '@prisma/client';
 
+interface Comment {
+  authorId: string;
+  createdAt: string;
+  id: string;
+  postId: string;
+  replyToId: string | null;
+  text: string;
+  updatedAt: Date;
+  author: {
+    id: string;
+    username: string | null;
+    image: string | null;
+  };
+}
+
 interface ExtendedPost extends Post {
   author: {
     id: string;
@@ -25,11 +40,13 @@ interface ExtendedPost extends Post {
 interface PostDetailProps {
   post: ExtendedPost;
   formattedTime: string;
+  comments: Comment[];
 }
 
 const PostDetail = ({
   post,
   formattedTime,
+  comments,
 }: PostDetailProps) => {
   const { data: session, status } = useSession();
   if (status === 'loading') return <Loader />;
@@ -71,7 +88,7 @@ const PostDetail = ({
             </div>
           </div>
           <div className='flex items-center space-x-2'>
-            {/* TODO: edit/delete는 내 글인 경우에만 화면에 노출되게 설정해야함 */}
+            {/* edit/delete는 내 글인 경우에만 화면에 노출*/}
             {post.author.id === session?.user.id && (
               <>
                 <Icons.edit className='w-6 h-6 hover:text-main cursor-pointer' />
@@ -92,9 +109,12 @@ const PostDetail = ({
       {/* 댓글 */}
       <div>
         {/* 댓글 작성 */}
-        <NewComment />
+        <NewComment postId={post.id} />
         {/* 댓글 리스트 */}
-        <CommentList isProfile={false} />
+        <CommentList
+          isProfile={false}
+          comments={comments}
+        />
       </div>
     </div>
   );
