@@ -9,6 +9,8 @@ import axios, { AxiosError } from 'axios';
 import { useCustomToast } from '@/hooks/use-custom-toast';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import Modal from '../ui/Modal';
 
 interface ExtendedPost extends Post {
   author: {
@@ -40,6 +42,8 @@ const PostDetail = ({
   const { data: session } = useSession();
   const router = useRouter();
   const { loginToast } = useCustomToast();
+  const [showModal, setShowModal] =
+    useState<boolean>(false);
 
   const { mutate: deletePost } = useMutation({
     mutationFn: async ({ postId }: DeleteRequest) => {
@@ -71,8 +75,7 @@ const PostDetail = ({
     },
   });
   const handleDelete = () => {
-    const postId = post.id;
-    deletePost({ postId });
+    deletePost({ postId: post.id });
   };
   return (
     <>
@@ -117,7 +120,7 @@ const PostDetail = ({
                 <Icons.edit className='w-6 h-6 hover:text-main cursor-pointer' />
                 <Icons.delete
                   className='w-6 h-6 hover:text-main cursor-pointer'
-                  onClick={handleDelete}
+                  onClick={() => setShowModal(true)}
                 />
               </>
             )}
@@ -132,6 +135,16 @@ const PostDetail = ({
           dangerouslySetInnerHTML={{ __html: post.content }}
         />
       </div>
+      {showModal && (
+        <Modal
+          text='정말 삭제하시겠어요?'
+          open={showModal}
+          onClose={() => setShowModal(false)}
+          buttonText='삭제'
+          className='bg-red-400 hover:bg-red-500'
+          handleButton={handleDelete}
+        />
+      )}
     </>
   );
 };

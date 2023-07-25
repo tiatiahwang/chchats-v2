@@ -53,8 +53,10 @@ const CommentSection = async ({
   const countReplyComments = comments
     .map((comment) => comment._count.replies)
     .reduce((prev, cur) => prev + cur, 0);
+
   const totalComments =
     comments.length + countReplyComments;
+
   return (
     <div className='flex flex-col mt-4'>
       <hr className='w-full h-px my-6' />

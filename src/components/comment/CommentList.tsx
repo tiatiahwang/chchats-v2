@@ -7,11 +7,15 @@ import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import { useCustomToast } from '@/hooks/use-custom-toast';
 import { useMutation } from '@tanstack/react-query';
-import { CommentCreateRequest } from '@/lib/validator/comment';
+import {
+  CommentCreateRequest,
+  CommentDeleteRequest,
+} from '@/lib/validator/comment';
 import axios, { AxiosError } from 'axios';
 import { toast } from 'react-toastify';
 import Image from 'next/image';
 import { Icons } from '../Icons';
+import Modal from '../ui/Modal';
 
 type ExtendedComment = Comment & {
   _count: {
@@ -44,6 +48,8 @@ const CommentList = ({
 
   const [input, setInput] = useState<string>('');
   const [isReplying, setIsReplying] =
+    useState<boolean>(false);
+  const [showModal, setShowModal] =
     useState<boolean>(false);
 
   const { mutate: replyComment, isLoading } = useMutation({
@@ -80,9 +86,55 @@ const CommentList = ({
     },
   });
 
+  const {
+    mutate: deleteComment,
+    isLoading: deleteLoading,
+  } = useMutation({
+    mutationFn: async ({
+      commentId,
+      replyToId,
+    }: CommentDeleteRequest) => {
+      const payload: CommentDeleteRequest = {
+        commentId,
+        replyToId,
+      };
+      const { data } = await axios.delete(
+        '/api/comments/delete',
+        { data: payload },
+      );
+      return data;
+    },
+    onError: (error) => {
+      if (error instanceof AxiosError) {
+        if (error.response?.status === 401) {
+          return loginToast();
+        }
+      }
+      return toast.error(
+        '알 수 없는 오류가 발생했습니다.\n잠시 후 다시 시도해 주세요.',
+        {
+          theme: 'light',
+          className: 'text-sm whitespace-pre-line',
+        },
+      );
+    },
+    onSuccess: (data) => {
+      if (data === 'OK') {
+        setShowModal(false);
+        router.refresh();
+        return toast.success('삭제되었습니다.', {
+          theme: 'light',
+          className: 'text-sm',
+        });
+      }
+    },
+  });
+
   const handleDelete = () => {
-    // todo: MODAL 필요할 듯
-    console.log('delete');
+    deleteComment({
+      commentId: comment.id,
+      replyToId: comment.replyToId ?? null,
+    });
   };
 
   const handleReply = () => {
@@ -130,7 +182,7 @@ const CommentList = ({
               {/* <Icons.edit className='w-4 h-4 hover:text-main cursor-pointer' /> */}
               <Icons.delete
                 className='w-4 h-4 hover:text-main cursor-pointer'
-                onClick={handleDelete}
+                onClick={() => setShowModal(true)}
               />
             </div>
           )}
@@ -208,6 +260,16 @@ const CommentList = ({
           </div>
         ) : null}
       </div>
+      {showModal && (
+        <Modal
+          text='정말 삭제하시겠어요?'
+          open={showModal}
+          onClose={() => setShowModal(false)}
+          buttonText='삭제'
+          className='bg-red-400 hover:bg-red-500'
+          handleButton={handleDelete}
+        />
+      )}
     </div>
   );
 };
