@@ -3,11 +3,18 @@ import PostCard from '@/components/post/PostCard';
 import { getAllCategories } from '@/lib/utils';
 import Link from 'next/link';
 
-const Page = async ({
+export const dynamic = 'force-dynamic';
+export const fetchCache = 'force-no-store';
+
+interface PageProps {
+  params: {
+    category: string;
+  };
+}
+
+const page = async ({
   params: { category },
-}: {
-  params: { category: string };
-}) => {
+}: PageProps) => {
   const categories = await getAllCategories();
   const currentCategory = categories.find(
     (cate) => cate.ref === category,
@@ -41,4 +48,4 @@ const Page = async ({
   );
 };
 
-export default Page;
+export default page;

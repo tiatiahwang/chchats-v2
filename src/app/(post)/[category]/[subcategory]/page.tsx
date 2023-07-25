@@ -4,11 +4,19 @@ import { db } from '@/lib/db';
 import { getAllCategories } from '@/lib/utils';
 import Link from 'next/link';
 
-const Page = async ({
+export const dynamic = 'force-dynamic';
+export const fetchCache = 'force-no-store';
+
+interface PageProps {
+  params: {
+    category: string;
+    subcategory: string;
+  };
+}
+
+const page = async ({
   params: { category, subcategory },
-}: {
-  params: { category: string; subcategory: string };
-}) => {
+}: PageProps) => {
   const categories = await getAllCategories();
   const currentSubcategory = await db.subcategory.findFirst(
     {
@@ -45,4 +53,4 @@ const Page = async ({
   );
 };
 
-export default Page;
+export default page;

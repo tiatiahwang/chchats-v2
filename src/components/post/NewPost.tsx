@@ -167,6 +167,7 @@ const NewPost = ({
       }
     },
     onSuccess: (url) => {
+      router.refresh();
       router.push(`${url}`);
     },
   });
@@ -203,6 +204,7 @@ const NewPost = ({
       }
     },
     onSuccess: (url) => {
+      router.refresh();
       router.push(`${url}`);
     },
   });

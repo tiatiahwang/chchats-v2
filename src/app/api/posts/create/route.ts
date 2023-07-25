@@ -17,7 +17,6 @@ export async function POST(req: Request) {
     const { title, content, categoryId, subcategoryId } =
       PostValidator.parse(body);
 
-    // TODO: zodError 추가?
     const post = await db.post.create({
       data: {
         title,

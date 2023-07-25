@@ -6,14 +6,28 @@ import { db } from '@/lib/db';
 import { formatTime, getAllCategories } from '@/lib/utils';
 import { Suspense } from 'react';
 
+export const dynamic = 'force-dynamic';
+export const fetchCache = 'force-no-store';
+
 interface PageProps {
   params: {
     id: string;
   };
 }
 
-const Page = async ({ params: { id } }: PageProps) => {
+const page = async ({ params: { id } }: PageProps) => {
   const categories = await getAllCategories();
+
+  // post 조회할 떄마다 조회수 1씩 증가
+  await db.post.update({
+    where: {
+      id,
+    },
+    data: {
+      viewCount: { increment: 1 },
+    },
+  });
+
   const post = await db.post.findFirst({
     where: {
       id,
@@ -41,6 +55,7 @@ const Page = async ({ params: { id } }: PageProps) => {
       },
     },
   });
+
   if (!post) return;
   return (
     <>
@@ -74,4 +89,4 @@ const Page = async ({ params: { id } }: PageProps) => {
   );
 };
 
-export default Page;
+export default page;

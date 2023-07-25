@@ -138,13 +138,15 @@ const PostDetail = ({
                 <Icons.user className='w-6 h-6 border-[1px] p-1 rounded-full border-slate-900' />
               )}
             </div>
-            {/* 닉네임/글작성시간 */}
+            {/* 닉네임/글작성시간/조회수 */}
             <div className='text-gray-500'>
               <span className='pl-2'>
                 {post.author.username}
               </span>
               <span className='px-1'>•</span>
               <span>{formattedTime}</span>
+              <span className='px-1'>•</span>
+              <span>조회수 {post.viewCount}</span>
             </div>
           </div>
           <div className='flex items-center space-x-2'>

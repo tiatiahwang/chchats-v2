@@ -96,10 +96,16 @@ const PostCard = async ({
                     <span className='px-1'>•</span>
                     {formatTime(post.createdAt)}
                   </div>
-                  {/* 댓글 갯수 */}
-                  <div className='w-fit flex items-center justify-end gap-1'>
-                    <Icons.comment className='h-3 w-3' />
-                    {post._count.comments}
+                  {/* 조회수/댓글 갯수 */}
+                  <div className='w-fit flex items-center justify-end space-x-2 text-gray-500 font-medium'>
+                    <div className='flex items-center space-x-1'>
+                      <Icons.eye className='h-4 w-4' />
+                      <span>{post.viewCount}</span>
+                    </div>
+                    <div className='flex items-center space-x-1 '>
+                      <Icons.comment className='h-4 w-4' />
+                      <span> {post._count.comments}</span>
+                    </div>
                   </div>
                 </div>
                 <Link
