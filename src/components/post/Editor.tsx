@@ -279,6 +279,7 @@ const TipTapEditor = ({ editor }: TipTapEditorProps) => {
       <div className='border-b ' />
       {/* 에디터 본문 입력  */}
       <EditorContent
+        onClick={() => editor.chain().focus()}
         editor={editor}
         className='p-4 h-[400px] overflow-auto'
       />
