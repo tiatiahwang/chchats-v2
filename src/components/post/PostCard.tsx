@@ -104,9 +104,9 @@ const PostCard = async ({
                 </div>
                 <Link
                   href={
-                    categoryId
+                    subcategoryId === undefined
                       ? `${post.category.ref}/${post.subcategory.ref}/${post.id}`
-                      : '/'
+                      : `${post.subcategory.ref}/${post.id}`
                   }
                   className='hover:text-main'
                 >

@@ -3,8 +3,12 @@
 import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import { Icons } from '../Icons';
-import Loader from '../ui/Loader';
 import { Post } from '@prisma/client';
+import { useMutation } from '@tanstack/react-query';
+import axios, { AxiosError } from 'axios';
+import { useCustomToast } from '@/hooks/use-custom-toast';
+import { toast } from 'react-toastify';
+import { useRouter } from 'next/navigation';
 
 interface ExtendedPost extends Post {
   author: {
@@ -25,13 +29,51 @@ interface PostDetailProps {
   formattedTime: string;
 }
 
+interface DeleteRequest {
+  postId: string;
+}
+
 const PostDetail = ({
   post,
   formattedTime,
 }: PostDetailProps) => {
-  const { data: session, status } = useSession();
-  if (status === 'loading') return <Loader />;
+  const { data: session } = useSession();
+  const router = useRouter();
+  const { loginToast } = useCustomToast();
 
+  const { mutate: deletePost } = useMutation({
+    mutationFn: async ({ postId }: DeleteRequest) => {
+      const payload: DeleteRequest = { postId };
+      const { data } = await axios.delete(
+        '/api/posts/delete',
+        { data: payload },
+      );
+      return data;
+    },
+    onError: (error) => {
+      if (error instanceof AxiosError) {
+        if (error.response?.status === 401) {
+          return loginToast();
+        }
+      }
+      return toast.error(
+        '알 수 없는 오류가 발생했습니다.\n잠시 후 다시 시도해 주세요.',
+        {
+          theme: 'light',
+          className: 'text-sm whitespace-pre-line',
+        },
+      );
+    },
+    onSuccess: (data) => {
+      if (data === 'OK') {
+        router.push('/');
+      }
+    },
+  });
+  const handleDelete = () => {
+    const postId = post.id;
+    deletePost({ postId });
+  };
   return (
     <>
       {/* 상단 - 카테고리  */}
@@ -73,7 +115,10 @@ const PostDetail = ({
             {post.author.id === session?.user.id && (
               <>
                 <Icons.edit className='w-6 h-6 hover:text-main cursor-pointer' />
-                <Icons.delete className='w-6 h-6 hover:text-main cursor-pointer' />
+                <Icons.delete
+                  className='w-6 h-6 hover:text-main cursor-pointer'
+                  onClick={handleDelete}
+                />
               </>
             )}
             <Icons.scrap className='w-6 h-6 hover:text-main cursor-pointer' />

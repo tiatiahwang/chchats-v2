@@ -81,12 +81,12 @@ model Post {
   content         String
   createdAt      DateTime     @default(now())
   updatedAt      DateTime     @default(now())
-  author         User         @relation(fields: [authorId], references: [id])
+  author         User         @relation(fields: [authorId], references: [id], onDelete: Cascade)
   authorId       String
   comments       Comment[]
-  category       Category     @relation(fields: [categoryId], references: [id])
+  category       Category     @relation(fields: [categoryId], references: [id], onDelete: Cascade)
   categoryId     Int 
-  subcategory    Subcategory  @relation(fields: [subcategoryId], references: [id])
+  subcategory    Subcategory  @relation(fields: [subcategoryId], references: [id], onDelete: Cascade)
   subcategoryId  Int 
 
   @@index([authorId])
@@ -99,7 +99,7 @@ model Comment {
   text      String
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
-  author    User      @relation(fields: [authorId], references: [id])
+  author    User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
   authorId  String
   post      Post      @relation(fields: [postId], references: [id], onDelete: Cascade)
   postId    String

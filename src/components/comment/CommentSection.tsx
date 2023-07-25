@@ -50,10 +50,15 @@ const CommentSection = async ({
     },
   });
 
+  const countReplyComments = comments
+    .map((comment) => comment._count.replies)
+    .reduce((prev, cur) => prev + cur, 0);
+  const totalComments =
+    comments.length + countReplyComments;
   return (
     <div className='flex flex-col mt-4'>
       <hr className='w-full h-px my-6' />
-      <div className='mb-4'>{comments.length}개의 댓글</div>
+      <div className='mb-4'>{totalComments}개의 댓글</div>
       <NewComment postId={postId} session={session} />
       <div className='flex flex-col gap-y-4 mt-4'>
         {comments

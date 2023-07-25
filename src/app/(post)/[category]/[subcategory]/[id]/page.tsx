@@ -42,14 +42,27 @@ const Page = async ({ params: { id } }: PageProps) => {
   return (
     <>
       <WebSideBar categories={categories} />
-      {/* TODO: loading */}
       <div className='space-y-6 border rounded-md w-full ml-4 p-4'>
-        <PostDetail
-          post={post}
-          formattedTime={formatTime(post?.createdAt!)}
-        />
         <Suspense
-          fallback={<Skeleton className='w-full h-10' />}
+          fallback={
+            <>
+              <Skeleton className='w-full h-10' />
+              <Skeleton className='w-full h-20' />
+              <Skeleton className='w-full h-[500px]' />
+            </>
+          }
+        >
+          <PostDetail
+            post={post}
+            formattedTime={formatTime(post?.createdAt!)}
+          />
+        </Suspense>
+        <Suspense
+          fallback={
+            <div className='mt-4'>
+              <Skeleton className='w-full h-40' />
+            </div>
+          }
         >
           <CommentSection postId={post.id} />
         </Suspense>

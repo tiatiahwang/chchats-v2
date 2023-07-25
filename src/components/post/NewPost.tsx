@@ -17,15 +17,18 @@ import TipTapEditor from './Editor';
 import { toast } from 'react-toastify';
 import Placeholder from '@tiptap/extension-placeholder';
 import '@/styles/tiptap.css';
+import { Subcategory } from '@prisma/client';
 
 interface NewpostProps {
   categories: ExtendedCategory[];
   currentCategory: ExtendedCategory;
+  currentSubcategory?: Subcategory;
 }
 
 const NewPost = ({
   categories,
   currentCategory,
+  currentSubcategory,
 }: NewpostProps) => {
   const { data: session } = useSession();
   const router = useRouter();
@@ -33,7 +36,7 @@ const NewPost = ({
   const [selectedCategory, setSelectedCategory] =
     useState(currentCategory);
   const [selectedSubcategory, setSelectedsubcategory] =
-    useState(0);
+    useState(currentSubcategory?.id ?? 0);
 
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
