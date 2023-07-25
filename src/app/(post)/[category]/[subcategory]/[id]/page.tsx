@@ -1,7 +1,10 @@
 import WebSideBar from '@/components/WebSideBar';
+import CommentSection from '@/components/comment/CommentSection';
 import PostDetail from '@/components/post/PostDetail';
+import Skeleton from '@/components/ui/Skeleton';
 import { db } from '@/lib/db';
 import { formatTime, getAllCategories } from '@/lib/utils';
+import { Suspense } from 'react';
 
 interface PageProps {
   params: {
@@ -35,34 +38,22 @@ const Page = async ({ params: { id } }: PageProps) => {
       },
     },
   });
-  const comments = await db.comment.findMany({
-    where: { postId: id },
-    include: {
-      author: {
-        select: {
-          id: true,
-          username: true,
-          image: true,
-        },
-      },
-    },
-  });
-  const commentsWithFormattedTime = comments.map(
-    (comment) => ({
-      ...comment,
-      createdAt: formatTime(comment.createdAt),
-    }),
-  );
   if (!post) return;
   return (
     <>
       <WebSideBar categories={categories} />
       {/* TODO: loading */}
-      <PostDetail
-        post={post}
-        comments={commentsWithFormattedTime}
-        formattedTime={formatTime(post?.createdAt!)}
-      />
+      <div className='space-y-6 border rounded-md w-full ml-4 p-4'>
+        <PostDetail
+          post={post}
+          formattedTime={formatTime(post?.createdAt!)}
+        />
+        <Suspense
+          fallback={<Skeleton className='w-full h-10' />}
+        >
+          <CommentSection postId={post.id} />
+        </Suspense>
+      </div>
     </>
   );
 };

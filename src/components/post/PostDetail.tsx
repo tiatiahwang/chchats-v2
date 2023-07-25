@@ -3,25 +3,8 @@
 import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import { Icons } from '../Icons';
-import NewComment from '../comment/NewComment';
-import CommentList from '../comment/CommentList';
 import Loader from '../ui/Loader';
 import { Post } from '@prisma/client';
-
-interface Comment {
-  authorId: string;
-  createdAt: string;
-  id: string;
-  postId: string;
-  replyToId: string | null;
-  text: string;
-  updatedAt: Date;
-  author: {
-    id: string;
-    username: string | null;
-    image: string | null;
-  };
-}
 
 interface ExtendedPost extends Post {
   author: {
@@ -40,21 +23,19 @@ interface ExtendedPost extends Post {
 interface PostDetailProps {
   post: ExtendedPost;
   formattedTime: string;
-  comments: Comment[];
 }
 
 const PostDetail = ({
   post,
   formattedTime,
-  comments,
 }: PostDetailProps) => {
   const { data: session, status } = useSession();
   if (status === 'loading') return <Loader />;
 
   return (
-    <div className='space-y-6 border rounded-md w-full ml-4 p-4'>
+    <>
       {/* 상단 - 카테고리  */}
-      <div className=' text-gray-500 '>
+      <div className=' text-gray-500'>
         {post.category.name} {'>'} {post.subcategory.name}
       </div>
       {/* 유저정보 및 글 */}
@@ -106,17 +87,7 @@ const PostDetail = ({
           dangerouslySetInnerHTML={{ __html: post.content }}
         />
       </div>
-      {/* 댓글 */}
-      <div>
-        {/* 댓글 작성 */}
-        <NewComment postId={post.id} />
-        {/* 댓글 리스트 */}
-        <CommentList
-          isProfile={false}
-          comments={comments}
-        />
-      </div>
-    </div>
+    </>
   );
 };
 

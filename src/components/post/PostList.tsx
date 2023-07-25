@@ -48,7 +48,7 @@ const PostList = async ({ categoryId }: PostListProps) => {
               {post.subcategory.name}
             </Link>
             <Link
-              href={`/${post.category.name}/${post.subcategory.name}/${post.id}`}
+              href={`/${post.category.ref}/${post.subcategory.ref}/${post.id}`}
               className='flex flex-1 justify-between items-center hover:text-main'
             >
               <div>{post.title}</div>
