@@ -1,45 +1,50 @@
 'use client';
 
+import '@/styles/tiptap.css';
 import { ExtendedCategory } from '@/types/db';
 import { useState } from 'react';
 import { useSession } from 'next-auth/react';
 import {
   PostCreateRequest,
-  PostValidator,
+  PostEditRequest,
 } from '@/lib/validator/post';
 import { useMutation } from '@tanstack/react-query';
 import axios, { AxiosError } from 'axios';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { Editor, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Image from '@tiptap/extension-image';
 import TipTapEditor from './Editor';
 import { toast } from 'react-toastify';
 import Placeholder from '@tiptap/extension-placeholder';
-import '@/styles/tiptap.css';
-import { Subcategory } from '@prisma/client';
+import { Post, Subcategory } from '@prisma/client';
 
 interface NewpostProps {
+  post?: Post;
   categories: ExtendedCategory[];
   currentCategory: ExtendedCategory;
   currentSubcategory?: Subcategory;
 }
 
 const NewPost = ({
+  post,
   categories,
   currentCategory,
   currentSubcategory,
 }: NewpostProps) => {
   const { data: session } = useSession();
   const router = useRouter();
+  const pathname = usePathname();
 
   const [selectedCategory, setSelectedCategory] =
     useState(currentCategory);
   const [selectedSubcategory, setSelectedsubcategory] =
     useState(currentSubcategory?.id ?? 0);
 
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
+  const [title, setTitle] = useState(post?.title ?? '');
+  const [content, setContent] = useState(
+    post?.content ?? '',
+  );
 
   const handleOnChangeContent = ({ editor }: any) => {
     setContent((editor as Editor).getHTML());
@@ -55,13 +60,13 @@ const NewPost = ({
       }),
     ],
     onUpdate: handleOnChangeContent,
-    content: '',
+    content: content,
     editorProps: {
       attributes: {
         class:
-          'prose prose-sm xl:prose-2xl leading-8 focus:outline-none w-full max-w-full',
+          'prose prose-sm focus:outline-none w-full max-w-full',
       },
-      // @ts-ignore
+      // 에디터 본문 부분에 사진 드롭하면 업로드 되는 기능 - 일단 지금은 사용 x
       // handleDrop: async (view, event, slice, moved) => {
       //   if (
       //     !moved &&
@@ -69,7 +74,6 @@ const NewPost = ({
       //     event.dataTransfer.files &&
       //     event.dataTransfer.files[0]
       //   ) {
-      //     // TODO: 여러장의 사진을 드랍하는 경우
       //     // 사진이 1개 일 경우
       //     if (event.dataTransfer.files.length === 1) {
       //       let file = event.dataTransfer.files[0];
@@ -85,7 +89,6 @@ const NewPost = ({
       //         +fileSize < 10
       //       ) {
       //         // 10MB 이하 사진만 업로드 가능하게
-
       //         try {
       //           const {
       //             data: { uploadURL },
@@ -124,7 +127,6 @@ const NewPost = ({
       //           return view.dispatch(transaction);
       //         } catch (error) {
       //           console.log(error);
-      //           // TODO: error handling
       //         }
       //       }
       //     }
@@ -169,6 +171,42 @@ const NewPost = ({
     },
   });
 
+  const { mutate: editPost } = useMutation({
+    mutationFn: async ({
+      title,
+      content,
+      categoryId,
+      subcategoryId,
+      postId,
+    }: PostEditRequest) => {
+      const payload: PostEditRequest = {
+        title,
+        content,
+        categoryId,
+        subcategoryId,
+        postId,
+      };
+      const { data } = await axios.post(
+        '/api/posts/edit',
+        payload,
+      );
+      return data;
+    },
+    onError: (error) => {
+      if (error instanceof AxiosError) {
+        if (error.response?.status === 500) {
+          toast.error(error.response.data, {
+            theme: 'light',
+            className: 'text-sm whitespace-pre-line',
+          });
+        }
+      }
+    },
+    onSuccess: (url) => {
+      router.push(`${url}`);
+    },
+  });
+
   const handleSubmit = () => {
     if (!selectedSubcategory)
       return toast.warning(
@@ -191,6 +229,24 @@ const NewPost = ({
       return toast.warning('내용을 입력해주세요.', {
         theme: 'light',
         className: 'text-sm',
+      });
+    }
+    if (pathname.includes('edit')) {
+      if (
+        title === post?.title &&
+        content === post?.content
+      ) {
+        return toast.warning('수정된 사항이 없습니다.', {
+          theme: 'light',
+          className: 'text-sm',
+        });
+      }
+      return editPost({
+        title,
+        content,
+        categoryId: selectedCategory.id,
+        subcategoryId: selectedSubcategory,
+        postId: post?.id,
       });
     }
     createPost({

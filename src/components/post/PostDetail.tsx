@@ -151,7 +151,14 @@ const PostDetail = ({
             {/* edit/delete는 내 글인 경우에만 화면에 노출*/}
             {post.author.id === session?.user.id && (
               <>
-                <Icons.edit className='w-6 h-6 hover:text-main cursor-pointer' />
+                <Icons.edit
+                  className='w-6 h-6 hover:text-main cursor-pointer'
+                  onClick={() =>
+                    router.push(
+                      `${post.category.url}/${post.subcategory.ref}/${post.id}/edit`,
+                    )
+                  }
+                />
                 <Icons.delete
                   className='w-6 h-6 hover:text-main cursor-pointer'
                   onClick={() => setShowModal(true)}

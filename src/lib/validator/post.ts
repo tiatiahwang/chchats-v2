@@ -10,6 +10,7 @@ export const PostValidator = z.object({
   categoryId: z.number(),
   subcategoryId: z.number(),
   content: z.any(),
+  postId: z.string().optional(),
 });
 
 export const PostVoteValidator = z.object({
@@ -24,3 +25,5 @@ export type PostVoteRequest = z.infer<
 export type PostCreateRequest = z.infer<
   typeof PostValidator
 >;
+
+export type PostEditRequest = z.infer<typeof PostValidator>;
