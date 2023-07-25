@@ -22,11 +22,13 @@ const Page = async ({ params: { id } }: PageProps) => {
       category: {
         select: {
           name: true,
+          url: true,
         },
       },
       subcategory: {
         select: {
           name: true,
+          ref: true,
         },
       },
       author: {

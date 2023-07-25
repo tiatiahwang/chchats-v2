@@ -11,6 +11,7 @@ import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import Modal from '../ui/Modal';
+import Link from 'next/link';
 
 interface ExtendedPost extends Post {
   author: {
@@ -20,9 +21,11 @@ interface ExtendedPost extends Post {
   };
   category: {
     name: string;
+    url: string;
   };
   subcategory: {
     name: string;
+    ref: string | null;
   };
 }
 
@@ -80,8 +83,20 @@ const PostDetail = ({
   return (
     <>
       {/* 상단 - 카테고리  */}
-      <div className=' text-gray-500'>
-        {post.category.name} {'>'} {post.subcategory.name}
+      <div className='text-gray-400 text-sm'>
+        <Link
+          href={`${post.category.url}`}
+          className='hover:text-main'
+        >
+          {post.category.name}
+        </Link>{' '}
+        {'>'}{' '}
+        <Link
+          href={`${post.category.url}/${post.subcategory.ref}`}
+          className='hover:text-main'
+        >
+          {post.subcategory.name}
+        </Link>
       </div>
       {/* 유저정보 및 글 */}
       <div>
