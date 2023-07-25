@@ -1,7 +1,6 @@
 import { getAuthSession } from '@/lib/auth';
 import { db } from '@/lib/db';
 import { PostValidator } from '@/lib/validator/post';
-import { z } from 'zod';
 
 export async function POST(req: Request) {
   try {
@@ -12,6 +11,7 @@ export async function POST(req: Request) {
         status: 401,
       });
     }
+
     const body = await req.json();
 
     const { title, content, categoryId, subcategoryId } =

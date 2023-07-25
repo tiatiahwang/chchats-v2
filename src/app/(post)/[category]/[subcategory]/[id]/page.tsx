@@ -19,6 +19,7 @@ const Page = async ({ params: { id } }: PageProps) => {
       id,
     },
     include: {
+      votes: true,
       category: {
         select: {
           name: true,
@@ -44,7 +45,7 @@ const Page = async ({ params: { id } }: PageProps) => {
   return (
     <>
       <WebSideBar categories={categories} />
-      <div className='space-y-6 border rounded-md w-full ml-4 p-4'>
+      <div className='border rounded-md w-full ml-4 p-4'>
         <Suspense
           fallback={
             <>

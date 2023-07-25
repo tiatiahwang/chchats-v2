@@ -3,7 +3,7 @@
 import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import { Icons } from '../Icons';
-import { Post } from '@prisma/client';
+import { Post, Vote, VoteType } from '@prisma/client';
 import { useMutation } from '@tanstack/react-query';
 import axios, { AxiosError } from 'axios';
 import { useCustomToast } from '@/hooks/use-custom-toast';
@@ -12,6 +12,7 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import Modal from '../ui/Modal';
 import Link from 'next/link';
+import PostVote from './PostVote';
 
 interface ExtendedPost extends Post {
   author: {
@@ -27,6 +28,7 @@ interface ExtendedPost extends Post {
     name: string;
     ref: string | null;
   };
+  votes: Vote[];
 }
 
 interface PostDetailProps {
@@ -47,6 +49,21 @@ const PostDetail = ({
   const { loginToast } = useCustomToast();
   const [showModal, setShowModal] =
     useState<boolean>(false);
+
+  let _votesAmount: number = 0;
+  let _currentVote: VoteType | null | undefined = undefined;
+
+  if (post?.votes) {
+    _votesAmount = post.votes.reduce((acc, vote) => {
+      if (vote.type === 'UP') return acc + 1;
+      if (vote.type === 'DOWN') return acc - 1;
+      return acc;
+    }, 0);
+
+    _currentVote = post.votes.find(
+      (vote) => vote.userId === session?.user.id,
+    )?.type;
+  }
 
   const { mutate: deletePost } = useMutation({
     mutationFn: async ({ postId }: DeleteRequest) => {
@@ -77,9 +94,11 @@ const PostDetail = ({
       }
     },
   });
+
   const handleDelete = () => {
     deletePost({ postId: post.id });
   };
+
   return (
     <>
       {/* 상단 - 카테고리  */}
@@ -99,7 +118,7 @@ const PostDetail = ({
         </Link>
       </div>
       {/* 유저정보 및 글 */}
-      <div>
+      <div className='mt-4'>
         <div className='flex items-center justify-between text-xs'>
           <div className='flex items-center'>
             {/* 아바타 */}
@@ -142,14 +161,23 @@ const PostDetail = ({
             <Icons.scrap className='w-6 h-6 hover:text-main cursor-pointer' />
           </div>
         </div>
-        <h1 className='text-4xl font-bold py-8 leading-6'>
+        {/* 글 제목 */}
+        <h1 className='text-4xl font-bold py-8'>
           {post.title}
         </h1>
+        {/* 글 내용 */}
         <div
           className='text-base leading-8'
           dangerouslySetInnerHTML={{ __html: post.content }}
         />
+        {/* 글 추천/반대 */}
+        <PostVote
+          postId={post.id}
+          initialVoteAmount={_votesAmount}
+          initialVote={_currentVote}
+        />
       </div>
+
       {showModal && (
         <Modal
           text='정말 삭제하시겠어요?'
