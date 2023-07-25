@@ -75,6 +75,7 @@ const CommentList = ({
     },
     onSuccess: () => {
       router.refresh();
+      setInput('');
       setIsReplying(false);
     },
   });
@@ -134,31 +135,34 @@ const CommentList = ({
             </div>
           )}
         </div>
-        <div className='flex itmes-center'></div>
       </div>
       {/* 댓글 내용 */}
       <div className='py-2 text-sm'>{comment.text}</div>
-      {/* <div className='text-xs text-gray-500 font-medium space-x-4'>
+      <div className='text-xs text-gray-500 font-medium space-x-4'>
         {!isReply ? (
           <span
             className='hover:text-main cursor-pointer'
-            onClick={() => setIsReplying((prev) => !prev)}
+            onClick={handleReply}
           >
             댓글 쓰기
           </span>
         ) : null}
         {isReplying ? (
-          <div className='pt-2 ml-2 py-2 pl-4 border-l-2'>
+          <div className='pt-4'>
             <div className='flex space-x-4'>
-              <div className='relative aspect-square h-6 w-6 rounded-full'>
-                <Image
-                  fill
-                  src={session?.user.image!}
-                  alt='user avatar'
-                  referrerPolicy='no-referrer'
-                  className='rounded-full'
-                />
-              </div>
+              {comment?.author?.image ? (
+                <div className='relative aspect-square h-6 w-6 rounded-full'>
+                  <Image
+                    fill
+                    src={comment?.author.image!}
+                    alt='comment user avatar'
+                    referrerPolicy='no-referrer'
+                    className='rounded-full'
+                  />
+                </div>
+              ) : (
+                <Icons.user className='w-6 h-6 border-[1px] p-1 rounded-full border-slate-900 text-slate-900' />
+              )}
               <textarea
                 className='text-sm bg-transparent placeholder:text-sm whitespace-pre-line resize-none rounded-md flex-1 focus:outline-none border-[1px] p-2'
                 placeholder='좋은 영향을 주고 받는 댓글을 남겨주세요 :)'
@@ -167,7 +171,16 @@ const CommentList = ({
                 rows={3}
               />
             </div>
-            <div className='flex items-center justify-end pt-4'>
+            <div className='flex items-center justify-end pt-4 space-x-2'>
+              <Button
+                type='transparent'
+                width='w-fit'
+                text='취소'
+                className='border-none rounded-md hover:bg-gray-400'
+                onClick={() =>
+                  setIsReplying((prev) => !prev)
+                }
+              />
               <Button
                 type='base'
                 disabled={isLoading}
@@ -194,7 +207,7 @@ const CommentList = ({
             </div>
           </div>
         ) : null}
-      </div> */}
+      </div>
     </div>
   );
 };

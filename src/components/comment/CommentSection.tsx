@@ -64,7 +64,7 @@ const CommentSection = async ({
                 key={comment.id}
                 className='flex flex-col'
               >
-                <div className='mb-2'>
+                <div className='mb-2 border-t-[1px]'>
                   <CommentList
                     comment={comment}
                     postId={postId}
@@ -73,11 +73,11 @@ const CommentSection = async ({
                     )}
                   />
                 </div>
-                {/* {comment.replies.map((reply) => {
+                {comment.replies.map((reply, index) => {
                   return (
                     <div
                       key={reply.id}
-                      className='ml-2 py-2 pl-4 border-l-2'
+                      className='ml-2 pl-4 border-l-2'
                     >
                       <CommentList
                         comment={reply}
@@ -87,9 +87,18 @@ const CommentSection = async ({
                         )}
                         isReply={true}
                       />
+                      <div
+                        className={` ' ${
+                          index !==
+                          comment.replies.length - 1
+                            ? 'border-b-[1px] border-dashed'
+                            : ''
+                        }
+                          `}
+                      />
                     </div>
                   );
-                })} */}
+                })}
               </div>
             );
           })}
