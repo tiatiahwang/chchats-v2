@@ -1,6 +1,5 @@
-import Link from 'next/link';
-import { Icons } from '../Icons';
 import { db } from '@/lib/db';
+import PostBox from './PostBox';
 
 interface PostListProps {
   categoryId: number;
@@ -31,6 +30,9 @@ const PostList = async ({ categoryId }: PostListProps) => {
       },
     },
     take: 10,
+    orderBy: {
+      createdAt: 'desc',
+    },
   });
 
   return (
@@ -41,24 +43,7 @@ const PostList = async ({ categoryId }: PostListProps) => {
             key={post.id}
             className='flex items-center space-x-2 w-full'
           >
-            <Link
-              href={`${post.category.ref}/${post.subcategory.ref}`}
-              className='text-[10px] border px-1 rounded-md text-main hover:bg-main hover:border-main hover:text-white'
-            >
-              {post.subcategory.name}
-            </Link>
-            <Link
-              href={`/${post.category.ref}/${post.subcategory.ref}/${post.id}`}
-              className='flex flex-1 justify-between items-center hover:text-main'
-            >
-              <div>{post.title}</div>
-              <div className='flex items-center space-x-1'>
-                <Icons.comment className='w-3 h-3' />
-                <span className='text-xs'>
-                  {post._count.comments}
-                </span>
-              </div>
-            </Link>
+            <PostBox post={post} />
           </div>
         ))
       ) : (

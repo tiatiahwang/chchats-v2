@@ -1,6 +1,5 @@
 'use client';
 
-// import { formatTime } from '@/lib/utils';
 import { useEffect, useRef } from 'react';
 import { useIntersection } from '@mantine/hooks';
 import { useInfiniteQuery } from '@tanstack/react-query';
@@ -72,7 +71,12 @@ const PostCardList = ({
             if (index === posts.length - 1) {
               return (
                 <li key={post.id} ref={ref}>
-                  <PostCard post={post} />
+                  <PostCard
+                    post={post}
+                    subcategoryId={
+                      subcategoryId! ?? undefined
+                    }
+                  />
                 </li>
               );
             } else {

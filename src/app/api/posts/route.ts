@@ -9,7 +9,7 @@ export async function GET(req: Request) {
         limit: z.string(),
         page: z.string(),
         categoryId: z.string(),
-        subcategoryId: z.string().optional(),
+        subcategoryId: z.string().nullish().optional(),
       })
       .parse({
         limit: url.searchParams.get('limit'),
@@ -58,6 +58,7 @@ export async function GET(req: Request) {
 
     return new Response(JSON.stringify(posts));
   } catch (error) {
+    console.log(error);
     if (error instanceof z.ZodError) {
       return new Response('유효하지 않은 데이터 입니다.', {
         status: 422,

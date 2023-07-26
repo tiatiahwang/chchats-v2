@@ -1,4 +1,4 @@
-import PostList from '@/components/post/PostList';
+import PostList from '@/components/PostList';
 import WebSideBar from '@/components/WebSideBar';
 import { getAllCategories } from '@/lib/utils';
 import Link from 'next/link';
