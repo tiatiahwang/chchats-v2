@@ -30,7 +30,7 @@ const WebSideBar: FC<WebSideBarProps> = ({
           return (
             <div
               key={category.id}
-              className='flex flex-col w-[150px] rounded-lg h-fit border'
+              className='flex flex-col w-[120px] rounded-lg h-fit border'
             >
               <div
                 className='rounded-t-lg font-bold bg-main text-white py-2 px-4 hover:bg-mainDark'
