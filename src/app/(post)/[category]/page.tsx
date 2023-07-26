@@ -1,7 +1,11 @@
 import WebSideBar from '@/components/WebSideBar';
-import PostCard from '@/components/post/PostCard';
+import PostCard from '@/components/post/PostCardList';
+import Skeleton from '@/components/ui/Skeleton';
+import { INFINITE_SCROLL_PAGINATION_RESULTS } from '@/config';
+import { db } from '@/lib/db';
 import { getAllCategories } from '@/lib/utils';
 import Link from 'next/link';
+import { Suspense } from 'react';
 
 export const dynamic = 'force-dynamic';
 export const fetchCache = 'force-no-store';
@@ -20,7 +24,32 @@ const page = async ({
     (cate) => cate.ref === category,
   );
 
+  const posts = await db.post.findMany({
+    where: {
+      categoryId: currentCategory?.id!,
+    },
+    include: {
+      author: {
+        select: { id: true, username: true },
+      },
+      category: {
+        select: { ref: true },
+      },
+      subcategory: {
+        select: { name: true, ref: true },
+      },
+      _count: {
+        select: {
+          comments: true,
+        },
+      },
+    },
+    orderBy: { createdAt: 'desc' },
+    take: INFINITE_SCROLL_PAGINATION_RESULTS,
+  });
+
   //TODO: loading
+
   return (
     <>
       <WebSideBar categories={categories} />
@@ -40,9 +69,16 @@ const page = async ({
             )}
           </div>
         </div>
-        <div className='space-y-2'>
-          <PostCard categoryId={currentCategory?.id} />
-        </div>
+        <Suspense
+          fallback={<Skeleton className='w-full h-50' />}
+        >
+          <div className='space-y-2'>
+            <PostCard
+              initialPosts={posts}
+              categoryId={currentCategory?.id}
+            />
+          </div>
+        </Suspense>
       </div>
     </>
   );

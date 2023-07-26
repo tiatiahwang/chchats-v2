@@ -1,5 +1,6 @@
 import WebSideBar from '@/components/WebSideBar';
-import PostCard from '@/components/post/PostCard';
+import PostCard from '@/components/post/PostCardList';
+import { INFINITE_SCROLL_PAGINATION_RESULTS } from '@/config';
 import { db } from '@/lib/db';
 import { getAllCategories } from '@/lib/utils';
 import Link from 'next/link';
@@ -26,6 +27,30 @@ const page = async ({
     },
   );
 
+  const posts = await db.post.findMany({
+    where: {
+      subcategoryId: currentSubcategory?.id!,
+    },
+    include: {
+      author: {
+        select: { id: true, username: true },
+      },
+      category: {
+        select: { ref: true },
+      },
+      subcategory: {
+        select: { name: true, ref: true },
+      },
+      _count: {
+        select: {
+          comments: true,
+        },
+      },
+    },
+    orderBy: { createdAt: 'desc' },
+    take: INFINITE_SCROLL_PAGINATION_RESULTS,
+  });
+
   return (
     <>
       <WebSideBar categories={categories} />
@@ -45,6 +70,8 @@ const page = async ({
         </div>
         <div className='space-y-2'>
           <PostCard
+            initialPosts={posts}
+            categoryId={currentSubcategory?.categoryId}
             subcategoryId={currentSubcategory?.id}
           />
         </div>

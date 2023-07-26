@@ -218,7 +218,7 @@ const NewPost = ({
           className: 'text-sm',
         },
       );
-    if (title.length < 2 || title.length > 20) {
+    if (title.length < 2 || title.length > 50) {
       return toast.warning(
         '제목은 2~50 글자 사이로 적어주세요.',
         {
