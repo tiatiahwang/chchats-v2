@@ -5,7 +5,6 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import Image from 'next/image';
 import { User } from 'next-auth';
-import { FC } from 'react';
 
 interface ProfileNavProps {
   user: User & {
@@ -13,7 +12,7 @@ interface ProfileNavProps {
   };
 }
 
-const ProfileNav: FC<ProfileNavProps> = ({ user }) => {
+const ProfileNav = ({ user }: ProfileNavProps) => {
   const pathname = usePathname();
 
   return (
