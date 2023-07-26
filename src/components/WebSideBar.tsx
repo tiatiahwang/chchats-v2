@@ -4,6 +4,7 @@ import { FC, useState } from 'react';
 import { Icons } from '@/components/Icons';
 import { Category, Subcategory } from '@prisma/client';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 interface category extends Category {
   subcategories: Subcategory[];
@@ -16,6 +17,7 @@ interface WebSideBarProps {
 const WebSideBar: FC<WebSideBarProps> = ({
   categories,
 }) => {
+  const router = useRouter();
   const [onHoverIndex, setOnHoverIndex] =
     useState<number>();
   const onHover = (index: number) => setOnHoverIndex(index);
@@ -36,29 +38,33 @@ const WebSideBar: FC<WebSideBarProps> = ({
                 onMouseLeave={() => onLeave()}
                 role='button'
               >
-                <Link
-                  className='flex justify-between items-center relative'
-                  href={{
-                    pathname: category.url,
+                <div
+                  className='flex justify-between items-center relative cursor-pointer'
+                  onClick={() => {
+                    router.refresh();
+                    router.push(`${category.url}`);
                   }}
                 >
                   <span>{category.name}</span>
                   {onHoverIndex === category.id && (
                     <Icons.chevRight className='h-4 w-4 absolute -right-2' />
                   )}
-                </Link>
+                </div>
               </div>
               <div>
                 {category?.subcategories.map(
                   (subcategory) => (
-                    <Link
+                    <div
                       key={subcategory.id}
-                      href={`${subcategory.url}`}
+                      onClick={() => {
+                        router.refresh();
+                        router.push(`${subcategory.url}`);
+                      }}
                     >
                       <div className='px-4 hover:bg-mainLight py-2'>
                         {subcategory.name}
                       </div>
-                    </Link>
+                    </div>
                   ),
                 )}
               </div>

@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { signOut, useSession } from 'next-auth/react';
 import Image from 'next/image';
 
-const MobileSideMenu = () => {
+const MobileToggleMenu = () => {
   const { data: session } = useSession();
   const [iconClicked, setIconClicked] = useState(false);
   const onIconClick = () => setIconClicked(!iconClicked);
@@ -130,4 +130,4 @@ const MobileSideMenu = () => {
   );
 };
 
-export default MobileSideMenu;
+export default MobileToggleMenu;

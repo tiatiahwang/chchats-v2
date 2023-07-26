@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { signOut } from 'next-auth/react';
 
-const WebSideMenu = ({ session }: any) => {
+const WebNav = ({ session }: any) => {
   const [avatarClicked, setAvatarClicked] = useState(false);
   const onClickAvatar = () =>
     setAvatarClicked(!avatarClicked);
@@ -85,4 +85,4 @@ const WebSideMenu = ({ session }: any) => {
   );
 };
 
-export default WebSideMenu;
+export default WebNav;
