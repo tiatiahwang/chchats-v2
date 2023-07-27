@@ -1,3 +1,4 @@
+import Ads from '@/components/Ads';
 import PostList from '@/components/PostList';
 import WebSideBar from '@/components/WebSideBar';
 import { getAllCategories } from '@/lib/utils';
@@ -6,9 +7,9 @@ import Link from 'next/link';
 export default async function Home() {
   const categories = await getAllCategories();
   return (
-    <div className='flex text-sm px-2 pb-2'>
+    <div className='flex text-sm pb-2 px-2 md:space-x-8'>
       <WebSideBar categories={categories} />
-      <div className='grid grid-cols-1 md:grid-cols-2 md:ml-4 w-full gap-4'>
+      <div className='grid grid-cols-1 md:grid-cols-2 w-full min-x-0 gap-4'>
         {categories?.map((category) => (
           <div
             key={category.id}
@@ -29,6 +30,7 @@ export default async function Home() {
           </div>
         ))}
       </div>
+      <Ads />
     </div>
   );
 }
