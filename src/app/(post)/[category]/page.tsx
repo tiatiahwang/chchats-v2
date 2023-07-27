@@ -1,7 +1,7 @@
 import WebSideBar from '@/components/WebSideBar';
-import PostCard from '@/components/post/PostCardList';
+import PostCardList from '@/components/post/PostCardList';
 import Skeleton from '@/components/ui/Skeleton';
-import { INFINITE_SCROLL_PAGINATION_RESULTS } from '@/config';
+import { INFINITE_SCROLL_LIMIT } from '@/config';
 import { db } from '@/lib/db';
 import { getAllCategories } from '@/lib/utils';
 import Link from 'next/link';
@@ -45,7 +45,7 @@ const page = async ({
       },
     },
     orderBy: { createdAt: 'desc' },
-    take: INFINITE_SCROLL_PAGINATION_RESULTS,
+    take: INFINITE_SCROLL_LIMIT,
   });
 
   //TODO: loading
@@ -73,7 +73,7 @@ const page = async ({
           fallback={<Skeleton className='w-full h-50' />}
         >
           <div className='space-y-2'>
-            <PostCard
+            <PostCardList
               initialPosts={posts}
               categoryId={currentCategory?.id}
             />

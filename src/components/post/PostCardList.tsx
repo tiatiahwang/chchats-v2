@@ -3,10 +3,11 @@
 import { useEffect, useRef } from 'react';
 import { useIntersection } from '@mantine/hooks';
 import { useInfiniteQuery } from '@tanstack/react-query';
-import { INFINITE_SCROLL_PAGINATION_RESULTS } from '@/config';
+import { INFINITE_SCROLL_LIMIT } from '@/config';
 import axios from 'axios';
 import PostCard from './PostCard';
 import { ExtendedPost } from '@/types/db';
+import Image from 'next/image';
 
 interface PostCardListProps {
   initialPosts: ExtendedPost[];
@@ -31,7 +32,7 @@ const PostCardList = ({
       ['infinite-query'],
       async ({ pageParam = 1 }) => {
         const query =
-          `/api/posts?limit=${INFINITE_SCROLL_PAGINATION_RESULTS}&page=${pageParam}&categoryId=${categoryId}` +
+          `/api/posts?limit=${INFINITE_SCROLL_LIMIT}&page=${pageParam}&categoryId=${categoryId}` +
           (!!subcategoryId
             ? `&subcategoryId=${subcategoryId}`
             : '');
@@ -41,8 +42,7 @@ const PostCardList = ({
       {
         getNextPageParam: (lastPage, allPages) => {
           const nextPage =
-            lastPage.length ===
-            INFINITE_SCROLL_PAGINATION_RESULTS
+            lastPage.length === INFINITE_SCROLL_LIMIT
               ? allPages.length + 1
               : undefined;
           return nextPage;
@@ -95,7 +95,19 @@ const PostCardList = ({
       ) : (
         <div>NO POST</div>
       )}
-      {isFetchingNextPage ? <div>Loading...</div> : ''}
+      {isFetchingNextPage ? (
+        <div className='flex items-center justify-center'>
+          <Image
+            src='/loader.gif'
+            alt='loading'
+            width={50}
+            height={50}
+            unoptimized={true}
+          />
+        </div>
+      ) : (
+        ''
+      )}
     </>
   );
 };

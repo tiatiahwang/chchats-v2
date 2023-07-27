@@ -1,6 +1,6 @@
 import WebSideBar from '@/components/WebSideBar';
 import PostCard from '@/components/post/PostCardList';
-import { INFINITE_SCROLL_PAGINATION_RESULTS } from '@/config';
+import { INFINITE_SCROLL_LIMIT } from '@/config';
 import { db } from '@/lib/db';
 import { getAllCategories } from '@/lib/utils';
 import Link from 'next/link';
@@ -48,7 +48,7 @@ const page = async ({
       },
     },
     orderBy: { createdAt: 'desc' },
-    take: INFINITE_SCROLL_PAGINATION_RESULTS,
+    take: INFINITE_SCROLL_LIMIT,
   });
 
   return (

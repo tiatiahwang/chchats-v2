@@ -1,52 +1,41 @@
+import { getAuthSession } from '@/lib/auth';
 import { db } from '@/lib/db';
 import { z } from 'zod';
 
 export async function GET(req: Request) {
   try {
+    const session = await getAuthSession();
+
+    if (!session?.user) {
+      return new Response('로그인을 해주세요.', {
+        status: 401,
+      });
+    }
+
     const url = new URL(req.url);
-    const { limit, page, categoryId, subcategoryId } = z
+    const { limit, page } = z
       .object({
         limit: z.string(),
         page: z.string(),
-        categoryId: z.string(),
-        subcategoryId: z.string().nullish().optional(),
       })
       .parse({
         limit: url.searchParams.get('limit'),
         page: url.searchParams.get('page'),
-        categoryId: url.searchParams.get('categoryId'),
-        subcategoryId:
-          url.searchParams.get('subcategoryId'),
       });
 
-    let whereClause = {};
-
-    if (subcategoryId) {
-      whereClause = {
-        subcategoryId: +subcategoryId,
-      };
-    } else {
-      whereClause = {
-        categoryId: +categoryId,
-      };
-    }
-
     const posts = await db.post.findMany({
-      where: whereClause,
+      where: {
+        authorId: session.user.id,
+      },
       include: {
         author: {
           select: { id: true, username: true },
         },
         category: {
-          select: { ref: true },
+          select: { name: true, ref: true },
         },
         subcategory: {
           select: { name: true, ref: true },
-        },
-        _count: {
-          select: {
-            comments: true,
-          },
         },
       },
       orderBy: {
