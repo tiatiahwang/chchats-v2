@@ -3,7 +3,7 @@
 import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import { Icons } from '../Icons';
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import axios, { AxiosError } from 'axios';
 import { toast } from 'react-toastify';
@@ -16,6 +16,8 @@ import {
   EditProfileValidator,
 } from '@/lib/validator/profile';
 import { ProfileEditLoading } from '@/app/(profile)/profile/edit/page';
+import { useRouter } from 'next/navigation';
+import { nanoid } from 'nanoid';
 
 // interface FormProps {
 //   avatar?: string;
@@ -25,27 +27,44 @@ import { ProfileEditLoading } from '@/app/(profile)/profile/edit/page';
 // }
 
 const ProfileEdit = () => {
+  const router = useRouter();
   const { data: session } = useSession();
-  const [isChecked, setIsChecked] = useState(false);
+  const { loginToast } = useCustomToast();
+
   const {
     register,
     setError,
     formState: { errors },
     setValue,
     getValues,
+    watch,
   } = useForm<EditProfileRequest>({
     mode: 'onChange',
     resolver: zodResolver(EditProfileValidator),
   });
-  const [avatarPreview, setAvatarPreview] = useState('');
-
+  const [isChecked, setIsChecked] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-  const { loginToast } = useCustomToast();
 
-  const {
-    mutate: changeAvatar,
-    isLoading: isAvatarLoading,
-  } = useMutation({
+  const [avatarUploading, setAvatarUploading] =
+    useState(false);
+  const [avatarPreview, setAvatarPreview] = useState('');
+  const avatar = watch('avatar');
+
+  useEffect(() => {
+    if (avatar && avatar.length > 0) {
+      const file = avatar[0];
+      setAvatarPreview(URL.createObjectURL(file));
+    }
+  }, [avatar]);
+
+  useEffect(() => {
+    if (session?.user?.username)
+      setValue('username', session?.user?.username);
+    if (session?.user?.image)
+      setAvatarPreview(session?.user?.image);
+  }, [session, setValue]);
+
+  const { mutate: changeAvatar } = useMutation({
     mutationFn: async ({ avatar }: EditProfileRequest) => {
       const { data } = await axios.post(
         '/api/profile/edit/avatar',
@@ -70,11 +89,8 @@ const ProfileEdit = () => {
     },
     onSuccess: (data) => {
       if (data === 'OK') {
-        console.log(data);
-        // toast.success('닉네임이 변경되었습니다.', {
-        //   theme: 'light',
-        //   className: 'text-sm',
-        // });
+        setAvatarUploading(false);
+        router.refresh();
       }
     },
   });
@@ -180,7 +196,24 @@ const ProfileEdit = () => {
       );
     }
 
+    const fileSize = event.target.files[0].size;
+    const maxSize = 1024 * 1024 * 5; // 5MB
+
+    console.log(fileSize, maxSize);
+
+    if (fileSize > maxSize) {
+      return toast.error(
+        '5MB 이하의 사진을 선택해주세요.',
+        {
+          theme: 'light',
+          className: 'text-sm whitespace-pre-line',
+        },
+      );
+    }
+
+    const TODAY = new Date().toJSON().slice(0, 10);
     try {
+      setAvatarUploading(true);
       const {
         data: { uploadURL },
       } = await axios.post('/api/files');
@@ -188,15 +221,16 @@ const ProfileEdit = () => {
       form.append(
         'file',
         event.target.files[0],
-        new Date().toJSON().slice(0, 10) + session?.user.id,
+        `${TODAY}-${nanoid(5)}-${session?.user.id}`,
       );
       const {
         data: {
           result: { variants },
         },
       } = await axios.post(uploadURL, form);
-      console.log('variants', variants);
+
       if (!variants) {
+        setAvatarUploading(false);
         return toast.error(
           '알 수 없는 오류가 발생했습니다.\n잠시 후 다시 시도해 주세요',
           {
@@ -209,10 +243,22 @@ const ProfileEdit = () => {
       const url =
         variants[0].split('/').slice(0, 5).join('/') +
         '/avatar';
-      console.log('url', url);
+
       setAvatarPreview(url);
       changeAvatar({ avatar: url });
     } catch (error) {
+      setAvatarUploading(false);
+      if (error instanceof AxiosError) {
+        if (error.response?.status === 413) {
+          return toast.error(
+            '12,000 픽셀 이하인 이미지만 가능합니다.',
+            {
+              theme: 'light',
+              className: 'text-sm',
+            },
+          );
+        }
+      }
       return toast.error(
         '알 수 없는 오류가 발생했습니다.\n잠시 후 다시 시도해 주세요',
         {
@@ -280,22 +326,27 @@ const ProfileEdit = () => {
           <div className='flex flex-col'>
             {/* 아바타 변경 */}
             <div className='flex items-center justify-center flex-col mb-6'>
-              {session?.user?.image ? (
+              {avatarUploading ? (
+                <div className='relative aspect-square w-20 h-20 rounded-full border'>
+                  <span className='w-full h-full flex items-center justify-center text-[10px] text-gray-400'>
+                    이미지 업로드중
+                  </span>
+                </div>
+              ) : avatarPreview ? (
                 <div className='relative aspect-square w-20 h-20 rounded-full'>
                   <Image
                     fill
-                    src={session.user.image!}
+                    src={avatarPreview!}
                     alt='user avatar'
                     referrerPolicy='no-referrer'
                     className='rounded-full'
                   />
                 </div>
               ) : (
-                <div className='w-20 h-20 md:w-32 md:h-32 rounded-full'>
+                <div className='w-20 h-20 rounded-full'>
                   <Icons.user className='border-[2px] p-1 rounded-full border-slate-900' />
                 </div>
               )}
-
               <label
                 htmlFor='avatar'
                 className='text-sm p-2 text-white rounded-md bg-main hover:bg-mainDark cursor-pointer mt-2 w-fit'
@@ -306,7 +357,7 @@ const ProfileEdit = () => {
                 id='avatar'
                 name='avatar'
                 type='file'
-                accept='image/*'
+                accept='image/png, image/jpeg, image/jpg'
                 className='sr-only'
                 onChange={(event) => onChangeAvatar(event)}
               />
@@ -377,7 +428,6 @@ const ProfileEdit = () => {
                         ? 'focus:border-red-500'
                         : 'focus:border-main '
                     }`}
-                    defaultValue={session?.user?.username!}
                     aria-invalid={Boolean(errors.username)}
                   />
                   {errors?.username?.message && (

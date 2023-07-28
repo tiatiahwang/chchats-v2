@@ -2,16 +2,7 @@
 
 import { Editor, EditorContent } from '@tiptap/react';
 import Skeleton from '../ui/Skeleton';
-import {
-  ChangeEvent,
-  DragEvent,
-  DragEventHandler,
-  FormEvent,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
-import { Icons } from '../Icons';
+import { ChangeEvent, useState } from 'react';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 import Image from 'next/image';
