@@ -9,6 +9,7 @@ import { useMutation } from '@tanstack/react-query';
 import { PostVoteRequest } from '@/lib/validator/post';
 import axios, { AxiosError } from 'axios';
 import { toast } from 'react-toastify';
+import { useSession } from 'next-auth/react';
 
 interface PostVoteProps {
   postId: string;
@@ -21,6 +22,7 @@ const PostVote = ({
   initialVoteAmount,
   initialVote,
 }: PostVoteProps) => {
+  const { data: session } = useSession();
   const { loginToast } = useCustomToast();
   const [votesAmount, setVotesAmount] = useState<number>(
     initialVoteAmount,
@@ -87,6 +89,7 @@ const PostVote = ({
     <div className='mt-4 flex justify-center items-center space-x-3'>
       <button
         onClick={() => {
+          if (!session?.user) return loginToast();
           if (isLoading) return;
           vote('UP');
         }}
@@ -104,6 +107,7 @@ const PostVote = ({
       </span>
       <button
         onClick={() => {
+          if (!session?.user) return loginToast();
           if (isLoading) return;
           vote('DOWN');
         }}

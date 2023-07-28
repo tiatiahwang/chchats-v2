@@ -1,4 +1,4 @@
-import { Fragment } from 'react';
+import { Fragment, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import Button from './Button';
 
@@ -20,10 +20,18 @@ const Modal = ({
   className,
 }: ModalProps) => {
   if (!open) return null;
-
   return createPortal(
     <Fragment>
-      <div className='fixed top-0 left-0 z-50 w-full h-full flex justify-center items-center bg-black/40'>
+      <div
+        className='fixed top-0 left-0 z-50 w-full h-full flex justify-center items-center bg-black/40'
+        onClick={(event) => {
+          event.stopPropagation();
+          if (event?.currentTarget !== event.target) return;
+          if (typeof onClose === 'function') {
+            onClose();
+          }
+        }}
+      >
         <div className='bg-white min-w-[300px] p-8 flex flex-col items-center rounded-md space-y-8'>
           <div className='fon-medium'>{text}</div>
           <div className='space-x-4'>

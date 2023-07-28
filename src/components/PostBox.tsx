@@ -23,7 +23,6 @@ interface PostBoxProps {
 }
 
 const PostBox = ({ post }: PostBoxProps) => {
-  console.log('search', post);
   const router = useRouter();
   return (
     <>
