@@ -20,7 +20,7 @@ const page = async ({ params: { id } }: PageProps) => {
   const session = await getAuthSession();
   const categories = await getAllCategories();
 
-  // post 조회할 떄마다 조회수 1씩 증가
+  // post 조회할 때마다 조회수 1씩 증가
   await db.post.update({
     where: {
       id,
@@ -85,7 +85,7 @@ const page = async ({ params: { id } }: PageProps) => {
           <PostDetail
             post={post}
             formattedTime={formatTime(post?.createdAt!)}
-            isScrapped={isScrapped}
+            isScrapped={session?.user ? isScrapped : false}
           />
         </Suspense>
         <Suspense

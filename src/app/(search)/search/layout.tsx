@@ -10,7 +10,7 @@ const Layout = async ({
   return (
     <div className='flex px-2'>
       <WebSideBar categories={categories} />
-      <div className='w-full'>{children}</div>
+      <div className='w-full pl-2'>{children}</div>
     </div>
   );
 };
