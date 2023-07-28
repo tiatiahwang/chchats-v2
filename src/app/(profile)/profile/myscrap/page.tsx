@@ -1,4 +1,4 @@
-import MyComment from '@/components/profile/MyComment';
+import MyScrap from '@/components/profile/MyScrap';
 import ProfileNav from '@/components/profile/ProfileNav';
 import Skeleton from '@/components/ui/Skeleton';
 import { INFINITE_SCROLL_LIMIT } from '@/config';
@@ -8,9 +8,9 @@ import { Suspense } from 'react';
 
 const Page = async () => {
   const session = await getAuthSession();
-  const mycomments = await db.comment.findMany({
+  const myscraps = await db.scrap.findMany({
     where: {
-      authorId: session?.user.id,
+      userId: session?.user?.id,
     },
     include: {
       post: {
@@ -31,21 +31,18 @@ const Page = async () => {
         },
       },
     },
-    orderBy: {
-      createdAt: 'desc',
-    },
     // TODO
     // take: INFINITE_SCROLL_LIMIT,
   });
 
   // TODO: LOADING
-  if (!mycomments) return;
+  if (!myscraps) return;
   return (
     <div className='w-full px-4'>
       {session?.user ? (
         <ProfileNav user={session.user} />
       ) : null}
-      <MyComment initialComments={mycomments} />
+      <MyScrap initialScraps={myscraps} />
     </div>
   );
 };
