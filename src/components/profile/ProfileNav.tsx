@@ -54,7 +54,7 @@ const ProfileNav = ({ user }: ProfileNavProps) => {
           </div>
         </div>
       ) : null}
-      <div className='flex items-center justify-start gap-x-6 border-b-[1px] border-gray-100 text-sm mt-6 font-medium'>
+      <div className='flex items-center justify-start gap-x-6 border-b text-sm my-6 font-medium'>
         <Link href='/profile/mypost' className='pb-4'>
           <span
             className={`${

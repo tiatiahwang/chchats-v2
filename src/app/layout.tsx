@@ -19,17 +19,17 @@ export default function RootLayout({
   return (
     <html
       lang='ko'
-      className='bg-white text-slate-900 antialiased light'
+      className='bg-white text-slate-900 antialiased light box-border'
     >
       <body
         suppressContentEditableWarning={true}
         suppressHydrationWarning={true}
-        className='min-h-screen pt-12 bg-slate-50 antialiased'
+        className='min-h-screen pt-12 bg-slate-50 antialiased box-border'
       >
         <Providers>
           <ToastProvider>
             <NavBar />
-            <div className='container max-w-7xl mx-auto h-full pt-12'>
+            <div className='max-w-7xl mx-auto h-full pt-12 box-border'>
               {children}
             </div>
             <Footer />

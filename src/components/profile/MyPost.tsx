@@ -65,9 +65,9 @@ const MyPost = ({ initialPosts }: MyPostProps) => {
     data?.pages.flatMap((page) => page) ?? initialPosts;
 
   return (
-    <>
+    <div className='h-[800px] border overflow-scroll rounded-md'>
       {posts.length > 0 ? (
-        <ul className='mt-4'>
+        <ul className='m-4'>
           {posts.map((post, index) => {
             if (index === posts.length - 1) {
               return (
@@ -98,7 +98,7 @@ const MyPost = ({ initialPosts }: MyPostProps) => {
       ) : (
         ''
       )}
-    </>
+    </div>
   );
 };
 

@@ -19,13 +19,6 @@ import { ProfileEditLoading } from '@/app/(profile)/profile/edit/page';
 import { useRouter } from 'next/navigation';
 import { nanoid } from 'nanoid';
 
-// interface FormProps {
-//   avatar?: string;
-//   username?: string;
-//   currentPassword?: string;
-//   newPassword?: string;
-// }
-
 const ProfileEdit = () => {
   const router = useRouter();
   const { data: session } = useSession();
@@ -199,8 +192,6 @@ const ProfileEdit = () => {
     const fileSize = event.target.files[0].size;
     const maxSize = 1024 * 1024 * 5; // 5MB
 
-    console.log(fileSize, maxSize);
-
     if (fileSize > maxSize) {
       return toast.error(
         '5MB 이하의 사진을 선택해주세요.',
@@ -317,7 +308,7 @@ const ProfileEdit = () => {
   }
 
   return (
-    <div className='mx-auto max-w-screen-7xl'>
+    <div className='ml-4 border p-4 rounded-md'>
       <div className='md:grid md:grid-cols-3 gap-4 sm:space-y-4 md:space-y-0'>
         <div className='md:col-span-1 font-medium md:border-b-[1px] pb-4'>
           계정 정보

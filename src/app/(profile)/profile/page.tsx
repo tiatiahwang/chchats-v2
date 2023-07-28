@@ -32,7 +32,7 @@ const Page = async () => {
 
   // TODO: loading
   return (
-    <div className='ml-4 w-full p-4'>
+    <div className='w-full px-4'>
       {session?.user ? (
         <ProfileNav user={session.user} />
       ) : null}

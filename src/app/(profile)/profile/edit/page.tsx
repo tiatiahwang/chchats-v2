@@ -35,11 +35,9 @@ export const ProfileEditLoading = () => {
 
 const Page = async () => {
   return (
-    <div className='ml-4 w-full border rounded-md p-4'>
-      <Suspense fallback={<ProfileEditLoading />}>
-        <ProfileEdit />
-      </Suspense>
-    </div>
+    <Suspense fallback={<ProfileEditLoading />}>
+      <ProfileEdit />
+    </Suspense>
   );
 };
 

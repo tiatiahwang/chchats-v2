@@ -8,12 +8,6 @@ module.exports = {
     './src/components/**/*.{ts,tsx}',
   ],
   theme: {
-    container: {
-      center: true,
-      screens: {
-        '2xl': '1400px',
-      },
-    },
     extend: {
       backgroundImage: {
         'gradient-radial':
