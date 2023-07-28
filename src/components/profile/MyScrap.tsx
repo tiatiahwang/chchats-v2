@@ -117,7 +117,7 @@ const MyScrapCard = ({
 }) => {
   const router = useRouter();
   return (
-    <div className='rounded-md bg-shite shadow mb-2 p-4 space-y-4'>
+    <div className='rounded-md bg-card shadow mb-2 p-4 space-y-4'>
       <div className='flex justify-between items-center w-full text-xs text-gray-400'>
         {/* 메인/서브 카테고리 */}
         <div className='flex items-center space-x-1'>

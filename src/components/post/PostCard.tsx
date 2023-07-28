@@ -37,7 +37,7 @@ const PostCard = ({
   subcategoryId,
 }: PostCardProps) => {
   return (
-    <div className='rounded-md bg-shite shadow mb-2'>
+    <div className='rounded-md bg-card shadow mb-2'>
       <div className='px-6 py-4 flex justify-between'>
         <div className='w-0 flex-1'>
           {/* 상단 부분 */}
