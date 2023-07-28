@@ -65,9 +65,11 @@ const PostDetail = ({
       return acc;
     }, 0);
 
-    _currentVote = post.votes.find(
-      (vote) => vote.userId === session?.user.id,
-    )?.type;
+    _currentVote = session?.user
+      ? post.votes.find(
+          (vote) => vote.userId === session?.user.id,
+        )?.type
+      : null;
   }
 
   const { mutate: deletePost } = useMutation({
@@ -192,7 +194,7 @@ const PostDetail = ({
           </div>
           <div className='flex items-center space-x-2'>
             {/* edit/delete는 내 글인 경우에만 화면에 노출*/}
-            {post.author.id === session?.user.id && (
+            {post.author.id === session?.user?.id && (
               <>
                 <Icons.edit
                   className='w-6 h-6 hover:text-main cursor-pointer'

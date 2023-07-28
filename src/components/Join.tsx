@@ -37,7 +37,7 @@ const Join = () => {
     const { email, password, username } = formData;
 
     try {
-      const { data } = await axios.post('/api/join', {
+      const { data } = await axios.post('/api/auth/join', {
         email,
         password,
         username,

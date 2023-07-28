@@ -1,6 +1,6 @@
 'use client';
 
-import { useSession } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
 import Image from 'next/image';
 import { Icons } from '../Icons';
 import { ChangeEvent, useEffect, useState } from 'react';
@@ -18,6 +18,7 @@ import {
 import { ProfileEditLoading } from '@/app/(profile)/profile/edit/page';
 import { useRouter } from 'next/navigation';
 import { nanoid } from 'nanoid';
+import Modal from '../ui/Modal';
 
 const ProfileEdit = () => {
   const router = useRouter();
@@ -35,6 +36,8 @@ const ProfileEdit = () => {
     mode: 'onChange',
     resolver: zodResolver(EditProfileValidator),
   });
+
+  const [showModal, setShowModal] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
@@ -181,6 +184,31 @@ const ProfileEdit = () => {
     },
   });
 
+  const { mutate: deleteAccount } = useMutation({
+    mutationFn: async () => {
+      const { data } = await axios.delete(
+        '/api/auth/delete',
+      );
+      return data;
+    },
+    onError: () => {
+      return toast.error(
+        '알 수 없는 오류가 발생했습니다.\n잠시 후 다시 시도해 주세요.',
+        {
+          theme: 'light',
+          className: 'text-sm whitespace-pre-line',
+        },
+      );
+    },
+    onSuccess: (data) => {
+      if (data === 'OK') {
+        signOut({
+          callbackUrl: '/',
+        });
+      }
+    },
+  });
+
   const onChangeAvatar = async (
     event: ChangeEvent<HTMLInputElement>,
   ) => {
@@ -308,17 +336,19 @@ const ProfileEdit = () => {
     }
   };
 
+  const onClickDeleteAccount = () => setShowModal(true);
+
   if (!session) {
     return <ProfileEditLoading />;
   }
 
   return (
-    <div className='ml-4 border p-4 rounded-md'>
+    <div className='md:ml-4 md:border p-2 md:p-4 rounded-md'>
       <div className='md:grid md:grid-cols-3 gap-4 sm:space-y-4 md:space-y-0'>
         <div className='md:col-span-1 font-medium md:border-b-[1px] pb-4'>
           계정 정보
         </div>
-        <div className='bg-slate-100 md:col-span-2 rounded-md p-8'>
+        <div className='bg-slate-100 md:col-span-2 rounded-md p-6 md:p-8'>
           <div className='flex flex-col'>
             {/* 아바타 변경 */}
             <div className='flex items-center justify-center flex-col mb-6'>
@@ -369,8 +399,8 @@ const ProfileEdit = () => {
                   (변경불가)
                 </span>
               </label>
-              <div className='flex justify-between items-center'>
-                <div className='w-[85%]'>
+              <div className='flex flex-col md:flex-row md:justify-between'>
+                <div className='md:w-[85%]'>
                   <input
                     type='email'
                     id='email'
@@ -391,7 +421,7 @@ const ProfileEdit = () => {
                 {session?.user?.emailVerified === null &&
                   session?.user?.provider ===
                     'CREDENTIALS' && (
-                    <div className='w-fit'>
+                    <div className='flex justify-end items-center sm:w-full md:w-fit'>
                       <Button
                         type='base'
                         disabled={false}
@@ -412,8 +442,8 @@ const ProfileEdit = () => {
               >
                 닉네임
               </label>
-              <div className='flex justify-between items-center'>
-                <div className='w-[85%]'>
+              <div className='flex flex-col md:flex-row md:justify-between'>
+                <div className='md:w-[85%]'>
                   <input
                     {...register('username')}
                     type='text'
@@ -432,7 +462,7 @@ const ProfileEdit = () => {
                     </span>
                   )}
                 </div>
-                <div className='w-fit'>
+                <div className='flex justify-end items-center sm:w-full md:w-fit'>
                   <Button
                     type='base'
                     disabled={
@@ -441,7 +471,7 @@ const ProfileEdit = () => {
                     }
                     isLoading={isUsernameLoading}
                     width='w-fit'
-                    className='mt-2'
+                    className='mt-2 jutstify-end'
                     text='변경하기'
                     onClick={onChangeUsername}
                   />
@@ -456,7 +486,7 @@ const ProfileEdit = () => {
             <div className='md:col-span-1 font-medium md:border-b-[1px] py-4 md:py-0'>
               비밀번호 변경
             </div>
-            <div className='bg-slate-100 md:col-span-2 rounded-md p-8'>
+            <div className='bg-slate-100 md:col-span-2 rounded-md p-6 md:p-8'>
               <div className='space-y-4'>
                 <div>
                   <label
@@ -589,15 +619,17 @@ const ProfileEdit = () => {
         <div className='md:col-span-1 font-medium py-4 md:py-0'>
           회원 탈퇴
         </div>
-        <div className='bg-slate-100 md:col-span-2 rounded-md p-8 space-y-6'>
+        <div className='bg-slate-100 md:col-span-2 rounded-md p-6 md:p-8 space-y-6'>
           {/* TODO: 문구 변경 필요 */}
-          <div className='text-gray-400 text-sm'>
+          <div className='text-gray-400 text-xs md:text-sm border font-medium rounded-md p-2'>
             회원 탈퇴 후, 계정 복구는 불가능 합니다.
             <br />
-            작성한 게시물은 삭제되지 않으며, CHCHATS으로
-            소유권이 귀속됩니다.
+            작성한 게시물과 댓글은 삭제되지 않고 익명으로
+            처리되며,
+            <br />
+            CHCHATS으로 소유권이 귀속됩니다.
           </div>
-          <div className='space-x-2 flex items-center justify-between'>
+          <div className='md:flex md:items-center md:justify-between'>
             <div className='text-sm space-x-2 flex items-center'>
               <input
                 type='checkbox'
@@ -610,19 +642,32 @@ const ProfileEdit = () => {
                 해당 사항을 숙지하였으며, 동의합니다.
               </label>
             </div>
-            <button
-              disabled={!isChecked}
-              className={`w-fit text-white p-2 mt-2 rounded-md text-sm ${
-                isChecked
-                  ? 'bg-red-500 cursor-pointer hover:bg-red-600'
-                  : 'bg-gray-300'
-              }`}
-            >
-              회원 탈퇴
-            </button>
+            <div className='flex justify-end items-center sm:w-full md:w-fit'>
+              <button
+                onClick={onClickDeleteAccount}
+                disabled={!isChecked}
+                className={`w-fit text-white p-2 mt-2 rounded-md text-sm ${
+                  isChecked
+                    ? 'bg-red-500 cursor-pointer hover:bg-red-600'
+                    : 'bg-gray-300'
+                }`}
+              >
+                회원 탈퇴
+              </button>
+            </div>
           </div>
         </div>
       </div>
+      {showModal && (
+        <Modal
+          text='정말 탈퇴하시겠어요?'
+          open={showModal}
+          onClose={() => setShowModal(false)}
+          buttonText='확인'
+          className='bg-red-400 hover:bg-red-500 px-4'
+          handleButton={() => deleteAccount()}
+        />
+      )}
     </div>
   );
 };

@@ -176,7 +176,7 @@ const CommentList = ({
             <span>{formattedTime}</span>
           </div>
           {/* 로그인한 유저가 댓글 남긴 유저인 경우 수정/삭제 아이콘 노출 */}
-          {comment.authorId === session?.user.id && (
+          {comment.authorId === session?.user?.id && (
             <div className='flex items-center space-x-2'>
               {/* 댓글 수정 기능 - 나중에 */}
               {/* <Icons.edit className='w-4 h-4 hover:text-main cursor-pointer' /> */}

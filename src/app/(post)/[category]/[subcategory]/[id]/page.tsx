@@ -60,15 +60,6 @@ const page = async ({ params: { id } }: PageProps) => {
 
   if (!post) return;
 
-  const isScrapped = Boolean(
-    await db.scrap.findFirst({
-      where: {
-        userId: session?.user.id,
-        postId: post.id,
-      },
-    }),
-  );
-
   return (
     <>
       <WebSideBar categories={categories} />
@@ -85,7 +76,18 @@ const page = async ({ params: { id } }: PageProps) => {
           <PostDetail
             post={post}
             formattedTime={formatTime(post?.createdAt!)}
-            isScrapped={session?.user ? isScrapped : false}
+            isScrapped={
+              session?.user
+                ? Boolean(
+                    await db.scrap.findFirst({
+                      where: {
+                        userId: session?.user.id,
+                        postId: post.id,
+                      },
+                    }),
+                  )
+                : false
+            }
           />
         </Suspense>
         <Suspense
