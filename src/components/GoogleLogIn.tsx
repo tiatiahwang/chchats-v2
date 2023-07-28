@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { Icons } from './Icons';
 import { signIn } from 'next-auth/react';
+import { toast } from 'react-toastify';
 
 const GoogleLogIn = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -12,8 +13,13 @@ const GoogleLogIn = () => {
     try {
       await signIn('google');
     } catch (e) {
-      // TODO : PRINT ERROR
-      console.log(e);
+      return toast.error(
+        '알 수 없는 오류가 발생했습니다.\n잠시 후 다시 시도해 주세요',
+        {
+          theme: 'light',
+          className: 'text-sm whitespace-pre-line',
+        },
+      );
     }
   };
 
@@ -28,7 +34,7 @@ const GoogleLogIn = () => {
       }`}
     >
       <Icons.google className='w-4 h-4' />
-      <span>
+      <span className={`${isLoading ? 'text-white' : ''}`}>
         {isLoading ? '로딩중' : 'Google 계정으로 로그인'}
       </span>
     </button>

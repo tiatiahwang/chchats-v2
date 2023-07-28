@@ -34,7 +34,6 @@ const PostList = async ({ categoryId }: PostListProps) => {
       createdAt: 'desc',
     },
   });
-
   return (
     <div className='py-2 space-y-2'>
       {posts.length > 0 ? (

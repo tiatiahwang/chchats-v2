@@ -50,6 +50,7 @@ const CommentSection = async ({
     },
   });
 
+  // 부모 댓글 수 + 자식 댓글 수
   const countReplyComments = comments
     .map((comment) => comment._count.replies)
     .reduce((prev, cur) => prev + cur, 0);

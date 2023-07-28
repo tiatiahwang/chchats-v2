@@ -2,7 +2,7 @@ import { getAuthSession } from '@/lib/auth';
 import { db } from '@/lib/db';
 import { customAlphabet } from 'nanoid';
 
-export async function DELETE(req: Request) {
+export async function DELETE() {
   try {
     const session = await getAuthSession();
 
@@ -24,6 +24,30 @@ export async function DELETE(req: Request) {
 
     const randomName = nanoid();
 
+    if (user.provider === 'GOOGLE') {
+      const account = await db.account.findFirst({
+        where: { userId: user.id },
+      });
+      await db.account.delete({
+        where: {
+          id: account?.id,
+        },
+      });
+      await db.user.update({
+        where: {
+          id: user.id,
+        },
+        data: {
+          email: randomName,
+          username: randomName,
+          image: '',
+          password: '',
+          isActive: false,
+        },
+      });
+      return new Response('OK');
+    }
+
     await db.user.update({
       where: {
         id: user.id,
@@ -36,9 +60,9 @@ export async function DELETE(req: Request) {
         isActive: false,
       },
     });
-
     return new Response('OK');
   } catch (error) {
+    console.log(error);
     return new Response(
       '알 수 없는 오류가 발생했습니다.\n잠시 후 다시 시도해 주세요.',
       {

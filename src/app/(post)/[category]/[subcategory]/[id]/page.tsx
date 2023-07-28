@@ -39,7 +39,7 @@ const page = async ({ params: { id } }: PageProps) => {
       category: {
         select: {
           name: true,
-          url: true,
+          ref: true,
         },
       },
       subcategory: {

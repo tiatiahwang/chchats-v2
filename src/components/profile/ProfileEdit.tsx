@@ -184,7 +184,10 @@ const ProfileEdit = () => {
     },
   });
 
-  const { mutate: deleteAccount } = useMutation({
+  const {
+    mutate: deleteAccount,
+    isLoading: deleteLoading,
+  } = useMutation({
     mutationFn: async () => {
       const { data } = await axios.delete(
         '/api/auth/delete',
@@ -411,7 +414,7 @@ const ProfileEdit = () => {
                   />
                 </div>
                 {/* 구글 로그인한 유저에게만 보이는 문구 */}
-                {session?.user.provider === 'GOOGLE' && (
+                {session?.user?.provider === 'GOOGLE' && (
                   <div className='w-fit bg-gray-300 text-white p-2 rounded-md text-sm cursor-default'>
                     인증 완료
                   </div>
@@ -664,6 +667,7 @@ const ProfileEdit = () => {
           open={showModal}
           onClose={() => setShowModal(false)}
           buttonText='확인'
+          isLoading={deleteLoading}
           className='bg-red-400 hover:bg-red-500 px-4'
           handleButton={() => deleteAccount()}
         />

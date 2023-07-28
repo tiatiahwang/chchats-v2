@@ -1,9 +1,9 @@
-import { ExtendedPost } from '@/types/db';
+import { ExtendedPostWithUser } from '@/types/db';
 import Link from 'next/link';
 import { Icons } from '../Icons';
 
 interface PostCardProps {
-  post: ExtendedPost;
+  post: ExtendedPostWithUser;
   subcategoryId?: number;
 }
 const formatTime = (date: Date) => {

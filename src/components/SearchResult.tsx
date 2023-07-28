@@ -1,6 +1,5 @@
 'use client';
 
-import { Post } from '@prisma/client';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import {
@@ -10,6 +9,7 @@ import {
 import { useEffect } from 'react';
 import PostCard from './post/PostCard';
 import Image from 'next/image';
+import { ExtendedPostWithUser } from '@/types/db';
 
 const SearchResult = () => {
   const router = useRouter();
@@ -28,7 +28,7 @@ const SearchResult = () => {
           encodeURIComponent(keyword),
         )}`,
       );
-      return data as Post[];
+      return data as ExtendedPostWithUser[];
     },
     queryKey: ['search-keyword'],
     enabled: false,
@@ -37,7 +37,7 @@ const SearchResult = () => {
   useEffect(() => {
     refetch();
     router.refresh();
-  }, [keyword]);
+  }, [keyword, refetch, router]);
 
   return (
     <>

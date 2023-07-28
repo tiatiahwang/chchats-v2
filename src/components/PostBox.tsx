@@ -2,24 +2,13 @@
 
 import { useRouter } from 'next/navigation';
 import { Icons } from './Icons';
-import { Post } from '@prisma/client';
-
-type ExtendedPost = Post & {
-  category: {
-    name: string;
-    ref: string | null;
-  };
-  subcategory: {
-    name: string;
-    ref: string | null;
-  };
-  _count: {
-    comments: number;
-  };
-};
+import { Prisma } from '@prisma/client';
+import { ExtendedPost } from '@/types/db';
 
 interface PostBoxProps {
-  post: ExtendedPost;
+  post: ExtendedPost & {
+    _count: Prisma.PostCountOutputType;
+  };
 }
 
 const PostBox = ({ post }: PostBoxProps) => {

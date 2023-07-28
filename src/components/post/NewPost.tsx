@@ -18,6 +18,7 @@ import TipTapEditor from './Editor';
 import { toast } from 'react-toastify';
 import Placeholder from '@tiptap/extension-placeholder';
 import { Post, Subcategory } from '@prisma/client';
+import Button from '../ui/Button';
 
 interface NewpostProps {
   post?: Post;
@@ -137,77 +138,79 @@ const NewPost = ({
     },
   });
 
-  const { mutate: createPost } = useMutation({
-    mutationFn: async ({
-      title,
-      content,
-      categoryId,
-      subcategoryId,
-    }: PostCreateRequest) => {
-      const payload: PostCreateRequest = {
+  const { mutate: createPost, isLoading: createLoading } =
+    useMutation({
+      mutationFn: async ({
         title,
         content,
         categoryId,
         subcategoryId,
-      };
-      const { data } = await axios.post(
-        '/api/posts/create',
-        payload,
-      );
-      return data;
-    },
-    onError: (error) => {
-      if (error instanceof AxiosError) {
-        if (error.response?.status === 500) {
-          toast.error(error.response.data, {
-            theme: 'light',
-            className: 'text-sm whitespace-pre-line',
-          });
+      }: PostCreateRequest) => {
+        const payload: PostCreateRequest = {
+          title,
+          content,
+          categoryId,
+          subcategoryId,
+        };
+        const { data } = await axios.post(
+          '/api/posts/create',
+          payload,
+        );
+        return data;
+      },
+      onError: (error) => {
+        if (error instanceof AxiosError) {
+          if (error.response?.status === 500) {
+            toast.error(error.response.data, {
+              theme: 'light',
+              className: 'text-sm whitespace-pre-line',
+            });
+          }
         }
-      }
-    },
-    onSuccess: (url) => {
-      router.refresh();
-      router.push(`${url}`);
-    },
-  });
+      },
+      onSuccess: (url) => {
+        router.refresh();
+        router.push(`${url}`);
+      },
+    });
 
-  const { mutate: editPost } = useMutation({
-    mutationFn: async ({
-      title,
-      content,
-      categoryId,
-      subcategoryId,
-      postId,
-    }: PostEditRequest) => {
-      const payload: PostEditRequest = {
+  const { mutate: editPost, isLoading: editLoading } =
+    useMutation({
+      mutationFn: async ({
         title,
         content,
         categoryId,
         subcategoryId,
         postId,
-      };
-      const { data } = await axios.post(
-        '/api/posts/edit',
-        payload,
-      );
-      return data;
-    },
-    onError: (error) => {
-      if (error instanceof AxiosError) {
-        if (error.response?.status === 500) {
-          toast.error(error.response.data, {
-            theme: 'light',
-            className: 'text-sm whitespace-pre-line',
-          });
+      }: PostEditRequest) => {
+        const payload: PostEditRequest = {
+          title,
+          content,
+          categoryId,
+          subcategoryId,
+          postId,
+        };
+        const { data } = await axios.post(
+          '/api/posts/edit',
+          payload,
+        );
+        return data;
+      },
+      onError: (error) => {
+        if (error instanceof AxiosError) {
+          if (error.response?.status === 500) {
+            toast.error(error.response.data, {
+              theme: 'light',
+              className: 'text-sm whitespace-pre-line',
+            });
+          }
         }
-      }
-    },
-    onSuccess: (url) => {
-      router.refresh();
-      router.push(`${url}`);
-    },
-  });
+      },
+      onSuccess: (url) => {
+        router.refresh();
+        router.push(`${url}`);
+      },
+    });
 
   const handleSubmit = () => {
     if (!selectedSubcategory)
@@ -329,13 +332,14 @@ const NewPost = ({
         onChange={(e) => setTitle(e.target.value)}
       />
       <TipTapEditor editor={editor} />
-      <button
-        type='submit'
-        className='my-4 p-2 text-md bg-main rounded-md text-white hover:bg-mainDark'
+      <Button
+        type='base'
+        isLoading={createLoading || editLoading}
+        text='작성하기'
         onClick={handleSubmit}
-      >
-        작성하기
-      </button>
+        width='w-fit'
+        className='my-4'
+      />
     </>
   );
 };

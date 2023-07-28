@@ -1,30 +1,16 @@
 'use client';
 
 import { INFINITE_SCROLL_LIMIT } from '@/config';
+import { ExtendedCommentWithPost } from '@/types/db';
 import { useIntersection } from '@mantine/hooks';
-import { Comment } from '@prisma/client';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef } from 'react';
 
-type ExtendedComment = Comment & {
-  post: {
-    title: string;
-    category: {
-      name: string;
-      ref: string | null;
-    };
-    subcategory: {
-      name: string;
-      ref: string | null;
-    };
-  };
-};
-
 interface MyCommentProps {
-  initialComments: ExtendedComment[];
+  initialComments: ExtendedCommentWithPost[];
 }
 
 const MyComment = ({ initialComments }: MyCommentProps) => {
@@ -41,7 +27,7 @@ const MyComment = ({ initialComments }: MyCommentProps) => {
       async ({ pageParam = 1 }) => {
         const query = `/api/profile/mycomments?limit=${INFINITE_SCROLL_LIMIT}&page=${pageParam}`;
         const { data } = await axios.get(query);
-        return data as ExtendedComment[];
+        return data as ExtendedCommentWithPost[];
       },
       {
         getNextPageParam: (lastPage, allPages) => {
@@ -112,7 +98,7 @@ export default MyComment;
 const MyCommentCard = ({
   comment,
 }: {
-  comment: ExtendedComment;
+  comment: ExtendedCommentWithPost;
 }) => {
   const router = useRouter();
   return (

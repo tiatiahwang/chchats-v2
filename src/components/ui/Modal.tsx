@@ -9,6 +9,7 @@ export interface ModalProps {
   buttonText: string;
   handleButton: any;
   className: string;
+  isLoading: boolean;
 }
 
 const Modal = ({
@@ -18,6 +19,7 @@ const Modal = ({
   buttonText,
   handleButton,
   className,
+  isLoading,
 }: ModalProps) => {
   if (!open) return null;
   return createPortal(
@@ -26,7 +28,11 @@ const Modal = ({
         className='fixed top-0 left-0 z-50 w-full h-full flex justify-center items-center bg-black/40'
         onClick={(event) => {
           event.stopPropagation();
-          if (event?.currentTarget !== event.target) return;
+          if (
+            event?.currentTarget !== event.target ||
+            isLoading
+          )
+            return;
           if (typeof onClose === 'function') {
             onClose();
           }
@@ -43,6 +49,8 @@ const Modal = ({
               onClick={onClose}
             />
             <Button
+              disabled={isLoading}
+              isLoading={isLoading}
               type='base'
               width='w-fit'
               text={buttonText}

@@ -1,6 +1,5 @@
 'use client';
 
-import { Comment } from '@prisma/client';
 import { useState } from 'react';
 import Button from '../ui/Button';
 import { useRouter } from 'next/navigation';
@@ -16,21 +15,10 @@ import { toast } from 'react-toastify';
 import Image from 'next/image';
 import { Icons } from '../Icons';
 import Modal from '../ui/Modal';
-
-type ExtendedComment = Comment & {
-  _count: {
-    replies: number;
-  };
-  author: {
-    id: string;
-    username: string | null;
-    image: string | null;
-  };
-  replies: Comment[];
-};
+import { ExtendedCommentWithUser } from '@/types/db';
 
 interface CommentListProps {
-  comment: ExtendedComment;
+  comment: ExtendedCommentWithUser;
   postId: string;
   formattedTime?: string;
   isReply?: boolean;
@@ -178,7 +166,7 @@ const CommentList = ({
           {/* 로그인한 유저가 댓글 남긴 유저인 경우 수정/삭제 아이콘 노출 */}
           {comment.authorId === session?.user?.id && (
             <div className='flex items-center space-x-2'>
-              {/* 댓글 수정 기능 - 나중에 */}
+              {/* TODO: 댓글 수정 기능 - 나중에 */}
               {/* <Icons.edit className='w-4 h-4 hover:text-main cursor-pointer' /> */}
               <Icons.delete
                 className='w-4 h-4 hover:text-main cursor-pointer'
@@ -268,6 +256,7 @@ const CommentList = ({
           buttonText='삭제'
           className='bg-red-400 hover:bg-red-500'
           handleButton={handleDelete}
+          isLoading={deleteLoading}
         />
       )}
     </div>

@@ -11,11 +11,10 @@ const Search = () => {
   return (
     <div className='flex items-center text-sm bg-transparent py-2 px-4 rounded-full border focus-within:border-main transition-colors '>
       <Icons.search className='w-3.5 h-3.5 text-gray-400' />
-      {/* @ts-ignore */}
       <form
         onSubmit={handleSubmit((e) => {
-          setValue('keyword', '');
           router.push(`/search?keyword=${e.keyword}`);
+          setTimeout(() => setValue('keyword', ''), 500);
         })}
       >
         <input

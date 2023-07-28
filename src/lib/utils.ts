@@ -1,5 +1,3 @@
-import clsx, { ClassValue } from 'clsx';
-import { twMerge } from 'tailwind-merge';
 import { db } from './db';
 
 export const getAllCategories = async () => {
@@ -10,10 +8,6 @@ export const getAllCategories = async () => {
     },
   });
   return categories;
-};
-
-export const cls = (...classes: ClassValue[]) => {
-  return twMerge(clsx(classes));
 };
 
 export const formatTime = (date: Date) => {

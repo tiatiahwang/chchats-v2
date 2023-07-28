@@ -6,11 +6,11 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import { INFINITE_SCROLL_LIMIT } from '@/config';
 import axios from 'axios';
 import PostCard from './PostCard';
-import { ExtendedPost } from '@/types/db';
+import { ExtendedPostWithUser } from '@/types/db';
 import Image from 'next/image';
 
 interface PostCardListProps {
-  initialPosts: ExtendedPost[];
+  initialPosts: ExtendedPostWithUser[];
   categoryId?: number;
   subcategoryId?: number;
 }
@@ -37,7 +37,7 @@ const PostCardList = ({
             ? `&subcategoryId=${subcategoryId}`
             : '');
         const { data } = await axios.get(query);
-        return data as ExtendedPost[];
+        return data as ExtendedPostWithUser[];
       },
       {
         getNextPageParam: (lastPage, allPages) => {

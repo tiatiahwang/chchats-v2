@@ -1,27 +1,13 @@
 'use client';
 
 import { INFINITE_SCROLL_LIMIT } from '@/config';
+import { ExtendedScrap } from '@/types/db';
 import { useIntersection } from '@mantine/hooks';
-import { Scrap } from '@prisma/client';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef } from 'react';
-
-type ExtendedScrap = Scrap & {
-  post: {
-    title: string;
-    category: {
-      name: string;
-      ref: string | null;
-    };
-    subcategory: {
-      name: string;
-      ref: string | null;
-    };
-  };
-};
 
 interface MyScrapProps {
   initialScraps: ExtendedScrap[];

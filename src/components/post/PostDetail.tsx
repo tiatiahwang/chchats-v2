@@ -22,7 +22,7 @@ interface ExtendedPost extends Post {
   };
   category: {
     name: string;
-    url: string;
+    ref: string | null;
   };
   subcategory: {
     name: string;
@@ -72,35 +72,37 @@ const PostDetail = ({
       : null;
   }
 
-  const { mutate: deletePost } = useMutation({
-    mutationFn: async ({ postId }: APIRequest) => {
-      const payload: APIRequest = { postId };
-      const { data } = await axios.delete(
-        '/api/posts/delete',
-        { data: payload },
-      );
-      return data;
-    },
-    onError: (error) => {
-      if (error instanceof AxiosError) {
-        if (error.response?.status === 401) {
-          return loginToast();
+  const { mutate: deletePost, isLoading: deleteLoading } =
+    useMutation({
+      mutationFn: async ({ postId }: APIRequest) => {
+        const payload: APIRequest = { postId };
+        const { data } = await axios.delete(
+          '/api/posts/delete',
+          { data: payload },
+        );
+        return data;
+      },
+      onError: (error) => {
+        if (error instanceof AxiosError) {
+          if (error.response?.status === 401) {
+            return loginToast();
+          }
         }
-      }
-      return toast.error(
-        '알 수 없는 오류가 발생했습니다.\n잠시 후 다시 시도해 주세요.',
-        {
-          theme: 'light',
-          className: 'text-sm whitespace-pre-line',
-        },
-      );
-    },
-    onSuccess: (data) => {
-      if (data === 'OK') {
-        router.push('/');
-      }
-    },
-  });
+        return toast.error(
+          '알 수 없는 오류가 발생했습니다.\n잠시 후 다시 시도해 주세요.',
+          {
+            theme: 'light',
+            className: 'text-sm whitespace-pre-line',
+          },
+        );
+      },
+      onSuccess: (data) => {
+        if (data === 'OK') {
+          setShowModal(false);
+          router.push('/');
+        }
+      },
+    });
 
   const { mutate: scrapPost } = useMutation({
     mutationFn: async ({ postId }: APIRequest) => {
@@ -147,14 +149,14 @@ const PostDetail = ({
       {/* 상단 - 카테고리  */}
       <div className='text-gray-400 text-sm'>
         <Link
-          href={`${post.category.url}`}
+          href={`/${post.category.ref}`}
           className='hover:text-main'
         >
           {post.category.name}
         </Link>{' '}
         {'>'}{' '}
         <Link
-          href={`${post.category.url}/${post.subcategory.ref}`}
+          href={`/${post.category.ref}/${post.subcategory.ref}`}
           className='hover:text-main'
         >
           {post.subcategory.name}
@@ -200,7 +202,7 @@ const PostDetail = ({
                   className='w-6 h-6 hover:text-main cursor-pointer'
                   onClick={() =>
                     router.push(
-                      `${post.category.url}/${post.subcategory.ref}/${post.id}/edit`,
+                      `/${post.category.ref}/${post.subcategory.ref}/${post.id}/edit`,
                     )
                   }
                 />
@@ -238,6 +240,7 @@ const PostDetail = ({
       </div>
       {showModal && (
         <Modal
+          isLoading={deleteLoading}
           text='정말 삭제하시겠어요?'
           open={showModal}
           onClose={() => setShowModal(false)}
