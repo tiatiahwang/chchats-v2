@@ -2,29 +2,32 @@
 
 import { INFINITE_SCROLL_LIMIT } from '@/config';
 import { useIntersection } from '@mantine/hooks';
-import { Post } from '@prisma/client';
+import { Comment } from '@prisma/client';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef } from 'react';
 
-type ExtendedPost = Post & {
-  category: {
-    name: string;
-    ref: string | null;
-  };
-  subcategory: {
-    name: string;
-    ref: string | null;
+type ExtendedComment = Comment & {
+  post: {
+    title: string;
+    category: {
+      name: string;
+      ref: string | null;
+    };
+    subcategory: {
+      name: string;
+      ref: string | null;
+    };
   };
 };
 
-interface MyPostProps {
-  initialPosts: ExtendedPost[];
+interface MyCommentProps {
+  initialComments: ExtendedComment[];
 }
 
-const MyPost = ({ initialPosts }: MyPostProps) => {
+const MyComment = ({ initialComments }: MyCommentProps) => {
   const lastPostRef = useRef<HTMLElement>(null);
 
   const { ref, entry } = useIntersection({
@@ -36,9 +39,9 @@ const MyPost = ({ initialPosts }: MyPostProps) => {
     useInfiniteQuery(
       ['infinite-query'],
       async ({ pageParam = 1 }) => {
-        const query = `/api/profile/myposts?limit=${INFINITE_SCROLL_LIMIT}&page=${pageParam}`;
+        const query = `/api/profile/mycomments?limit=${INFINITE_SCROLL_LIMIT}&page=${pageParam}`;
         const { data } = await axios.get(query);
-        return data as ExtendedPost[];
+        return data as ExtendedComment[];
       },
       {
         getNextPageParam: (lastPage, allPages) => {
@@ -49,7 +52,7 @@ const MyPost = ({ initialPosts }: MyPostProps) => {
           return nextPage;
         },
         initialData: {
-          pages: [initialPosts],
+          pages: [initialComments],
           pageParams: [1],
         },
       },
@@ -60,30 +63,32 @@ const MyPost = ({ initialPosts }: MyPostProps) => {
       fetchNextPage();
     }
   }, [entry, fetchNextPage]);
-
-  const posts =
-    data?.pages.flatMap((page) => page) ?? initialPosts;
+  const comments =
+    data?.pages.flatMap((page) => page) ?? initialComments;
 
   return (
     <div className='h-[800px] border overflow-scroll rounded-md'>
-      {posts.length > 0 ? (
+      {comments.length > 0 ? (
         <ul className='m-4'>
-          {posts.map((post, index) => {
-            if (index === posts.length - 1) {
+          {comments.map((comment, index) => {
+            if (index === comments.length - 1) {
               return (
-                <li key={post.id} ref={ref}>
-                  <MyPostCard post={post} />
+                <li key={comment.id} ref={ref}>
+                  <MyCommentCard comment={comment} />
                 </li>
               );
             } else {
               return (
-                <MyPostCard key={post.id} post={post} />
+                <MyCommentCard
+                  key={comment.id}
+                  comment={comment}
+                />
               );
             }
           })}
         </ul>
       ) : (
-        <div>NO POST</div>
+        <div>NO Comment</div>
       )}
       {isFetchingNextPage ? (
         <div className='flex items-center justify-center'>
@@ -102,13 +107,17 @@ const MyPost = ({ initialPosts }: MyPostProps) => {
   );
 };
 
-export default MyPost;
+export default MyComment;
 
-const MyPostCard = ({ post }: { post: ExtendedPost }) => {
+const MyCommentCard = ({
+  comment,
+}: {
+  comment: ExtendedComment;
+}) => {
   const router = useRouter();
   return (
     <div
-      key={post.id}
+      key={comment.id}
       className='rounded-md bg-shite shadow mb-2 p-4 space-y-4'
     >
       <div className='flex justify-between items-center w-full text-xs text-gray-400'>
@@ -118,10 +127,10 @@ const MyPostCard = ({ post }: { post: ExtendedPost }) => {
             className='hover:text-main cursor-pointer'
             onClick={() => {
               router.refresh();
-              router.push(`/${post.category.ref}`);
+              router.push(`/${comment.post.category.ref}`);
             }}
           >
-            {post.category.name}
+            {comment.post.category.name}
           </div>
           <span>{` > `}</span>
           <div
@@ -129,29 +138,36 @@ const MyPostCard = ({ post }: { post: ExtendedPost }) => {
             onClick={() => {
               router.refresh();
               router.push(
-                `/${post.category.ref}/${post.subcategory.ref}`,
+                `/${comment.post.category.ref}/${comment.post.subcategory.ref}`,
               );
             }}
           >
-            {post.subcategory.name}
+            {comment.post.subcategory.name}
           </div>
         </div>
-        {/* 글 작성 시간 */}
+        {/* 댓글 작성 시간 */}
         <span className='text-[10px]'>
-          {post.createdAt.toLocaleString()}
+          {comment.createdAt.toLocaleString()}
         </span>
       </div>
-      {/* 글 제목 */}
-      <div
-        className='text-sm font-medium hover:text-main cursor-pointer'
-        onClick={() => {
-          router.refresh();
-          router.push(
-            `/${post.category.ref}/${post.subcategory.ref}/${post.id}`,
-          );
-        }}
-      >
-        {post.title}
+      {/* 댓글 내용 */}
+      <div>
+        <span
+          className='text-sm font-medium hover:text-main cursor-pointer'
+          onClick={() => {
+            router.refresh();
+            router.push(
+              `/${comment.post.category.ref}/${comment.post.subcategory.ref}/${comment.postId}`,
+            );
+          }}
+        >
+          {comment.post.title}
+        </span>
+        <span className='text-xs'>
+          {' '}
+          게시글에 <span className='text-main'>댓글</span>을
+          남기셨어요.
+        </span>
       </div>
     </div>
   );

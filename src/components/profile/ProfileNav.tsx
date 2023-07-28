@@ -55,10 +55,9 @@ const ProfileNav = ({ user }: ProfileNavProps) => {
         </div>
       ) : null}
       <div className='flex items-center justify-start gap-x-6 border-b text-sm my-6 font-medium'>
-        <Link href='/profile/mypost' className='pb-4'>
+        <Link href='/profile' className='pb-4'>
           <span
             className={`${
-              pathname.includes('mypost') ||
               pathname.split('/').length === 2
                 ? 'border-b-[3px] border-main text-main'
                 : 'hover:border-b-[3px] hover:border-mainDark hover:text-mainDark'
