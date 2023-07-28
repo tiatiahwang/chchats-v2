@@ -56,6 +56,7 @@ model User {
   posts         Post[]
   comments      Comment[]
   votes         Vote[]
+  scraps        Scrap[]
 }
 
 enum ProviderType {
@@ -90,6 +91,7 @@ model Post {
   subcategory    Subcategory  @relation(fields: [subcategoryId], references: [id], onDelete: Cascade)
   subcategoryId  Int
   votes          Vote[]
+  scraps         Scrap[]
   viewCount      Int          @default(0)
 
   @@index([authorId])
@@ -151,6 +153,19 @@ model Vote {
   post     Post    @relation(fields: [postId], references: [id])
   postId   String
   type     VoteType
+
+  @@id([userId, postId])
+  @@index([userId])
+  @@index([postId])
+}
+
+
+
+model Scrap {
+  user     User    @relation(fields: [userId], references: [id])
+  userId   String
+  post     Post    @relation(fields: [postId], references: [id])
+  postId   String     
 
   @@id([userId, postId])
   @@index([userId])

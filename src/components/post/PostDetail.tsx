@@ -34,19 +34,24 @@ interface ExtendedPost extends Post {
 interface PostDetailProps {
   post: ExtendedPost;
   formattedTime: string;
+  isScrapped: boolean;
 }
 
-interface DeleteRequest {
+interface APIRequest {
   postId: string;
 }
 
 const PostDetail = ({
   post,
   formattedTime,
+  isScrapped,
 }: PostDetailProps) => {
   const { data: session } = useSession();
   const router = useRouter();
   const { loginToast } = useCustomToast();
+
+  const [toggleScrap, setToggleScrap] =
+    useState<boolean>(isScrapped);
   const [showModal, setShowModal] =
     useState<boolean>(false);
 
@@ -66,8 +71,8 @@ const PostDetail = ({
   }
 
   const { mutate: deletePost } = useMutation({
-    mutationFn: async ({ postId }: DeleteRequest) => {
-      const payload: DeleteRequest = { postId };
+    mutationFn: async ({ postId }: APIRequest) => {
+      const payload: APIRequest = { postId };
       const { data } = await axios.delete(
         '/api/posts/delete',
         { data: payload },
@@ -95,9 +100,45 @@ const PostDetail = ({
     },
   });
 
-  const handleDelete = () => {
-    deletePost({ postId: post.id });
-  };
+  const { mutate: scrapPost } = useMutation({
+    mutationFn: async ({ postId }: APIRequest) => {
+      const payload: APIRequest = { postId };
+      const { data } = await axios.post(
+        '/api/posts/scrap',
+        payload,
+      );
+      return data;
+    },
+    onError: (error) => {
+      if (error instanceof AxiosError) {
+        if (error.response?.status === 401) {
+          return loginToast();
+        }
+      }
+      return toast.error(
+        '알 수 없는 오류가 발생했습니다.\n잠시 후 다시 시도해 주세요.',
+        {
+          theme: 'light',
+          className: 'text-sm whitespace-pre-line',
+        },
+      );
+    },
+    onSuccess: (data) => {
+      setToggleScrap((prev) => !prev);
+      if (data === 'OK') {
+        return toast.success('게시글이 스크랩되었습니다.', {
+          theme: 'light',
+          className: 'text-sm',
+        });
+      }
+      if (data === 'DELETED') {
+        return toast.success('스크랩을 취소했습니다.', {
+          theme: 'light',
+          className: 'text-sm',
+        });
+      }
+    },
+  });
 
   return (
     <>
@@ -167,7 +208,14 @@ const PostDetail = ({
                 />
               </>
             )}
-            <Icons.scrap className='w-6 h-6 hover:text-main cursor-pointer' />
+            <Icons.scrap
+              className={`w-6 h-6 cursor-pointer ${
+                toggleScrap
+                  ? 'text-main fill-main hover:fill-mainDark hover:text-mainDark'
+                  : 'fill-none hover:text-main'
+              }`}
+              onClick={() => scrapPost({ postId: post.id })}
+            />
           </div>
         </div>
         {/* 글 제목 */}
@@ -194,7 +242,9 @@ const PostDetail = ({
           onClose={() => setShowModal(false)}
           buttonText='삭제'
           className='bg-red-400 hover:bg-red-500'
-          handleButton={handleDelete}
+          handleButton={() =>
+            deletePost({ postId: post.id })
+          }
         />
       )}
     </>

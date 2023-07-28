@@ -2,6 +2,7 @@ import WebSideBar from '@/components/WebSideBar';
 import CommentSection from '@/components/comment/CommentSection';
 import PostDetail from '@/components/post/PostDetail';
 import Skeleton from '@/components/ui/Skeleton';
+import { getAuthSession } from '@/lib/auth';
 import { db } from '@/lib/db';
 import { formatTime, getAllCategories } from '@/lib/utils';
 import { Suspense } from 'react';
@@ -16,6 +17,7 @@ interface PageProps {
 }
 
 const page = async ({ params: { id } }: PageProps) => {
+  const session = await getAuthSession();
   const categories = await getAllCategories();
 
   // post 조회할 떄마다 조회수 1씩 증가
@@ -57,6 +59,16 @@ const page = async ({ params: { id } }: PageProps) => {
   });
 
   if (!post) return;
+
+  const isScrapped = Boolean(
+    await db.scrap.findFirst({
+      where: {
+        userId: session?.user.id,
+        postId: post.id,
+      },
+    }),
+  );
+
   return (
     <>
       <WebSideBar categories={categories} />
@@ -73,6 +85,7 @@ const page = async ({ params: { id } }: PageProps) => {
           <PostDetail
             post={post}
             formattedTime={formatTime(post?.createdAt!)}
+            isScrapped={isScrapped}
           />
         </Suspense>
         <Suspense

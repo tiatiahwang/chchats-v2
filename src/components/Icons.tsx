@@ -181,7 +181,6 @@ export const Icons = {
   scrap: (props: any) => (
     <svg
       {...props}
-      fill='none'
       stroke='currentColor'
       strokeWidth='1.5'
       viewBox='0 0 24 24'
