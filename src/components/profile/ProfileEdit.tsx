@@ -15,7 +15,6 @@ import {
   EditProfileRequest,
   EditProfileValidator,
 } from '@/lib/validator/profile';
-import Loader from '../ui/Loader';
 import { ProfileEditLoading } from '@/app/(profile)/profile/edit/page';
 
 // interface FormProps {

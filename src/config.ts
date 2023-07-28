@@ -1,1 +1,1 @@
-export const INFINITE_SCROLL_LIMIT = 6;
+export const INFINITE_SCROLL_LIMIT = 10;
