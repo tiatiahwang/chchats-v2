@@ -26,6 +26,7 @@ const LogIn = () => {
   });
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
 
   const onValid = async (formData: FormProps) => {
     if (errorMessage !== '') setErrorMessage('');
@@ -49,6 +50,7 @@ const LogIn = () => {
       router.refresh();
     }
   };
+
   return (
     <form
       id='form-submit'
@@ -79,17 +81,34 @@ const LogIn = () => {
           <label htmlFor='password' className='text-sm'>
             비밀번호
           </label>
-          <input
-            {...register('password')}
-            id='password'
-            type='password'
-            className={`w-full bg-transparent border rounded-lg p-2 outline-none ${
-              errors?.password
-                ? 'border-red-500'
-                : 'focus:border-main'
-            }`}
-            aria-invalid={Boolean(errors.password)}
-          />
+          <div className='flex items-center border rounded-lg p-2'>
+            <input
+              {...register('password')}
+              id='password'
+              type={showPassword ? 'text' : 'password'}
+              className={`w-full bg-transparent outline-none ${
+                errors?.password
+                  ? 'border-red-500'
+                  : 'focus:border-main'
+              }`}
+              aria-invalid={Boolean(errors.password)}
+            />
+            {showPassword ? (
+              <Icons.eye
+                className='w-4 h-4 text-gray-400 cursor-pointer'
+                onClick={() =>
+                  setShowPassword((prev) => !prev)
+                }
+              />
+            ) : (
+              <Icons.eyeSlash
+                className='w-4 h-4 text-gray-400 cursor-pointer'
+                onClick={() =>
+                  setShowPassword((prev) => !prev)
+                }
+              />
+            )}
+          </div>
           {errors?.password?.message && (
             <span className='text-red-500 text-sm'>
               {errors.password.message}

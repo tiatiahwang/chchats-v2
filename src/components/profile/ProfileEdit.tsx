@@ -38,6 +38,11 @@ const ProfileEdit = () => {
   const [isChecked, setIsChecked] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
+  const [showCurrentPassword, setShowCurrentPassword] =
+    useState(false);
+  const [showNewPassword, setShowNewPassword] =
+    useState(false);
+
   const [avatarUploading, setAvatarUploading] =
     useState(false);
   const [avatarPreview, setAvatarPreview] = useState('');
@@ -460,20 +465,46 @@ const ProfileEdit = () => {
                   >
                     현재 비밀번호
                   </label>
-                  <input
-                    {...register('currentPassword')}
-                    type='password'
-                    id='currentPassword'
-                    name='currentPassword'
-                    className={`block flex-1 w-full bg-transparent border-b py-2 px-4 mt-1 outline-none ${
-                      errors?.currentPassword
-                        ? 'focus:border-red-500'
-                        : 'focus:border-main '
-                    }`}
-                    aria-invalid={Boolean(
-                      errors.currentPassword,
+                  <div className='flex items-center border-b'>
+                    <input
+                      {...register('currentPassword')}
+                      type={
+                        showCurrentPassword
+                          ? 'text'
+                          : 'password'
+                      }
+                      id='currentPassword'
+                      name='currentPassword'
+                      className={`w-full bg-transparent py-2 px-4 mt-1 outline-none ${
+                        errors?.currentPassword
+                          ? 'focus:border-red-500'
+                          : 'focus:border-main '
+                      }`}
+                      aria-invalid={Boolean(
+                        errors.currentPassword,
+                      )}
+                    />
+                    {showCurrentPassword ? (
+                      <Icons.eye
+                        className='w-4 h-4 text-gray-400 cursor-pointer'
+                        onClick={() =>
+                          setShowCurrentPassword(
+                            (prev) => !prev,
+                          )
+                        }
+                      />
+                    ) : (
+                      <Icons.eyeSlash
+                        className='w-4 h-4 text-gray-400 cursor-pointer'
+                        onClick={() =>
+                          setShowCurrentPassword(
+                            (prev) => !prev,
+                          )
+                        }
+                      />
                     )}
-                  />
+                  </div>
+
                   {errors?.currentPassword?.message && (
                     <span className='text-red-500 text-xs leading-8'>
                       {errors.currentPassword.message}
@@ -487,17 +518,42 @@ const ProfileEdit = () => {
                   >
                     새로운 비밀번호
                   </label>
-                  <input
-                    {...register('newPassword')}
-                    type='password'
-                    id='newPassword'
-                    name='newPassword'
-                    className={`block flex-1 w-full bg-transparent border-b py-2 px-4 mt-1 outline-none ${
-                      errors?.newPassword
-                        ? 'focus:border-red-500'
-                        : 'focus:border-main '
-                    }`}
-                  />
+                  <div className='flex items-center border-b'>
+                    <input
+                      {...register('newPassword')}
+                      type={
+                        showNewPassword
+                          ? 'text'
+                          : 'password'
+                      }
+                      id='newPassword'
+                      name='newPassword'
+                      className={`w-full bg-transparent py-2 px-4 mt-1 outline-none ${
+                        errors?.newPassword
+                          ? 'focus:border-red-500'
+                          : 'focus:border-main '
+                      }`}
+                    />
+                    {showNewPassword ? (
+                      <Icons.eye
+                        className='w-4 h-4 text-gray-400 cursor-pointer'
+                        onClick={() =>
+                          setShowNewPassword(
+                            (prev) => !prev,
+                          )
+                        }
+                      />
+                    ) : (
+                      <Icons.eyeSlash
+                        className='w-4 h-4 text-gray-400 cursor-pointer'
+                        onClick={() =>
+                          setShowNewPassword(
+                            (prev) => !prev,
+                          )
+                        }
+                      />
+                    )}
+                  </div>
                   {errors?.newPassword?.message && (
                     <span className='text-red-500 text-xs leading-8'>
                       {errors.newPassword.message}

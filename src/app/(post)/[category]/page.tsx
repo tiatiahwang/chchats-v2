@@ -10,6 +10,19 @@ import { Suspense } from 'react';
 export const dynamic = 'force-dynamic';
 export const fetchCache = 'force-no-store';
 
+export const PostListLoading = () => {
+  return (
+    <div className='space-y-2'>
+      <Skeleton className='w-full h-32' />
+      <Skeleton className='w-full h-32' />
+      <Skeleton className='w-full h-32' />
+      <Skeleton className='w-full h-32' />
+      <Skeleton className='w-full h-32' />
+      <Skeleton className='w-full h-32' />
+    </div>
+  );
+};
+
 interface PageProps {
   params: {
     category: string;
@@ -48,12 +61,10 @@ const page = async ({
     take: INFINITE_SCROLL_LIMIT,
   });
 
-  //TODO: loading
-
   return (
     <>
       <WebSideBar categories={categories} />
-      <div className='w-full px-4'>
+      <div className='w-full pl-4'>
         <div className='pb-4'>
           <h1 className='font-bold text-3xl md:text-4xl h-14'>
             {currentCategory?.name}
@@ -69,9 +80,7 @@ const page = async ({
             )}
           </div>
         </div>
-        <Suspense
-          fallback={<Skeleton className='w-full h-50' />}
-        >
+        <Suspense fallback={<PostListLoading />}>
           <div className='space-y-2'>
             <PostCardList
               initialPosts={posts}

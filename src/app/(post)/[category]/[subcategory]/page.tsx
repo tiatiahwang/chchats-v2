@@ -4,6 +4,8 @@ import { INFINITE_SCROLL_LIMIT } from '@/config';
 import { db } from '@/lib/db';
 import { getAllCategories } from '@/lib/utils';
 import Link from 'next/link';
+import { PostListLoading } from '../page';
+import { Suspense } from 'react';
 
 export const dynamic = 'force-dynamic';
 export const fetchCache = 'force-no-store';
@@ -54,7 +56,7 @@ const page = async ({
   return (
     <>
       <WebSideBar categories={categories} />
-      <div className='w-full px-4'>
+      <div className='w-full pl-4'>
         <div className='pb-4'>
           <h1 className='font-bold text-3xl md:text-4xl h-14'>
             {currentSubcategory?.name}
@@ -68,13 +70,15 @@ const page = async ({
             </Link>
           </div>
         </div>
-        <div className='space-y-2'>
-          <PostCard
-            initialPosts={posts}
-            categoryId={currentSubcategory?.categoryId}
-            subcategoryId={currentSubcategory?.id}
-          />
-        </div>
+        <Suspense fallback={<PostListLoading />}>
+          <div className='space-y-2'>
+            <PostCard
+              initialPosts={posts}
+              categoryId={currentSubcategory?.categoryId}
+              subcategoryId={currentSubcategory?.id}
+            />
+          </div>
+        </Suspense>
       </div>
     </>
   );

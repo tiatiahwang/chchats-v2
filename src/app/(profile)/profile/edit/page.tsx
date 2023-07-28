@@ -4,7 +4,7 @@ import { Suspense } from 'react';
 
 export const ProfileEditLoading = () => {
   return (
-    <div className='mx-auto max-w-screen-7xl space-y-6'>
+    <div className='mx-auto max-w-screen-7xl space-y-6 ml-4'>
       <div className='md:grid md:grid-cols-3 gap-4 sm:space-y-4 md:space-y-0'>
         <div className='md:col-span-1 font-medium md:border-b-[1px] pb-4'>
           <Skeleton className='w-full h-[40px]' />

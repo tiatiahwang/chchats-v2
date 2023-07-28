@@ -234,14 +234,13 @@ const PostDetail = ({
           initialVote={_currentVote}
         />
       </div>
-
       {showModal && (
         <Modal
           text='정말 삭제하시겠어요?'
           open={showModal}
           onClose={() => setShowModal(false)}
           buttonText='삭제'
-          className='bg-red-400 hover:bg-red-500'
+          className='bg-red-400 hover:bg-red-500 px-4'
           handleButton={() =>
             deletePost({ postId: post.id })
           }

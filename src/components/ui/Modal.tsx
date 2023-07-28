@@ -31,7 +31,7 @@ const Modal = ({
               type='transparent'
               width='w-fit'
               text='취소'
-              className='border-none rounded-md hover:bg-gray-400'
+              className='border-none rounded-md hover:bg-gray-400 px-4'
               onClick={onClose}
             />
             <Button

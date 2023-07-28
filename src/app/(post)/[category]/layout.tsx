@@ -3,7 +3,7 @@ const Layout = ({
 }: {
   children: React.ReactNode;
 }) => {
-  return <div className='flex'>{children}</div>;
+  return <div className='flex px-2'>{children}</div>;
 };
 
 export default Layout;
