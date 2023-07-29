@@ -38,7 +38,7 @@ const SearchResult = () => {
     refetch();
     router.refresh();
   }, [keyword, refetch, router]);
-  console.log('isFetching', isFetching);
+
   return (
     <>
       {keyword ? (
