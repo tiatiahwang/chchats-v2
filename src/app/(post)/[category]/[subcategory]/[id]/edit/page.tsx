@@ -4,7 +4,7 @@ import { db } from '@/lib/db';
 import { getAllCategories } from '@/lib/utils';
 import { Suspense } from 'react';
 
-export const EditPostLoading = () => {
+const EditPostLoading = () => {
   return (
     <>
       <div className='py-4 space-y-2 w-full'>
