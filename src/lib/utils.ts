@@ -10,6 +10,22 @@ export const getAllCategories = async () => {
   return categories;
 };
 
+export const getCategoryURLs = async () => {
+  const categories = await getAllCategories();
+  return categories.map((category) => category.ref);
+};
+
+export const getSubcategoryURLs = async (
+  category: string,
+) => {
+  const categories = await getAllCategories();
+  const parentCategory = categories.filter(
+    (cate) => cate.ref === category,
+  );
+  const subcategories = parentCategory[0].subcategories;
+  return subcategories.map((sub) => sub.ref);
+};
+
 export const formatTime = (date: Date) => {
   const start = new Date(date);
   const end = new Date();

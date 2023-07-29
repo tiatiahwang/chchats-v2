@@ -20,7 +20,7 @@ export type ExtendedPost = Post & {
 export type ExtendedPostWithUser = Post & {
   author: {
     id: string;
-    username: string;
+    username: string | null;
   };
   category: {
     name: string;

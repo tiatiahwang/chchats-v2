@@ -1,6 +1,7 @@
 import WebSideBar from '@/components/WebSideBar';
 import CommentSection from '@/components/comment/CommentSection';
 import PostDetail from '@/components/post/PostDetail';
+import NotFound from '@/components/ui/NotFound';
 import Skeleton from '@/components/ui/Skeleton';
 import { getAuthSession } from '@/lib/auth';
 import { db } from '@/lib/db';
@@ -19,16 +20,6 @@ interface PageProps {
 const page = async ({ params: { id } }: PageProps) => {
   const session = await getAuthSession();
   const categories = await getAllCategories();
-
-  // post 조회할 때마다 조회수 1씩 증가
-  await db.post.update({
-    where: {
-      id,
-    },
-    data: {
-      viewCount: { increment: 1 },
-    },
-  });
 
   const post = await db.post.findFirst({
     where: {
@@ -58,7 +49,19 @@ const page = async ({ params: { id } }: PageProps) => {
     },
   });
 
-  if (!post) return;
+  // TODO: 바꾸기 - post 조회할 때마다 조회수 1씩 증가
+  await db.post.update({
+    where: {
+      id,
+    },
+    data: {
+      viewCount: { increment: 1 },
+    },
+  });
+
+  if (!post) {
+    return <NotFound />;
+  }
 
   return (
     <>
@@ -82,7 +85,7 @@ const page = async ({ params: { id } }: PageProps) => {
                     await db.scrap.findFirst({
                       where: {
                         userId: session?.user.id,
-                        postId: post.id,
+                        postId: post?.id,
                       },
                     }),
                   )

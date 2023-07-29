@@ -10,6 +10,7 @@ import { useEffect } from 'react';
 import PostCard from './post/PostCard';
 import Image from 'next/image';
 import { ExtendedPostWithUser } from '@/types/db';
+import NotFound from './ui/NotFound';
 
 const SearchResult = () => {
   const router = useRouter();
@@ -41,29 +42,37 @@ const SearchResult = () => {
 
   return (
     <>
-      <h1 className='font-bold text-3xl md:text-4xl h-14'>
-        {keyword}
-        <span className='text-xl md:text-2xl'>
-          {' '}
-          검색결과
-        </span>
-      </h1>
-      {isFetching ? (
-        <Image
-          src='/loader.gif'
-          alt='loading'
-          width={50}
-          height={50}
-          unoptimized={true}
-        />
-      ) : results && results?.length > 0 ? (
-        <div className='py-2 space-y-2'>
-          {results.map((post) => (
-            <PostCard key={post.id} post={post} />
-          ))}
-        </div>
+      {keyword ? (
+        <>
+          <h1 className='font-bold text-3xl md:text-4xl h-14'>
+            {keyword}
+            <span className='text-xl md:text-2xl'>
+              {' '}
+              검색결과
+            </span>
+          </h1>
+          {isFetching ? (
+            <Image
+              src='/loader.gif'
+              alt='loading'
+              width={50}
+              height={50}
+              unoptimized={true}
+            />
+          ) : results && results?.length > 0 ? (
+            <div className='py-2 space-y-2'>
+              {results.map((post) => (
+                <PostCard key={post.id} post={post} />
+              ))}
+            </div>
+          ) : (
+            <div>검색결과가 없습니다.</div>
+          )}
+        </>
       ) : (
-        <div>검색결과가 없습니다.</div>
+        <div className='w-full flex justify-center font-bold'>
+          검색하고자 하는 단어를 입력해 주세요.
+        </div>
       )}
     </>
   );

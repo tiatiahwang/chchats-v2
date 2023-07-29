@@ -38,7 +38,7 @@ const page = async ({
         select: { id: true, username: true },
       },
       category: {
-        select: { ref: true },
+        select: { name: true, ref: true },
       },
       subcategory: {
         select: { name: true, ref: true },
