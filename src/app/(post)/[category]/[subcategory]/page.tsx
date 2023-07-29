@@ -12,13 +12,12 @@ export const fetchCache = 'force-no-store';
 
 interface PageProps {
   params: {
-    category: string;
     subcategory: string;
   };
 }
 
 const page = async ({
-  params: { category, subcategory },
+  params: { subcategory },
 }: PageProps) => {
   const categories = await getAllCategories();
   const currentSubcategory = await db.subcategory.findFirst(

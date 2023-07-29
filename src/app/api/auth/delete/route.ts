@@ -62,7 +62,6 @@ export async function DELETE() {
     });
     return new Response('OK');
   } catch (error) {
-    console.log(error);
     return new Response(
       '알 수 없는 오류가 발생했습니다.\n잠시 후 다시 시도해 주세요.',
       {

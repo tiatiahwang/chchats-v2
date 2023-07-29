@@ -3,12 +3,8 @@ import PostCardList from '@/components/post/PostCardList';
 import Skeleton from '@/components/ui/Skeleton';
 import { INFINITE_SCROLL_LIMIT } from '@/config';
 import { db } from '@/lib/db';
-import {
-  getAllCategories,
-  getCategoryURLs,
-} from '@/lib/utils';
+import { getAllCategories } from '@/lib/utils';
 import Link from 'next/link';
-import { notFound } from 'next/navigation';
 import { Suspense } from 'react';
 
 export const dynamic = 'force-dynamic';

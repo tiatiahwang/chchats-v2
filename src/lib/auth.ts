@@ -18,7 +18,7 @@ export const authOptions: NextAuthOptions = {
         email: { label: '이메일', type: 'email' },
         password: { label: '비밀번호', type: 'password' },
       },
-      async authorize(credentials, req) {
+      async authorize(credentials) {
         if (!credentials) {
           throw new Error(
             '잘못된 요청으로 인해 오류가 발생했습니다.',

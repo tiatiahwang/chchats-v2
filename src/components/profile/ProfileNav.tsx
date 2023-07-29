@@ -8,7 +8,7 @@ import { User } from 'next-auth';
 
 interface ProfileNavProps {
   user: User & {
-    username: string;
+    username: string | null;
   };
 }
 

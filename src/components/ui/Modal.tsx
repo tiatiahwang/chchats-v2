@@ -1,4 +1,4 @@
-import { Fragment, useRef } from 'react';
+import { Fragment } from 'react';
 import { createPortal } from 'react-dom';
 import Button from './Button';
 

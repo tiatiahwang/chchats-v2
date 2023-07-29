@@ -1,6 +1,5 @@
 import { getAuthSession } from '@/lib/auth';
 import { db } from '@/lib/db';
-import { ChangeUsernameValidator } from '@/lib/validator/profile';
 
 export async function POST(req: Request) {
   try {

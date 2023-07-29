@@ -1,4 +1,4 @@
-export async function POST(req: Request) {
+export async function POST() {
   const response = await fetch(
     `https://api.cloudflare.com/client/v4/accounts/${process.env.CLOUDFLARE_ID}/images/v1/direct_upload`,
     {

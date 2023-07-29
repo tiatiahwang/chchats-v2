@@ -1,16 +1,12 @@
 import { getToken } from 'next-auth/jwt';
 import {
   type NextRequest,
-  type NextFetchEvent,
   NextResponse,
 } from 'next/server';
 
 const secret = process.env.JWT_SECRET;
 
-export async function middleware(
-  req: NextRequest,
-  event: NextFetchEvent,
-) {
+export async function middleware(req: NextRequest) {
   // 'next-auth.session-token' 쿠키가 존재할 때
   const session = await getToken({
     req,
