@@ -1,3 +1,4 @@
+import Ads from '@/components/Ads';
 import WebSideBar from '@/components/WebSideBar';
 import CommentSection from '@/components/comment/CommentSection';
 import PostDetail from '@/components/post/PostDetail';
@@ -66,7 +67,7 @@ const page = async ({ params: { id } }: PageProps) => {
   return (
     <>
       <WebSideBar categories={categories} />
-      <div className='border rounded-md w-full md:ml-4 p-4'>
+      <div className='w-full md:mx-4 px-4'>
         <Suspense
           fallback={
             <>
@@ -103,6 +104,7 @@ const page = async ({ params: { id } }: PageProps) => {
           <CommentSection postId={post.id} />
         </Suspense>
       </div>
+      <Ads />
     </>
   );
 };
