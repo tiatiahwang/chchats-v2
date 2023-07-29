@@ -3,7 +3,7 @@ import Skeleton from '@/components/ui/Skeleton';
 import { getAllCategories } from '@/lib/utils';
 import { Suspense } from 'react';
 
-export const NewPostLoading = () => {
+const NewPostLoading = () => {
   return (
     <>
       <div className='py-4 space-y-2 w-full'>
