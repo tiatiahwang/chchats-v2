@@ -166,6 +166,13 @@ const subcategories = [
     isDefault: true,
     categoryId: 4,
   },
+  {
+    name: '공지사항',
+    url: '/notice/all',
+    ref: 'all',
+    isDefault: true,
+    categoryId: 5,
+  },
 ];
 async function main() {
   await prisma.category.createMany({
