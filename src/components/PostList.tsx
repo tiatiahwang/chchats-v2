@@ -46,7 +46,7 @@ const PostList = async ({ categoryId }: PostListProps) => {
           </div>
         ))
       ) : (
-        <div>NO POST</div>
+        <div>아직 남겨진 글이 없습니다.</div>
       )}
     </div>
   );

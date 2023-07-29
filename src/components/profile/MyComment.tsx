@@ -21,60 +21,81 @@ const MyComment = ({ initialComments }: MyCommentProps) => {
     threshold: 1,
   });
 
-  const { data, fetchNextPage, isFetchingNextPage } =
-    useInfiniteQuery(
-      ['infinite-query'],
-      async ({ pageParam = 1 }) => {
-        const query = `/api/profile/mycomments?limit=${INFINITE_SCROLL_LIMIT}&page=${pageParam}`;
-        const { data } = await axios.get(query);
-        return data as ExtendedCommentWithPost[];
+  const {
+    data,
+    fetchNextPage,
+    isFetchingNextPage,
+    isFetching,
+  } = useInfiniteQuery(
+    ['infinite-query'],
+    async ({ pageParam = 1 }) => {
+      const query = `/api/profile/mycomments?limit=${INFINITE_SCROLL_LIMIT}&page=${pageParam}`;
+      const { data } = await axios.get(query);
+      return data as ExtendedCommentWithPost[];
+    },
+    {
+      getNextPageParam: (lastPage, allPages) => {
+        const nextPage =
+          lastPage.length === INFINITE_SCROLL_LIMIT
+            ? allPages.length + 1
+            : undefined;
+        return nextPage;
       },
-      {
-        getNextPageParam: (lastPage, allPages) => {
-          const nextPage =
-            lastPage.length === INFINITE_SCROLL_LIMIT
-              ? allPages.length + 1
-              : undefined;
-          return nextPage;
-        },
-        initialData: {
-          pages: [initialComments],
-          pageParams: [1],
-        },
+      initialData: {
+        pages: [initialComments],
+        pageParams: [1],
       },
-    );
+    },
+  );
 
   useEffect(() => {
     if (entry?.isIntersecting) {
       fetchNextPage();
     }
   }, [entry, fetchNextPage]);
+
   const comments =
     data?.pages.flatMap((page) => page) ?? initialComments;
 
   return (
-    <div className='h-[800px] border overflow-scroll rounded-md'>
-      {comments.length > 0 ? (
-        <ul className='m-4'>
-          {comments.map((comment, index) => {
-            if (index === comments.length - 1) {
-              return (
-                <li key={comment.id} ref={ref}>
-                  <MyCommentCard comment={comment} />
-                </li>
-              );
-            } else {
-              return (
-                <MyCommentCard
-                  key={comment.id}
-                  comment={comment}
-                />
-              );
-            }
-          })}
-        </ul>
+    <div className='border overflow-scroll rounded-md'>
+      {isFetching ? (
+        <div className='w-full flex justify-center'>
+          <Image
+            src='/loader.gif'
+            alt='loading'
+            width={50}
+            height={50}
+            unoptimized={true}
+          />
+        </div>
       ) : (
-        <div>NO Comment</div>
+        <>
+          {comments.length > 0 ? (
+            <ul className='m-4'>
+              {comments.map((comment, index) => {
+                if (index === comments.length - 1) {
+                  return (
+                    <li key={comment.id} ref={ref}>
+                      <MyCommentCard comment={comment} />
+                    </li>
+                  );
+                } else {
+                  return (
+                    <MyCommentCard
+                      key={comment.id}
+                      comment={comment}
+                    />
+                  );
+                }
+              })}
+            </ul>
+          ) : (
+            <div className='text-sm flex justify-center p-4 w-full'>
+              아직 남기신 댓글이 없습니다.
+            </div>
+          )}
+        </>
       )}
       {isFetchingNextPage ? (
         <div className='flex items-center justify-center'>
@@ -133,7 +154,7 @@ const MyCommentCard = ({
         </div>
         {/* 댓글 작성 시간 */}
         <span className='text-[10px]'>
-          {comment.createdAt.toLocaleString()}
+          {comment.createdAt.toLocaleString().split('T')[0]}
         </span>
       </div>
       {/* 댓글 내용 */}

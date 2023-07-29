@@ -5,6 +5,7 @@ import { db } from '@/lib/db';
 
 const Page = async () => {
   const session = await getAuthSession();
+  console.log(session);
   const mycomments = await db.comment.findMany({
     where: {
       authorId: session?.user.id,
