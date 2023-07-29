@@ -2,7 +2,7 @@ import ProfileEdit from '@/components/profile/ProfileEdit';
 import Skeleton from '@/components/ui/Skeleton';
 import { Suspense } from 'react';
 
-export const ProfileEditLoading = () => {
+const ProfileEditLoading = () => {
   return (
     <div className='mx-auto max-w-screen-7xl space-y-6 ml-4'>
       <div className='md:grid md:grid-cols-3 gap-4 sm:space-y-4 md:space-y-0'>
