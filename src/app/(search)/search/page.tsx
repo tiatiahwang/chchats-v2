@@ -1,6 +1,6 @@
 import SearchResult from '@/components/SearchResult';
 
-const page = () => {
+const page = async () => {
   return <SearchResult />;
 };
 

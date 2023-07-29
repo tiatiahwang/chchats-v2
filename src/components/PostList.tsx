@@ -35,7 +35,7 @@ const PostList = async ({ categoryId }: PostListProps) => {
     },
   });
   return (
-    <div className='py-2 space-y-2'>
+    <div className='pt-2 space-y-2'>
       {posts.length > 0 ? (
         posts.map((post) => (
           <div

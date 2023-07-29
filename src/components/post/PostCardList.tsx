@@ -66,7 +66,7 @@ const PostCardList = ({
   return (
     <>
       {posts.length > 0 ? (
-        <ul>
+        <ul className='h-[1500px] border overflow-scroll rounded-md p-4'>
           {posts?.map((post, index) => {
             if (index === posts.length - 1) {
               return (

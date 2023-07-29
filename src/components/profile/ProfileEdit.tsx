@@ -82,7 +82,6 @@ const ProfileEdit = () => {
         }
         if (error.response?.status === 500) {
           toast.error(error.response.data, {
-            theme: 'light',
             className: 'text-sm whitespace-pre-line',
           });
         }
@@ -123,7 +122,6 @@ const ProfileEdit = () => {
         }
         if (error.response?.status === 500) {
           toast.error(error.response.data, {
-            theme: 'light',
             className: 'text-sm whitespace-pre-line',
           });
         }
@@ -132,7 +130,6 @@ const ProfileEdit = () => {
     onSuccess: (data) => {
       if (data === 'OK') {
         toast.success('닉네임이 변경되었습니다.', {
-          theme: 'light',
           className: 'text-sm',
         });
       }
@@ -163,7 +160,6 @@ const ProfileEdit = () => {
         }
         if (error.response?.status === 500) {
           toast.error(error.response.data, {
-            theme: 'light',
             className: 'text-sm whitespace-pre-line',
           });
         }
@@ -177,7 +173,6 @@ const ProfileEdit = () => {
         setValue('currentPassword', '');
         setValue('newPassword', '');
         toast.success('비밀번호가 변경되었습니다.', {
-          theme: 'light',
           className: 'text-sm',
         });
       }
@@ -198,7 +193,6 @@ const ProfileEdit = () => {
       return toast.error(
         '알 수 없는 오류가 발생했습니다.\n잠시 후 다시 시도해 주세요.',
         {
-          theme: 'light',
           className: 'text-sm whitespace-pre-line',
         },
       );
@@ -219,7 +213,6 @@ const ProfileEdit = () => {
       return toast.error(
         '알 수 없는 오류가 발생했습니다.\n잠시 후 다시 시도해 주세요',
         {
-          theme: 'light',
           className: 'text-sm whitespace-pre-line',
         },
       );
@@ -232,8 +225,7 @@ const ProfileEdit = () => {
       return toast.error(
         '5MB 이하의 사진을 선택해주세요.',
         {
-          theme: 'light',
-          className: 'text-sm whitespace-pre-line',
+          className: 'text-sm',
         },
       );
     }
@@ -261,7 +253,6 @@ const ProfileEdit = () => {
         return toast.error(
           '알 수 없는 오류가 발생했습니다.\n잠시 후 다시 시도해 주세요',
           {
-            theme: 'light',
             className: 'text-sm whitespace-pre-line',
           },
         );
@@ -280,7 +271,6 @@ const ProfileEdit = () => {
           return toast.error(
             '12,000 픽셀 이하인 이미지만 가능합니다.',
             {
-              theme: 'light',
               className: 'text-sm',
             },
           );
@@ -289,7 +279,6 @@ const ProfileEdit = () => {
       return toast.error(
         '알 수 없는 오류가 발생했습니다.\n잠시 후 다시 시도해 주세요',
         {
-          theme: 'light',
           className: 'text-sm whitespace-pre-line',
         },
       );

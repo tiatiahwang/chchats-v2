@@ -91,7 +91,6 @@ const PostDetail = ({
         return toast.error(
           '알 수 없는 오류가 발생했습니다.\n잠시 후 다시 시도해 주세요.',
           {
-            theme: 'light',
             className: 'text-sm whitespace-pre-line',
           },
         );
@@ -122,7 +121,6 @@ const PostDetail = ({
       return toast.error(
         '알 수 없는 오류가 발생했습니다.\n잠시 후 다시 시도해 주세요.',
         {
-          theme: 'light',
           className: 'text-sm whitespace-pre-line',
         },
       );
@@ -131,13 +129,11 @@ const PostDetail = ({
       setToggleScrap((prev) => !prev);
       if (data === 'OK') {
         return toast.success('게시글이 스크랩되었습니다.', {
-          theme: 'light',
           className: 'text-sm',
         });
       }
       if (data === 'DELETED') {
         return toast.success('스크랩을 취소했습니다.', {
-          theme: 'light',
           className: 'text-sm',
         });
       }

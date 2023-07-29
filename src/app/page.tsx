@@ -9,7 +9,7 @@ export default async function Home() {
   return (
     <div className='flex text-sm pb-2 px-2 md:space-x-8'>
       <WebSideBar categories={categories} />
-      <div className='grid grid-cols-1 md:grid-cols-2 w-full min-x-0 gap-4'>
+      <div className='grid grid-cols-1 md:grid-cols-2 w-full h-min gap-4'>
         {categories?.map((category) => (
           <div
             key={category.id}

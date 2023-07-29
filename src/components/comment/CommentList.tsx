@@ -62,7 +62,6 @@ const CommentList = ({
       return toast.error(
         '알 수 없는 오류가 발생했습니다.\n잠시 후 다시 시도해 주세요.',
         {
-          theme: 'light',
           className: 'text-sm whitespace-pre-line',
         },
       );
@@ -101,7 +100,6 @@ const CommentList = ({
       return toast.error(
         '알 수 없는 오류가 발생했습니다.\n잠시 후 다시 시도해 주세요.',
         {
-          theme: 'light',
           className: 'text-sm whitespace-pre-line',
         },
       );
@@ -111,7 +109,6 @@ const CommentList = ({
         setShowModal(false);
         router.refresh();
         return toast.success('삭제되었습니다.', {
-          theme: 'light',
           className: 'text-sm',
         });
       }
@@ -232,7 +229,6 @@ const CommentList = ({
                     return toast.warning(
                       '댓글 내용을 입력해주세요.',
                       {
-                        theme: 'light',
                         className: 'text-sm',
                       },
                     );

@@ -32,7 +32,11 @@ const WebSideBar: FC<WebSideBarProps> = ({
               className='flex flex-col w-[150px] rounded-lg h-fit border'
             >
               <div
-                className='rounded-t-lg font-bold bg-main text-white py-2 px-4 hover:bg-mainDark'
+                className={`font-bold bg-main text-white py-2 px-4 hover:bg-mainDark ${
+                  category.id === 5
+                    ? 'rounded-lg'
+                    : 'rounded-t-lg'
+                }`}
                 onMouseEnter={() => onHover(category.id)}
                 onMouseLeave={() => onLeave()}
                 role='button'

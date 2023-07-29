@@ -49,7 +49,6 @@ const Join = () => {
           {
             hideProgressBar: true,
             autoClose: 1000,
-            theme: 'light',
             className: 'text-sm whitespace-pre-line',
           },
         );

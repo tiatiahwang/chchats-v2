@@ -162,7 +162,6 @@ const NewPost = ({
         if (error instanceof AxiosError) {
           if (error.response?.status === 500) {
             toast.error(error.response.data, {
-              theme: 'light',
               className: 'text-sm whitespace-pre-line',
             });
           }
@@ -200,7 +199,6 @@ const NewPost = ({
         if (error instanceof AxiosError) {
           if (error.response?.status === 500) {
             toast.error(error.response.data, {
-              theme: 'light',
               className: 'text-sm whitespace-pre-line',
             });
           }
@@ -217,7 +215,6 @@ const NewPost = ({
       return toast.warning(
         '서브 카테고리를 하나 선택해주세요.',
         {
-          theme: 'light',
           className: 'text-sm',
         },
       );
@@ -225,14 +222,12 @@ const NewPost = ({
       return toast.warning(
         '제목은 2~50 글자 사이로 적어주세요.',
         {
-          theme: 'light',
           className: 'text-sm',
         },
       );
     }
     if (content === '') {
       return toast.warning('내용을 입력해주세요.', {
-        theme: 'light',
         className: 'text-sm',
       });
     }
@@ -242,7 +237,6 @@ const NewPost = ({
         content === post?.content
       ) {
         return toast.warning('수정된 사항이 없습니다.', {
-          theme: 'light',
           className: 'text-sm',
         });
       }

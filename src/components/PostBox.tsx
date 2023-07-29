@@ -2,12 +2,13 @@
 
 import { useRouter } from 'next/navigation';
 import { Icons } from './Icons';
-import { Prisma } from '@prisma/client';
 import { ExtendedPost } from '@/types/db';
 
 interface PostBoxProps {
   post: ExtendedPost & {
-    _count: Prisma.PostCountOutputType;
+    _count: {
+      comments: number;
+    };
   };
 }
 

@@ -16,7 +16,6 @@ const GoogleLogIn = () => {
       return toast.error(
         '알 수 없는 오류가 발생했습니다.\n잠시 후 다시 시도해 주세요',
         {
-          theme: 'light',
           className: 'text-sm whitespace-pre-line',
         },
       );
