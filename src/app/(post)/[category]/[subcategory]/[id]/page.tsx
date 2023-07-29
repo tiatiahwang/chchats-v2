@@ -84,7 +84,7 @@ const page = async ({ params: { id } }: PageProps) => {
                 ? Boolean(
                     await db.scrap.findFirst({
                       where: {
-                        userId: session?.user.id,
+                        userId: session?.user?.id,
                         postId: post?.id,
                       },
                     }),
