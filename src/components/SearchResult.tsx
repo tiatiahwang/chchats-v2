@@ -10,7 +10,6 @@ import { useEffect } from 'react';
 import PostCard from './post/PostCard';
 import Image from 'next/image';
 import { ExtendedPostWithUser } from '@/types/db';
-import NotFound from './ui/NotFound';
 
 const SearchResult = () => {
   const router = useRouter();
@@ -39,7 +38,7 @@ const SearchResult = () => {
     refetch();
     router.refresh();
   }, [keyword, refetch, router]);
-
+  console.log('isFetching', isFetching);
   return (
     <>
       {keyword ? (
