@@ -66,7 +66,7 @@ const page = async ({ params: { id } }: PageProps) => {
   return (
     <>
       <WebSideBar categories={categories} />
-      <div className='border rounded-md w-full ml-4 p-4'>
+      <div className='border rounded-md w-full md:ml-4 p-4'>
         <Suspense
           fallback={
             <>

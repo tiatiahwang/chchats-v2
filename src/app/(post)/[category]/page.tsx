@@ -63,7 +63,7 @@ const page = async ({
   return (
     <>
       <WebSideBar categories={categories} />
-      <div className='w-full pl-4'>
+      <div className='w-full md:pl-4'>
         <h1 className='font-bold text-3xl md:text-4xl h-14'>
           {currentCategory?.name}
         </h1>

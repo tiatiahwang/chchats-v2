@@ -21,28 +21,32 @@ const MyPost = ({ initialPosts }: MyPostProps) => {
     threshold: 1,
   });
 
-  const { data, fetchNextPage, isFetchingNextPage } =
-    useInfiniteQuery(
-      ['infinite-query'],
-      async ({ pageParam = 1 }) => {
-        const query = `/api/profile/myposts?limit=${INFINITE_SCROLL_LIMIT}&page=${pageParam}`;
-        const { data } = await axios.get(query);
-        return data as ExtendedPost[];
+  const {
+    data,
+    fetchNextPage,
+    isFetchingNextPage,
+    isFetching,
+  } = useInfiniteQuery(
+    ['infinite-query'],
+    async ({ pageParam = 1 }) => {
+      const query = `/api/profile/myposts?limit=${INFINITE_SCROLL_LIMIT}&page=${pageParam}`;
+      const { data } = await axios.get(query);
+      return data as ExtendedPost[];
+    },
+    {
+      getNextPageParam: (lastPage, allPages) => {
+        const nextPage =
+          lastPage.length === INFINITE_SCROLL_LIMIT
+            ? allPages.length + 1
+            : undefined;
+        return nextPage;
       },
-      {
-        getNextPageParam: (lastPage, allPages) => {
-          const nextPage =
-            lastPage.length === INFINITE_SCROLL_LIMIT
-              ? allPages.length + 1
-              : undefined;
-          return nextPage;
-        },
-        initialData: {
-          pages: [initialPosts],
-          pageParams: [1],
-        },
+      initialData: {
+        pages: [initialPosts],
+        pageParams: [1],
       },
-    );
+    },
+  );
 
   useEffect(() => {
     if (entry?.isIntersecting) {
@@ -54,25 +58,41 @@ const MyPost = ({ initialPosts }: MyPostProps) => {
     data?.pages.flatMap((page) => page) ?? initialPosts;
 
   return (
-    <div className='h-[800px] border overflow-scroll rounded-md'>
-      {posts.length > 0 ? (
-        <ul className='m-4'>
-          {posts.map((post, index) => {
-            if (index === posts.length - 1) {
-              return (
-                <li key={post.id} ref={ref}>
-                  <MyPostCard post={post} />
-                </li>
-              );
-            } else {
-              return (
-                <MyPostCard key={post.id} post={post} />
-              );
-            }
-          })}
-        </ul>
+    <div className='border overflow-scroll rounded-md'>
+      {isFetching ? (
+        <div className='w-full flex justify-center'>
+          <Image
+            src='/loader.gif'
+            alt='loading'
+            width={50}
+            height={50}
+            unoptimized={true}
+          />
+        </div>
       ) : (
-        <div>NO POST</div>
+        <>
+          {posts.length > 0 ? (
+            <ul className='m-4'>
+              {posts.map((post, index) => {
+                if (index === posts.length - 1) {
+                  return (
+                    <li key={post.id} ref={ref}>
+                      <MyPostCard post={post} />
+                    </li>
+                  );
+                } else {
+                  return (
+                    <MyPostCard key={post.id} post={post} />
+                  );
+                }
+              })}
+            </ul>
+          ) : (
+            <div className='text-sm flex justify-center w-full p-4'>
+              아직 남기신 글이 없습니다.
+            </div>
+          )}
+        </>
       )}
       {isFetchingNextPage ? (
         <div className='flex items-center justify-center'>
@@ -127,7 +147,7 @@ const MyPostCard = ({ post }: { post: ExtendedPost }) => {
         </div>
         {/* 글 작성 시간 */}
         <span className='text-[10px]'>
-          {post.createdAt.toLocaleString()}
+          {post.createdAt.toLocaleString().split('T')[0]}
         </span>
       </div>
       {/* 글 제목 */}

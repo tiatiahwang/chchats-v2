@@ -21,28 +21,32 @@ const MyScrap = ({ initialScraps }: MyScrapProps) => {
     threshold: 1,
   });
 
-  const { data, fetchNextPage, isFetchingNextPage } =
-    useInfiniteQuery(
-      ['infinite-query'],
-      async ({ pageParam = 1 }) => {
-        const query = `/api/profile/myscraps?limit=${INFINITE_SCROLL_LIMIT}&page=${pageParam}`;
-        const { data } = await axios.get(query);
-        return data as ExtendedScrap[];
+  const {
+    data,
+    fetchNextPage,
+    isFetchingNextPage,
+    isFetching,
+  } = useInfiniteQuery(
+    ['infinite-query'],
+    async ({ pageParam = 1 }) => {
+      const query = `/api/profile/myscraps?limit=${INFINITE_SCROLL_LIMIT}&page=${pageParam}`;
+      const { data } = await axios.get(query);
+      return data as ExtendedScrap[];
+    },
+    {
+      getNextPageParam: (lastPage, allPages) => {
+        const nextPage =
+          lastPage.length === INFINITE_SCROLL_LIMIT
+            ? allPages.length + 1
+            : undefined;
+        return nextPage;
       },
-      {
-        getNextPageParam: (lastPage, allPages) => {
-          const nextPage =
-            lastPage.length === INFINITE_SCROLL_LIMIT
-              ? allPages.length + 1
-              : undefined;
-          return nextPage;
-        },
-        initialData: {
-          pages: [initialScraps],
-          pageParams: [1],
-        },
+      initialData: {
+        pages: [initialScraps],
+        pageParams: [1],
       },
-    );
+    },
+  );
 
   useEffect(() => {
     if (entry?.isIntersecting) {
@@ -54,31 +58,9 @@ const MyScrap = ({ initialScraps }: MyScrapProps) => {
     data?.pages.flatMap((page) => page) ?? initialScraps;
 
   return (
-    <div className='h-[800px] border overflow-scroll rounded-md'>
-      {scraps.length > 0 ? (
-        <ul className='m-4'>
-          {scraps.map((scrap, index) => {
-            if (index === scraps.length - 1) {
-              return (
-                <li key={scrap.postId} ref={ref}>
-                  <MyScrapCard scrap={scrap} />
-                </li>
-              );
-            } else {
-              return (
-                <MyScrapCard
-                  key={scrap.postId}
-                  scrap={scrap}
-                />
-              );
-            }
-          })}
-        </ul>
-      ) : (
-        <div>NO Scrap</div>
-      )}
-      {isFetchingNextPage ? (
-        <div className='flex items-center justify-center'>
+    <div className='border overflow-scroll rounded-md'>
+      {isFetching ? (
+        <div className='w-full flex justify-center'>
           <Image
             src='/loader.gif'
             alt='loading'
@@ -88,7 +70,45 @@ const MyScrap = ({ initialScraps }: MyScrapProps) => {
           />
         </div>
       ) : (
-        ''
+        <>
+          {scraps.length > 0 ? (
+            <ul className='m-4'>
+              {scraps.map((scrap, index) => {
+                if (index === scraps.length - 1) {
+                  return (
+                    <li key={scrap.postId} ref={ref}>
+                      <MyScrapCard scrap={scrap} />
+                    </li>
+                  );
+                } else {
+                  return (
+                    <MyScrapCard
+                      key={scrap.postId}
+                      scrap={scrap}
+                    />
+                  );
+                }
+              })}
+            </ul>
+          ) : (
+            <div className='text-sm flex justify-center p-4 w-full'>
+              스크랩 한 글이 없습니다.
+            </div>
+          )}
+          {isFetchingNextPage ? (
+            <div className='flex items-center justify-center'>
+              <Image
+                src='/loader.gif'
+                alt='loading'
+                width={50}
+                height={50}
+                unoptimized={true}
+              />
+            </div>
+          ) : (
+            ''
+          )}
+        </>
       )}
     </div>
   );
@@ -131,7 +151,7 @@ const MyScrapCard = ({
         </div>
         {/* 댓글 작성 시간 */}
         <span className='text-[10px]'>
-          {scrap.createdAt.toLocaleString()}
+          {scrap.createdAt.toLocaleString().split('T')[0]}
         </span>
       </div>
       {/* 댓글 내용 */}

@@ -103,49 +103,53 @@ const PostCardList = ({
           </div>
         )}
       </div>
-      {posts.length > 0 ? (
-        <ul className='h-[1500px] border overflow-scroll rounded-md p-4'>
-          {posts?.map((post, index) => {
-            if (index === posts.length - 1) {
-              return (
-                <li key={post.id} ref={ref}>
+      <ul className='border overflow-scroll rounded-md p-4'>
+        {posts.length > 0 ? (
+          <>
+            {posts?.map((post, index) => {
+              if (index === posts.length - 1) {
+                return (
+                  <li key={post.id} ref={ref}>
+                    <PostCard
+                      post={post}
+                      subcategoryId={
+                        currentSubcategory?.id ?? undefined
+                      }
+                    />
+                  </li>
+                );
+              } else {
+                return (
                   <PostCard
                     post={post}
+                    key={post.id}
                     subcategoryId={
                       currentSubcategory?.id ?? undefined
                     }
                   />
-                </li>
-              );
-            } else {
-              return (
-                <PostCard
-                  post={post}
-                  key={post.id}
-                  subcategoryId={
-                    currentSubcategory?.id ?? undefined
-                  }
-                />
-              );
-            }
-          })}
-        </ul>
-      ) : (
-        <div>NO POST</div>
-      )}
-      {isFetchingNextPage ? (
-        <div className='flex items-center justify-center'>
-          <Image
-            src='/loader.gif'
-            alt='loading'
-            width={50}
-            height={50}
-            unoptimized={true}
-          />
-        </div>
-      ) : (
-        ''
-      )}
+                );
+              }
+            })}
+          </>
+        ) : (
+          <div className='flex w-full justify-center'>
+            아직 남겨진 글이 없습니다.
+          </div>
+        )}
+        {isFetchingNextPage ? (
+          <div className='flex items-center justify-center'>
+            <Image
+              src='/loader.gif'
+              alt='loading'
+              width={50}
+              height={50}
+              unoptimized={true}
+            />
+          </div>
+        ) : (
+          ''
+        )}
+      </ul>
     </>
   );
 };
