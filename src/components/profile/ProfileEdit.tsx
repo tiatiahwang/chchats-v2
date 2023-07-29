@@ -435,13 +435,15 @@ const ProfileEdit = () => {
                 </div>
                 {/* 구글 로그인한 유저에게만 보이는 문구 */}
                 {session?.user?.provider === 'GOOGLE' && (
-                  <div className='w-fit bg-gray-300 text-white p-2 rounded-md text-sm cursor-default'>
-                    인증 완료
+                  <div className='flex justify-end items-center sm:w-full md:w-fit'>
+                    <div className='bg-gray-300 text-white p-2 rounded-md text-sm cursor-default'>
+                      인증완료
+                    </div>
                   </div>
                 )}
                 {/* 일반 로그인 한 경우 이메일 인증 버튼 출력 */}
                 {/* TODO: 이메일 인증 로직 필요 */}
-                {session?.user?.emailVerified === null &&
+                {session?.user?.emailVerified === false &&
                   session?.user?.provider ===
                     'CREDENTIALS' && (
                     <div className='flex justify-end items-center sm:w-full md:w-fit'>

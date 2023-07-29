@@ -6,8 +6,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { UserLoginValidator } from '@/lib/validator/auth';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { Icons } from './Icons';
-import Button from './ui/Button';
+import { Icons } from '../Icons';
+import Button from '../ui/Button';
 
 interface FormProps {
   email: string;

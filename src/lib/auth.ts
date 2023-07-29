@@ -19,7 +19,7 @@ export const authOptions: NextAuthOptions = {
         password: { label: '비밀번호', type: 'password' },
       },
       async authorize(credentials) {
-        if (!credentials) {
+        if (typeof credentials === 'undefined') {
           throw new Error(
             '잘못된 요청으로 인해 오류가 발생했습니다.',
           );
@@ -86,6 +86,7 @@ export const authOptions: NextAuthOptions = {
               data: {
                 username: nanoid(8),
                 provider: 'GOOGLE',
+                emailVerified: true,
               },
             });
           } else {
@@ -97,11 +98,13 @@ export const authOptions: NextAuthOptions = {
               data: {
                 username: token.name,
                 provider: 'GOOGLE',
+                emailVerified: true,
               },
             });
           }
         }
       }
+
       return token;
     },
     async session({ session }) {

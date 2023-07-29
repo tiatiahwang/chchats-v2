@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Icons } from './Icons';
+import { Icons } from '../Icons';
 import { signIn } from 'next-auth/react';
 import { toast } from 'react-toastify';
 

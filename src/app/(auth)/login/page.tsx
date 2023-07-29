@@ -1,12 +1,12 @@
-import GoogleLogIn from '@/components/GoogleLogIn';
-import LogIn from '@/components/LogIn';
+import GoogleLogIn from '@/components/auth/GoogleLogIn';
+import LogIn from '@/components/auth/LogIn';
 import Image from 'next/image';
 import Link from 'next/link';
 
 const Page = () => {
   return (
-    <div className='my-20'>
-      <div className='h-full max-w-md w-full mx-auto flex flex-col items-center justify-center'>
+    <div className='my-10 md:my-20 mx-4 md:mx-0'>
+      <div className='h-full max-w-sm w-full mx-auto flex flex-col items-center justify-center'>
         <div className='relative aspect-square h-14 w-14'>
           <Image
             fill
