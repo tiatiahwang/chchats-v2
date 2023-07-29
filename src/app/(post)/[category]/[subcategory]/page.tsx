@@ -1,9 +1,8 @@
 import WebSideBar from '@/components/WebSideBar';
-import PostCard from '@/components/post/PostCardList';
+import PostCardList from '@/components/post/PostCardList';
 import { INFINITE_SCROLL_LIMIT } from '@/config';
 import { db } from '@/lib/db';
 import { getAllCategories } from '@/lib/utils';
-import Link from 'next/link';
 import { PostListLoading } from '../page';
 import { Suspense } from 'react';
 
@@ -56,25 +55,14 @@ const page = async ({
     <>
       <WebSideBar categories={categories} />
       <div className='w-full pl-4'>
-        <div className='pb-4'>
-          <h1 className='font-bold text-3xl md:text-4xl h-14'>
-            {currentSubcategory?.name}
-          </h1>
-          <div className='flex items-center justify-end'>
-            <Link
-              href={`${currentSubcategory?.url}/create`}
-              className='p-2 rounded-md bg-main hover:bg-mainDark text-white'
-            >
-              글쓰기
-            </Link>
-          </div>
-        </div>
+        <h1 className='font-bold text-3xl md:text-4xl h-14'>
+          {currentSubcategory?.name}
+        </h1>
         <Suspense fallback={<PostListLoading />}>
           <div className='space-y-2'>
-            <PostCard
+            <PostCardList
               initialPosts={posts}
-              categoryId={currentSubcategory?.categoryId}
-              subcategoryId={currentSubcategory?.id}
+              currentSubcategory={currentSubcategory!}
             />
           </div>
         </Suspense>

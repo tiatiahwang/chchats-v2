@@ -4,7 +4,6 @@ import Skeleton from '@/components/ui/Skeleton';
 import { INFINITE_SCROLL_LIMIT } from '@/config';
 import { db } from '@/lib/db';
 import { getAllCategories } from '@/lib/utils';
-import Link from 'next/link';
 import { Suspense } from 'react';
 
 export const dynamic = 'force-dynamic';
@@ -65,26 +64,14 @@ const page = async ({
     <>
       <WebSideBar categories={categories} />
       <div className='w-full pl-4'>
-        <div className='pb-4'>
-          <h1 className='font-bold text-3xl md:text-4xl h-14'>
-            {currentCategory?.name}
-          </h1>
-          <div className='flex items-center justify-end'>
-            {currentCategory?.id !== 5 && (
-              <Link
-                href={`${currentCategory?.url}/create`}
-                className='p-2 rounded-md bg-main hover:bg-mainDark text-white'
-              >
-                글쓰기
-              </Link>
-            )}
-          </div>
-        </div>
+        <h1 className='font-bold text-3xl md:text-4xl h-14'>
+          {currentCategory?.name}
+        </h1>
         <Suspense fallback={<PostListLoading />}>
           <div className='space-y-2'>
             <PostCardList
               initialPosts={posts}
-              categoryId={currentCategory?.id}
+              currentCategory={currentCategory}
             />
           </div>
         </Suspense>

@@ -58,8 +58,12 @@ const TipTapEditor = ({ editor }: TipTapEditorProps) => {
         '/public';
       editor?.chain().setImage({ src: url }).run();
     } catch (error) {
-      // TODO: error handling
-      console.log('으악 에러', error);
+      toast.warning(
+        '이미지 업로드 중 오류가 발생했습니다.\n잠시 후 다시 시도해 주세요.',
+        {
+          className: 'text-sm whitespace-pre-line',
+        },
+      );
     } finally {
       setIsUploading(false);
       setImageModal(false);

@@ -6,20 +6,30 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import { INFINITE_SCROLL_LIMIT } from '@/config';
 import axios from 'axios';
 import PostCard from './PostCard';
-import { ExtendedPostWithUser } from '@/types/db';
+import {
+  ExtendedCategory,
+  ExtendedPostWithUser,
+} from '@/types/db';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
+import { useCustomToast } from '@/hooks/use-custom-toast';
+import { Subcategory } from '@prisma/client';
 
 interface PostCardListProps {
   initialPosts: ExtendedPostWithUser[];
-  categoryId?: number;
-  subcategoryId?: number;
+  currentCategory?: ExtendedCategory;
+  currentSubcategory?: Subcategory;
 }
 
 const PostCardList = ({
   initialPosts,
-  categoryId,
-  subcategoryId,
+  currentCategory,
+  currentSubcategory,
 }: PostCardListProps) => {
+  const { data: session } = useSession();
+  const router = useRouter();
+  const { loginToast } = useCustomToast();
   const lastPostRef = useRef<HTMLElement>(null);
 
   const { ref, entry } = useIntersection({
@@ -27,14 +37,18 @@ const PostCardList = ({
     threshold: 1,
   });
 
+  const categoryId = currentCategory
+    ? currentCategory.id
+    : currentSubcategory?.categoryId;
+
   const { data, fetchNextPage, isFetchingNextPage } =
     useInfiniteQuery(
       ['infinite-query'],
       async ({ pageParam = 1 }) => {
         const query =
           `/api/posts?limit=${INFINITE_SCROLL_LIMIT}&page=${pageParam}&categoryId=${categoryId}` +
-          (!!subcategoryId
-            ? `&subcategoryId=${subcategoryId}`
+          (!!currentSubcategory?.id
+            ? `&subcategoryId=${currentSubcategory?.id}`
             : '');
         const { data } = await axios.get(query);
         return data as ExtendedPostWithUser[];
@@ -65,6 +79,30 @@ const PostCardList = ({
 
   return (
     <>
+      <div className='flex items-center justify-end'>
+        {currentCategory?.id !== 5 && (
+          <div
+            className='p-2 rounded-md bg-main hover:bg-mainDark text-white mb-2 cursor-pointer'
+            onClick={() => {
+              if (!session?.user) {
+                return loginToast();
+              }
+
+              if (currentCategory) {
+                router.push(
+                  `${currentCategory?.url}/create`,
+                );
+              } else {
+                router.push(
+                  `${currentSubcategory?.url}/create`,
+                );
+              }
+            }}
+          >
+            글쓰기
+          </div>
+        )}
+      </div>
       {posts.length > 0 ? (
         <ul className='h-[1500px] border overflow-scroll rounded-md p-4'>
           {posts?.map((post, index) => {
@@ -74,7 +112,7 @@ const PostCardList = ({
                   <PostCard
                     post={post}
                     subcategoryId={
-                      subcategoryId! ?? undefined
+                      currentSubcategory?.id ?? undefined
                     }
                   />
                 </li>
@@ -85,7 +123,7 @@ const PostCardList = ({
                   post={post}
                   key={post.id}
                   subcategoryId={
-                    subcategoryId! ?? undefined
+                    currentSubcategory?.id ?? undefined
                   }
                 />
               );
