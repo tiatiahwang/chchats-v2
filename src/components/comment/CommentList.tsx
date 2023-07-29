@@ -35,14 +35,19 @@ const CommentList = ({
   const { loginToast } = useCustomToast();
   const router = useRouter();
 
-  const [input, setInput] = useState<string>('');
+  // 대댓글 관련 상태들
+  const [replyInput, setReplyInput] = useState<string>('');
   const [isReplying, setIsReplying] =
     useState<boolean>(false);
-  const [showModal, setShowModal] =
-    useState<boolean>(false);
+
+  // 댓글 수정 관련 상태들
   const [isEditing, setIsEditing] =
     useState<boolean>(false);
   const [editInput, setEditInput] = useState<string>('');
+
+  // 댓글 삭제 버튼 클릭시, 재확인 하기 위한 모달 열고 닫는 상태
+  const [showModal, setShowModal] =
+    useState<boolean>(false);
 
   const { mutate: replyComment, isLoading } = useMutation({
     mutationFn: async ({
@@ -76,7 +81,7 @@ const CommentList = ({
     },
     onSuccess: () => {
       router.refresh();
-      setInput('');
+      setReplyInput('');
       setIsReplying(false);
     },
   });
@@ -221,7 +226,7 @@ const CommentList = ({
           )}
         </div>
       </div>
-      {/* 댓글 내용 */}
+      {/* 댓글 수정에 따른 댓글 내용 */}
       {isEditing ? (
         <>
           <textarea
@@ -293,8 +298,10 @@ const CommentList = ({
               <textarea
                 className='text-sm bg-transparent placeholder:text-sm whitespace-pre-line resize-none rounded-md flex-1 focus:outline-none border-[1px] p-2'
                 placeholder='좋은 영향을 주고 받는 댓글을 남겨주세요 :)'
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
+                value={replyInput}
+                onChange={(e) =>
+                  setReplyInput(e.target.value)
+                }
                 rows={3}
               />
             </div>
@@ -315,7 +322,7 @@ const CommentList = ({
                 width='w-fit'
                 text='작성하기'
                 onClick={() => {
-                  if (!input) {
+                  if (!replyInput) {
                     return toast.warning(
                       '댓글 내용을 입력해주세요.',
                       {
@@ -325,7 +332,7 @@ const CommentList = ({
                   }
                   replyComment({
                     postId,
-                    text: input,
+                    text: replyInput,
                     replyToId: comment.id,
                   });
                 }}

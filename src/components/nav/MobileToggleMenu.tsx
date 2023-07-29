@@ -5,8 +5,11 @@ import { Icons } from '../Icons';
 import Link from 'next/link';
 import { signOut, useSession } from 'next-auth/react';
 import Image from 'next/image';
+import Button from '../ui/Button';
+import { useRouter } from 'next/navigation';
 
 const MobileToggleMenu = () => {
+  const router = useRouter();
   const { data: session } = useSession();
   const [iconClicked, setIconClicked] = useState(false);
   const onIconClick = () => setIconClicked(!iconClicked);
@@ -53,7 +56,7 @@ const MobileToggleMenu = () => {
                   </div>
                 </div>
                 <div className='space-x-2'>
-                  <Link
+                  {/* <Link
                     href='/profile'
                     className='p-2 rounded-md bg-main text-white hover:bg-mainDark'
                     onClick={() =>
@@ -61,17 +64,26 @@ const MobileToggleMenu = () => {
                     }
                   >
                     내 계정
-                  </Link>
-                  <button
-                    className='p-2 rounded-md bg-main text-white hover:bg-mainDark'
-                    onClick={() =>
+                  </Link> */}
+                  <Button
+                    type='base'
+                    text='내 계정'
+                    width='w-fit'
+                    onClick={() => {
+                      router.push('/profile');
+                      setIconClicked(!iconClicked);
+                    }}
+                  />
+                  <Button
+                    type='base'
+                    text='로그아웃'
+                    width='w-fit'
+                    onClick={() => {
                       signOut({
                         callbackUrl: '/',
-                      })
-                    }
-                  >
-                    로그아웃
-                  </button>
+                      });
+                    }}
+                  />
                 </div>
               </div>
             ) : (

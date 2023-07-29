@@ -6,6 +6,7 @@ interface PostCardProps {
   post: ExtendedPostWithUser;
   subcategoryId?: number;
 }
+
 const formatTime = (date: Date) => {
   const start = new Date(date);
   const end = new Date();
@@ -36,6 +37,7 @@ const PostCard = ({
   post,
   subcategoryId,
 }: PostCardProps) => {
+  if (!post) return;
   return (
     <div className='rounded-md bg-card shadow mb-2'>
       <div className='px-6 py-4 flex justify-between'>

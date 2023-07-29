@@ -96,7 +96,7 @@ const page = async ({ params: { id } }: PageProps) => {
         <Suspense
           fallback={
             <div className='mt-4'>
-              <Skeleton className='w-full h-40' />
+              <Skeleton className='w-full h-60' />
             </div>
           }
         >
