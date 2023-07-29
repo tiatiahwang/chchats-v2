@@ -1,9 +1,9 @@
 import { getAuthSession } from '@/lib/auth';
 import { db } from '@/lib/db';
-import { CommentCreateValidator } from '@/lib/validator/comment';
+import { CommentEditValidator } from '@/lib/validator/comment';
 import { z } from 'zod';
 
-export async function POST(req: Request) {
+export async function PATCH(req: Request) {
   try {
     const session = await getAuthSession();
 
@@ -14,17 +14,18 @@ export async function POST(req: Request) {
     }
     const body = await req.json();
 
-    const { text, postId, replyToId } =
-      CommentCreateValidator.parse(body);
+    const { text, commentId } =
+      CommentEditValidator.parse(body);
 
-    await db.comment.create({
+    await db.comment.update({
+      where: {
+        id: commentId,
+      },
       data: {
         text,
-        authorId: session.user.id,
-        postId,
-        replyToId,
       },
     });
+
     return new Response('OK');
   } catch (error) {
     if (error instanceof z.ZodError) {

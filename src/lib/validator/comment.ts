@@ -1,9 +1,14 @@
 import { literal, z } from 'zod';
 
-export const CommentValidator = z.object({
+export const CommentCreateValidator = z.object({
   text: z.string(),
   postId: z.string(),
-  replyToId: z.string().optional(),
+  replyToId: z.string().optional().or(literal(null)),
+});
+
+export const CommentEditValidator = z.object({
+  text: z.string(),
+  commentId: z.string(),
 });
 
 export const CommentDeleteValidator = z.object({
@@ -12,7 +17,11 @@ export const CommentDeleteValidator = z.object({
 });
 
 export type CommentCreateRequest = z.infer<
-  typeof CommentValidator
+  typeof CommentCreateValidator
+>;
+
+export type CommentEditRequest = z.infer<
+  typeof CommentEditValidator
 >;
 
 export type CommentDeleteRequest = z.infer<

@@ -38,7 +38,7 @@ const NewComment = ({
         text,
         replyToId,
       };
-      const { data } = await axios.patch(
+      const { data } = await axios.post(
         '/api/comments/create',
         payload,
       );
