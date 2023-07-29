@@ -6,8 +6,8 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { UserJoinValidator } from '@/lib/validator/auth';
-import { Icons } from './Icons';
-import Button from './ui/Button';
+import { Icons } from '../Icons';
+import Button from '../ui/Button';
 import { toast } from 'react-toastify';
 
 interface FormProps {

@@ -1,5 +1,5 @@
-import GoogleLogIn from '@/components/GoogleLogIn';
-import LogIn from '@/components/LogIn';
+import GoogleLogIn from '@/components/auth/GoogleLogIn';
+import LogIn from '@/components/auth/LogIn';
 import Image from 'next/image';
 import Link from 'next/link';
 

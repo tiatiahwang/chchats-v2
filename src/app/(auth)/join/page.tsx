@@ -1,5 +1,5 @@
-import GoogleLogIn from '@/components/GoogleLogIn';
-import Join from '@/components/Join';
+import GoogleLogIn from '@/components/auth/GoogleLogIn';
+import Join from '@/components/auth/Join';
 import Image from 'next/image';
 import Link from 'next/link';
 
