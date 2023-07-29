@@ -10,7 +10,7 @@ const Page = () => {
         <div className='relative aspect-square h-14 w-14'>
           <Image
             fill
-            src='/favicon.ico'
+            src='/logo_noletter.png'
             alt='logo'
             referrerPolicy='no-referrer'
           />
