@@ -1,3 +1,4 @@
+import Ads from '@/components/Ads';
 import WebSideBar from '@/components/WebSideBar';
 import PostCardList from '@/components/post/PostCardList';
 import Skeleton from '@/components/ui/Skeleton';
@@ -63,7 +64,7 @@ const page = async ({
   return (
     <>
       <WebSideBar categories={categories} />
-      <div className='w-full md:pl-4'>
+      <div className='w-full md:px-4'>
         <h1 className='font-bold text-3xl md:text-4xl h-14'>
           {currentCategory?.name}
         </h1>
@@ -76,6 +77,7 @@ const page = async ({
           </div>
         </Suspense>
       </div>
+      <Ads />
     </>
   );
 };
