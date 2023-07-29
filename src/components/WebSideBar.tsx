@@ -45,6 +45,9 @@ const WebSideBar: FC<WebSideBarProps> = ({
                   className='flex justify-between items-center relative cursor-pointer'
                   onClick={() => {
                     router.refresh();
+                    if (category.id === 5) {
+                      return router.push('/notice/all');
+                    }
                     router.push(`${category.url}`);
                   }}
                 >
@@ -55,21 +58,22 @@ const WebSideBar: FC<WebSideBarProps> = ({
                 </div>
               </div>
               <div>
-                {category?.subcategories.map(
-                  (subcategory) => (
-                    <div
-                      key={subcategory.id}
-                      onClick={() => {
-                        router.refresh();
-                        router.push(`${subcategory.url}`);
-                      }}
-                    >
-                      <div className='px-4 hover:bg-mainLight py-2'>
-                        {subcategory.name}
+                {category.id !== 5 &&
+                  category?.subcategories.map(
+                    (subcategory) => (
+                      <div
+                        key={subcategory.id}
+                        onClick={() => {
+                          router.refresh();
+                          router.push(`${subcategory.url}`);
+                        }}
+                      >
+                        <div className='px-4 hover:bg-mainLight py-2'>
+                          {subcategory.name}
+                        </div>
                       </div>
-                    </div>
-                  ),
-                )}
+                    ),
+                  )}
               </div>
             </div>
           );

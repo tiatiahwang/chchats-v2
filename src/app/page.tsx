@@ -20,7 +20,11 @@ export default async function Home() {
               className='border rounded-md w-full p-4'
             >
               <Link
-                href={`${category.url}`}
+                href={
+                  category.id === 5
+                    ? '/notice/all'
+                    : `${category.url}`
+                }
                 className='flex justify-between border-b pb-2 cursor-pointer pt-2 hover:text-main'
               >
                 <div className='text-2xl font-bold'>

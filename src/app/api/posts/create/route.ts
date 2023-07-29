@@ -33,6 +33,7 @@ export async function POST(req: Request) {
         },
       },
     });
+
     const url = `${post.subcategory.url}/${post.id}`;
     return new Response(url);
   } catch (error) {
