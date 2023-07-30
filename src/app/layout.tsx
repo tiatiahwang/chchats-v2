@@ -19,7 +19,7 @@ export default function RootLayout({
   return (
     <html
       lang='ko'
-      className='bg-white text-slate-900 antialiased light box-border'
+      className='bg-slate-50 text-slate-900 antialiased light box-border h-full'
     >
       <body
         suppressContentEditableWarning={true}
