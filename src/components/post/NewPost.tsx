@@ -19,7 +19,7 @@ import { toast } from 'react-toastify';
 import Placeholder from '@tiptap/extension-placeholder';
 import { Post, Subcategory } from '@prisma/client';
 import Button from '../ui/Button';
-import HardBreak from '@tiptap/extension-hard-break';
+import Link from '@tiptap/extension-link';
 
 interface NewpostProps {
   post?: Post;
@@ -39,14 +39,22 @@ const NewPost = ({
   const pathname = usePathname();
 
   const [selectedCategory, setSelectedCategory] =
-    useState(currentCategory);
+    useState<ExtendedCategory>(currentCategory);
   const [selectedSubcategory, setSelectedsubcategory] =
-    useState(currentSubcategory?.id ?? 0);
+    useState<number>(currentSubcategory?.id ?? 0);
 
-  const [title, setTitle] = useState(post?.title ?? '');
-  const [content, setContent] = useState(
+  const [title, setTitle] = useState<string>(
+    post?.title ?? '',
+  );
+  const [content, setContent] = useState<string>(
     post?.content ?? '',
   );
+
+  // 글이 다 작성이 됬음에도, 페이지 전환이 조금 느려서 로딩 상태 별도로 관리
+  const [createLoading, setCreateLoading] =
+    useState<boolean>(false);
+  const [editLoading, setEditLoading] =
+    useState<boolean>(false);
 
   const handleOnChangeContent = ({ editor }: any) => {
     setContent((editor as Editor).getHTML());
@@ -60,13 +68,9 @@ const NewPost = ({
         placeholder: '여기에 내용을 입력해 주세요.',
         emptyEditorClass: 'is-editor-empty',
       }),
-      // HardBreak.configure({
-      //   addKeyboardShortcuts() {
-      //     return {
-      //       Enter: () => editor?.commands.setHardBreak(),
-      //     };
-      //   },
-      // }),
+      Link.configure({
+        openOnClick: false,
+      }),
     ],
     onUpdate: handleOnChangeContent,
     content: content,
@@ -146,77 +150,77 @@ const NewPost = ({
     },
   });
 
-  const { mutate: createPost, isLoading: createLoading } =
-    useMutation({
-      mutationFn: async ({
+  const { mutate: createPost } = useMutation({
+    mutationFn: async ({
+      title,
+      content,
+      categoryId,
+      subcategoryId,
+    }: PostCreateRequest) => {
+      setCreateLoading(true);
+      const payload: PostCreateRequest = {
         title,
         content,
         categoryId,
         subcategoryId,
-      }: PostCreateRequest) => {
-        const payload: PostCreateRequest = {
-          title,
-          content,
-          categoryId,
-          subcategoryId,
-        };
-        const { data } = await axios.post(
-          '/api/posts/create',
-          payload,
-        );
-        return data;
-      },
-      onError: (error) => {
-        if (error instanceof AxiosError) {
-          if (error.response?.status === 500) {
-            toast.error(error.response.data, {
-              className: 'text-sm whitespace-pre-line',
-            });
-          }
+      };
+      const { data } = await axios.post(
+        '/api/posts/create',
+        payload,
+      );
+      return data;
+    },
+    onError: (error) => {
+      if (error instanceof AxiosError) {
+        if (error.response?.status === 500) {
+          toast.error(error.response.data, {
+            className: 'text-sm whitespace-pre-line',
+          });
         }
-      },
-      onSuccess: (url) => {
-        router.refresh();
-        router.push(`${url}`);
-      },
-    });
+      }
+    },
+    onSuccess: (url) => {
+      router.refresh();
+      router.push(`${url}`);
+    },
+  });
 
-  const { mutate: editPost, isLoading: editLoading } =
-    useMutation({
-      mutationFn: async ({
+  const { mutate: editPost } = useMutation({
+    mutationFn: async ({
+      title,
+      content,
+      categoryId,
+      subcategoryId,
+      postId,
+    }: PostEditRequest) => {
+      setEditLoading(true);
+      const payload: PostEditRequest = {
         title,
         content,
         categoryId,
         subcategoryId,
         postId,
-      }: PostEditRequest) => {
-        const payload: PostEditRequest = {
-          title,
-          content,
-          categoryId,
-          subcategoryId,
-          postId,
-        };
-        const { data } = await axios.post(
-          '/api/posts/edit',
-          payload,
-        );
-        return data;
-      },
-      onError: (error) => {
-        if (error instanceof AxiosError) {
-          if (error.response?.status === 500) {
-            toast.error(error.response.data, {
-              className: 'text-sm whitespace-pre-line',
-            });
-          }
+      };
+      const { data } = await axios.post(
+        '/api/posts/edit',
+        payload,
+      );
+      return data;
+    },
+    onError: (error) => {
+      if (error instanceof AxiosError) {
+        if (error.response?.status === 500) {
+          toast.error(error.response.data, {
+            className: 'text-sm whitespace-pre-line',
+          });
         }
-      },
-      onSuccess: (url) => {
-        router.refresh();
-        router.push(`${url}`);
-      },
-    });
+      }
+    },
+    onSuccess: (url) => {
+      router.refresh();
+      router.push(`${url}`);
+    },
+  });
 
   const handleSubmit = () => {
     if (!selectedSubcategory)

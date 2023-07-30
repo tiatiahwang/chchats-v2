@@ -43,3 +43,9 @@
 .post-detail p:empty {
   height: 20px;
 }
+
+.post-detail a {
+  color: #138808;
+  text-decoration: underline;
+  cursor: pointer;
+}

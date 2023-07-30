@@ -9,3 +9,7 @@
 .ProseMirror p {
   line-height: normal;
 }
+
+.ProseMirror a {
+  color: #138808;
+}
