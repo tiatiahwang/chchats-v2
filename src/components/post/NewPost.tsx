@@ -19,6 +19,7 @@ import { toast } from 'react-toastify';
 import Placeholder from '@tiptap/extension-placeholder';
 import { Post, Subcategory } from '@prisma/client';
 import Button from '../ui/Button';
+import HardBreak from '@tiptap/extension-hard-break';
 
 interface NewpostProps {
   post?: Post;
@@ -59,6 +60,13 @@ const NewPost = ({
         placeholder: '여기에 내용을 입력해 주세요.',
         emptyEditorClass: 'is-editor-empty',
       }),
+      // HardBreak.configure({
+      //   addKeyboardShortcuts() {
+      //     return {
+      //       Enter: () => editor?.commands.setHardBreak(),
+      //     };
+      //   },
+      // }),
     ],
     onUpdate: handleOnChangeContent,
     content: content,

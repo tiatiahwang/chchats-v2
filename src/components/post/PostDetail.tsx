@@ -228,7 +228,7 @@ const PostDetail = ({
         </h1>
         {/* 글 내용 */}
         <div
-          className='text-base leading-8'
+          className='text-base leading-8 post-detail'
           dangerouslySetInnerHTML={{ __html: post.content }}
         />
         {/* 글 추천/반대 */}
