@@ -80,7 +80,22 @@ const PostCardList = ({
   return (
     <>
       <div className='flex items-center justify-end'>
-        {currentCategory?.id !== 5 && (
+        {currentSubcategory?.categoryId === 5 ? (
+          <>
+            {session?.user?.role === 'ADMIN' ? (
+              <div
+                className='p-2 rounded-md bg-main hover:bg-mainDark text-white mb-2 cursor-pointer'
+                onClick={() => {
+                  router.push(
+                    `${currentSubcategory?.url}/create`,
+                  );
+                }}
+              >
+                글쓰기
+              </div>
+            ) : null}
+          </>
+        ) : (
           <div
             className='p-2 rounded-md bg-main hover:bg-mainDark text-white mb-2 cursor-pointer'
             onClick={() => {
