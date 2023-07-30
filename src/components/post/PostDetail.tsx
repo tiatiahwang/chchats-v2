@@ -144,13 +144,17 @@ const PostDetail = ({
     <>
       {/* 상단 - 카테고리  */}
       <div className='text-gray-400 text-sm'>
-        <Link
-          href={`/${post.category.ref}`}
-          className='hover:text-main'
-        >
-          {post.category.name}
-        </Link>{' '}
-        {'>'}{' '}
+        {post.categoryId !== 5 && (
+          <>
+            <Link
+              href={`/${post.category.ref}`}
+              className='hover:text-main'
+            >
+              {post.category.name}
+            </Link>{' '}
+            {'>'}{' '}
+          </>
+        )}
         <Link
           href={`/${post.category.ref}/${post.subcategory.ref}`}
           className='hover:text-main'
