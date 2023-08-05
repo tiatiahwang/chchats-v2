@@ -13,7 +13,7 @@ const NewPostLoading = () => {
             <Skeleton className='w-1/5 h-[25px]' />
             <Skeleton className='w-4/5 h-[25px]' />
           </div>
-          <div className='md:flex md:items-center md:space-x-2'>
+          <div className='md:flex md:items-center md:space-x-2 space-y-2 md:space-y-0'>
             <Skeleton className='w-1/5 h-[25px]' />
             <Skeleton className='w-4/5 h-[25px]' />
           </div>
