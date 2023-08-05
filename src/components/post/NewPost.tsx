@@ -13,13 +13,15 @@ import axios, { AxiosError } from 'axios';
 import { usePathname, useRouter } from 'next/navigation';
 import { Editor, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
-import Image from '@tiptap/extension-image';
+import EditorImage from '@tiptap/extension-image';
 import TipTapEditor from './Editor';
 import { toast } from 'react-toastify';
 import Placeholder from '@tiptap/extension-placeholder';
 import { Post, Subcategory } from '@prisma/client';
 import Button from '../ui/Button';
 import Link from '@tiptap/extension-link';
+import { nanoid } from 'nanoid';
+import Image from 'next/image';
 
 interface NewpostProps {
   post?: Post;
@@ -27,6 +29,8 @@ interface NewpostProps {
   currentCategory: ExtendedCategory;
   currentSubcategory?: Subcategory;
 }
+
+const TODAY = new Date().toJSON().slice(0, 10);
 
 const NewPost = ({
   post,
@@ -56,14 +60,20 @@ const NewPost = ({
   const [editLoading, setEditLoading] =
     useState<boolean>(false);
 
+  const [isUploading, setIsUploading] =
+    useState<boolean>(false);
+
   const handleOnChangeContent = ({ editor }: any) => {
     setContent((editor as Editor).getHTML());
   };
 
+  const handleDragImage = () =>
+    setIsUploading((prev) => !prev);
+
   const editor = useEditor({
     extensions: [
       StarterKit,
-      Image,
+      EditorImage,
       Placeholder.configure({
         placeholder: '여기에 내용을 입력해 주세요.',
         emptyEditorClass: 'is-editor-empty',
@@ -79,74 +89,120 @@ const NewPost = ({
         class:
           'prose prose-sm focus:outline-none w-full max-w-full',
       },
-      // 에디터 본문 부분에 사진 드롭하면 업로드 되는 기능 - 일단 지금은 사용 x
-      // handleDrop: async (view, event, slice, moved) => {
-      //   if (
-      //     !moved &&
-      //     event.dataTransfer &&
-      //     event.dataTransfer.files &&
-      //     event.dataTransfer.files[0]
-      //   ) {
-      //     // 사진이 1개 일 경우
-      //     if (event.dataTransfer.files.length === 1) {
-      //       let file = event.dataTransfer.files[0];
-      //       let fileSize = (
-      //         file.size /
-      //         1024 /
-      //         1024
-      //       ).toFixed(4);
-      //       // TODO: file.type 안 맞는 경우 안내 토스트
-      //       if (
-      //         (file.type === 'image/jpeg' ||
-      //           file.type === 'image/png') &&
-      //         +fileSize < 10
-      //       ) {
-      //         // 10MB 이하 사진만 업로드 가능하게
-      //         try {
-      //           const {
-      //             data: { uploadURL },
-      //           } = await axios.post('/api/files');
-      //           const image = new FormData();
-      //           image.append(
-      //             'file',
-      //             file,
-      //             new Date().toJSON().slice(0, 10) +
-      //               Math.random() * 100,
-      //           );
-      //           const {
-      //             data: {
-      //               result: { variants },
-      //             },
-      //           } = await axios.post(uploadURL, image);
-      //           console.log(variants);
-      //           const url =
-      //             variants[0]
-      //               .split('/')
-      //               .slice(0, 5)
-      //               .join('/') + '/public';
+      // @ts-ignore
+      handleDrop: async (view, event, slice, moved) => {
+        if (
+          !moved &&
+          event.dataTransfer &&
+          event.dataTransfer.files &&
+          event.dataTransfer.files[0]
+        ) {
+          const files = Array.from(
+            event.dataTransfer.files,
+          );
 
-      //           const { schema } = view.state;
-      //           const coordinates = view.posAtCoords({
-      //             left: event.clientX,
-      //             top: event.clientY,
-      //           });
-      //           const node = schema.nodes.image.create({
-      //             src: url,
-      //           }); // creates the image element
-      //           const transaction = view.state.tr.insert(
-      //             coordinates?.pos!,
-      //             node,
-      //           ); // places it in the correct position
-      //           return view.dispatch(transaction);
-      //         } catch (error) {
-      //           console.log(error);
-      //         }
-      //       }
-      //     }
-      //     return true;
-      //   }
-      //   return false;
-      // },
+          const maxSize = 1024 * 1024 * 10; // 10MB
+
+          // file size 확인 - 10MB 이하만 업로드 가능
+          const filterFileSize = files.filter(
+            (file) => file.size < maxSize,
+          );
+
+          // filter한 결과가 없는 경우, 토스트창으로 return
+          if (filterFileSize.length === 0) {
+            return toast.warning(
+              '10MB이하 사진만 가능합니다.',
+              { className: 'text-sm' },
+            );
+          }
+
+          if (files.length !== filterFileSize.length) {
+            toast.warning(
+              '10MB 이하 사진만 업로드됩니다.',
+              { className: 'text-sm' },
+            );
+          }
+
+          // file type 확인
+          const filterFileType = filterFileSize.filter(
+            (file) =>
+              file.type === 'image/png' ||
+              file.type === 'image/jpg' ||
+              file.type === 'image/jpeg',
+          );
+
+          // filter한 결과가 없는 경우, 토스트창으로 return
+          if (filterFileType.length === 0) {
+            return toast.warning(
+              'png/jpeg/jpg 사진만 가능합니다.',
+              { className: 'text-sm' },
+            );
+          }
+
+          if (
+            filterFileSize.length !== filterFileType.length
+          ) {
+            toast.warning(
+              'png/jpeg/jpg 사진만 업로드됩니다.',
+              { className: 'text-sm' },
+            );
+          }
+
+          handleDragImage();
+          try {
+            filterFileType.forEach(async (file, index) => {
+              const {
+                data: { uploadURL },
+              } = await axios.post('/api/files');
+              const image = new FormData();
+              image.append(
+                'file',
+                file,
+                `${TODAY}-${nanoid(10)}`,
+              );
+              const {
+                data: {
+                  result: { variants },
+                },
+              } = await axios.post(uploadURL, image);
+
+              const url =
+                variants[0]
+                  .split('/')
+                  .slice(0, 5)
+                  .join('/') + '/public';
+
+              const { schema } = view.state;
+              const coordinates = view.posAtCoords({
+                left: event.clientX,
+                top: event.clientY,
+              });
+              const node = schema.nodes.image.create({
+                src: url,
+              }); // creates the image element
+              const transaction = view.state.tr.insert(
+                coordinates?.pos!,
+                node,
+              ); // places it in the correct position
+
+              // 이미지 파일이 마지막인 경우, isUploading 상태 변경 위한 조건
+              if (index === files.length - 1) {
+                handleDragImage();
+              }
+              return view.dispatch(transaction);
+            });
+          } catch (error) {
+            return toast.error(
+              '알 수 없는 오류가 발생했습니다.\n잠시 후 다시 시도해 주세요',
+              {
+                className: 'text-sm whitespace-pre-line',
+              },
+            );
+          }
+          return true;
+        }
+        return false;
+      },
     },
   });
 
@@ -300,7 +356,7 @@ const NewPost = ({
               })}
             </ul>
           </div>
-          <div className='md:flex md:items-center md:space-x-2'>
+          <div className='md:flex md:items-center md:space-x-2 space-y-2 md:space-y-0'>
             <h3>서브 카테고리</h3>
             <ul className='flex items-center overflow-x-scroll scrollbar-hide space-x-2'>
               {selectedCategory.subcategories.map(
@@ -346,6 +402,22 @@ const NewPost = ({
         width='w-fit'
         className='my-4'
       />
+      {isUploading && (
+        <div className='fixed top-0 left-0 z-50 w-full h-full flex justify-center items-center bg-black/40'>
+          <div className='bg-slate-50 rounded-md w-[200px] md:w-[350px] py-10 md:py10 flex flex-col items-center justify-center space-y-2'>
+            <Image
+              src='/loader.gif'
+              alt='loading'
+              width={50}
+              height={50}
+              unoptimized={true}
+            />
+            <span className='text-xs'>
+              이미지 업로드중...
+            </span>
+          </div>
+        </div>
+      )}
     </>
   );
 };

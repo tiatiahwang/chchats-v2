@@ -20,6 +20,8 @@ import { nanoid } from 'nanoid';
 import Modal from '../ui/Modal';
 import Skeleton from '../ui/Skeleton';
 
+const TODAY = new Date().toJSON().slice(0, 10);
+
 const ProfileEditLoading = () => {
   return (
     <div className='mx-auto max-w-screen-7xl space-y-6 ml-4'>
@@ -261,7 +263,6 @@ const ProfileEdit = () => {
       );
     }
 
-    const TODAY = new Date().toJSON().slice(0, 10);
     try {
       setAvatarUploading(true);
       const {

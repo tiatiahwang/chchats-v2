@@ -7,10 +7,13 @@ import { toast } from 'react-toastify';
 import axios from 'axios';
 import Image from 'next/image';
 import { EditorIcons } from '../Icons';
+import { nanoid } from 'nanoid';
 
 interface TipTapEditorProps {
   editor: Editor | null;
 }
+
+const TODAY = new Date().toJSON().slice(0, 10);
 
 const TipTapEditor = ({ editor }: TipTapEditorProps) => {
   const [link, setLink] = useState<string>('');
@@ -64,10 +67,6 @@ const TipTapEditor = ({ editor }: TipTapEditorProps) => {
         );
       }
 
-      // const files = Array.from(event.target.files).map(
-      //   (file) => file,
-      // );
-
       try {
         setIsUploading(true);
         const file = event.target.files[0];
@@ -78,8 +77,7 @@ const TipTapEditor = ({ editor }: TipTapEditorProps) => {
         image.append(
           'file',
           file,
-          new Date().toJSON().slice(0, 10) +
-            Math.random() * 100,
+          `${TODAY}-${nanoid(10)}`,
         );
         const {
           data: {
@@ -89,6 +87,7 @@ const TipTapEditor = ({ editor }: TipTapEditorProps) => {
         const url =
           variants[0].split('/').slice(0, 5).join('/') +
           '/public';
+
         editor?.chain().setImage({ src: url }).run();
       } catch (error) {
         toast.warning(
@@ -226,14 +225,14 @@ const TipTapEditor = ({ editor }: TipTapEditorProps) => {
               <EditorIcons.image className='w-4 h-4' />
             </div>
             {linkModal && (
-              <div className='absolute top-[34px] -left-10 border shadow-md bg-white rounded-md p-4 w-[350px] z-10'>
+              <div className='absolute top-[34px] -right-4 md:-left-10 border shadow-md bg-white rounded-md p-4 w-[300px] md:w-[380px] z-10'>
                 <div className='space-y-1'>
-                  <span className='text-xs'>
+                  <span className='text-[10px] md:text-xs'>
                     * 링크로 만들 텍스트틀 선택하신 후에,
                     링크를 입력해주세요.
                   </span>
                   <input
-                    className='w-full border rounded-md p-2 outline-none'
+                    className='text-xs md:text-base w-full border rounded-md p-2 outline-none'
                     autoFocus
                     value={link}
                     onChange={(e) =>
@@ -244,13 +243,13 @@ const TipTapEditor = ({ editor }: TipTapEditorProps) => {
                 <div className='justify-end flex mt-2 space-x-2'>
                   <span
                     onClick={handleLinkModal}
-                    className='bg-gray-300 text-white p-2 rounded-md hover:bg-gray-400 cursor-pointer'
+                    className='text-xs md:text-base bg-gray-300 text-white p-2 rounded-md hover:bg-gray-400 cursor-pointer'
                   >
                     취소
                   </span>
                   <span
                     onClick={handleLink}
-                    className='bg-main text-white p-2 rounded-md hover:bg-mainDark cursor-pointer'
+                    className='text-xs md:text-base bg-main text-white p-2 rounded-md hover:bg-mainDark cursor-pointer'
                   >
                     저장
                   </span>
@@ -258,9 +257,9 @@ const TipTapEditor = ({ editor }: TipTapEditorProps) => {
               </div>
             )}
             {imageModal && (
-              <div className='absolute top-[34px] border shadow-md bg-white rounded-md p-4 w-[350px] z-10'>
+              <div className='absolute top-[34px] -right-4 md:left-0 border shadow-md bg-white rounded-md p-4 w-[300px] md:w-[380px] z-10'>
                 {isUploading ? (
-                  <div className='w-full h-full flex flex-col items-center justify-center space-y-2 cursor-pointer'>
+                  <div className='w-full h-full flex flex-col items-center justify-center space-y-2'>
                     <Image
                       src='/loader.gif'
                       alt='loading'
@@ -274,23 +273,25 @@ const TipTapEditor = ({ editor }: TipTapEditorProps) => {
                   </div>
                 ) : (
                   <>
-                    <div className='w-full h-full flex flex-col items-center justify-center space-y-2 cursor-pointer'>
+                    <div className='w-full space-y-2'>
+                      <p className='text-[10px] md:text-xs '>
+                        * 여러장 업로드는 텍스트 입력 창에
+                        직접 드래그앤 드롭해주세요.
+                      </p>
+                      <p className='text-[10px] md:text-xs pb-2'>
+                        * 파일 선택은 1장만 가능합니다.
+                      </p>
                       <input
-                        className='file:bg-mainLight file:text-main file:rounded-md file:rounded-tr-none file:rounded-br-none file:px-4 file:py-2 file:mr-4 file:border-none file:cursor-pointer hover:cursor-pointer border rounded-lg text-gray-400'
+                        className='text-xs md:text-base file:bg-mainLight file:text-main file:rounded-md file:rounded-tr-none file:rounded-br-none file:px-4 file:py-2 file:mr-4 file:border-none file:cursor-pointer hover:cursor-pointer border rounded-lg text-gray-400'
                         type='file'
                         onChange={handleImage}
-                        multiple
-                        accept='image/*'
+                        accept='image/png, image/jpeg, image/jpg'
                       />
                     </div>
-                    {/* TODO: 제발..나중에는 성공할 수 있길.. */}
-                    {/* <p className='text-xs leading-8 text-main'>
-                      * 여러장도 한번에 업로드 가능해요
-                    </p> */}
                     <div className='justify-end flex'>
                       <span
                         onClick={handleImageModal}
-                        className='mt-2 mr-2 bg-gray-300 text-white p-2 rounded-md hover:bg-gray-400 cursor-pointer'
+                        className='text-xs md:text-base mt-2 mr-2 bg-gray-300 text-white p-2 rounded-md hover:bg-gray-400 cursor-pointer'
                       >
                         취소
                       </span>
