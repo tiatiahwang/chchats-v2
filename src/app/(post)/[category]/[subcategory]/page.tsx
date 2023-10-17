@@ -5,7 +5,6 @@ import { db } from '@/lib/db';
 import { getAllCategories } from '@/lib/utils';
 import { PostListLoading } from '../page';
 import { Suspense } from 'react';
-import Ads from '@/components/Ads';
 
 export const dynamic = 'force-dynamic';
 export const fetchCache = 'force-no-store';
@@ -68,7 +67,6 @@ const page = async ({
           </div>
         </Suspense>
       </div>
-      <Ads />
     </>
   );
 };

@@ -350,6 +350,7 @@ const ProfileEdit = () => {
     }
 
     if (currentPassword && newPassword) {
+      //TODO: need to fix this
       // 현재 비밀번호와 새로운 비밀번호가 같으면 오류 메세지 출력
       if (currentPassword === newPassword) {
         return setErrorMessage(

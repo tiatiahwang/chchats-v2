@@ -1,9 +1,9 @@
 'use client';
 
 import { FC, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { Icons } from '@/components/Icons';
 import { Category, Subcategory } from '@prisma/client';
-import { useRouter } from 'next/navigation';
 
 interface category extends Category {
   subcategories: Subcategory[];
@@ -33,7 +33,7 @@ const WebSideBar: FC<WebSideBarProps> = ({
             >
               <div
                 className={`font-bold bg-main text-white py-2 px-4 hover:bg-mainDark ${
-                  category.id === 5
+                  category.id === 5 || category.id === 2
                     ? 'rounded-lg'
                     : 'rounded-t-lg'
                 }`}
@@ -59,6 +59,7 @@ const WebSideBar: FC<WebSideBarProps> = ({
               </div>
               <div>
                 {category.id !== 5 &&
+                  category.id !== 2 &&
                   category?.subcategories.map(
                     (subcategory) => (
                       <div
