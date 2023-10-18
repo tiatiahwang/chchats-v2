@@ -34,7 +34,7 @@ const PostCardList = ({
   const lastPostRef = useRef<HTMLElement>(null);
 
   const [selectedSubcategory, setSelectedsubcategory] =
-    useState<number>(currentSubcategory?.id ?? 0);
+    useState<number>(currentSubcategory?.id ?? -1);
 
   const { ref, entry } = useIntersection({
     root: lastPostRef.current,
@@ -83,25 +83,40 @@ const PostCardList = ({
 
   return (
     <>
-      {/* <ul className='flex items-center space-x-2 overflow-x-scroll scrollbar-hide py-2'>
-        {currentCategory &&
-          currentCategory.subcategories?.map((category) => (
-            <Link href={category.url} key={category.id}>
-              <li
-                className={`${
-                  selectedSubcategory === category.id
-                    ? 'bg-main text-white'
-                    : 'hover:bg-gray-100'
-                } p-2 rounded-md cursor-pointer inline whitespace-nowrap`}
-                onClick={() =>
-                  setSelectedsubcategory(category.id)
-                }
-              >
-                {category.name}
-              </li>
-            </Link>
-          ))}
-      </ul> */}
+      {currentCategory && currentCategory.id !== 5 && (
+        <ul className='flex items-center space-x-2 overflow-x-scroll scrollbar-hide py-2'>
+          <Link href={currentCategory.url}>
+            <li
+              className={`${
+                selectedSubcategory === -1
+                  ? 'bg-gray-200'
+                  : 'hover:bg-gray-100'
+              } p-2 rounded-md cursor-pointer inline whitespace-nowrap text-sm md:text-base`}
+            >
+              전체
+            </li>
+          </Link>
+          {currentCategory &&
+            currentCategory.subcategories?.map(
+              (category) => (
+                <Link href={category.url} key={category.id}>
+                  <li
+                    className={`${
+                      selectedSubcategory === category.id
+                        ? 'bg-gray-200'
+                        : 'hover:bg-gray-100'
+                    } p-2 rounded-md cursor-pointer inline whitespace-nowrap text-sm md:text-base`}
+                    onClick={() =>
+                      setSelectedsubcategory(category.id)
+                    }
+                  >
+                    {category.name}
+                  </li>
+                </Link>
+              ),
+            )}
+        </ul>
+      )}
       <div className='flex items-center justify-end'>
         {currentSubcategory?.categoryId === 5 ? (
           <>
