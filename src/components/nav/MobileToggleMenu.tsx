@@ -130,7 +130,7 @@ const MobileToggleMenu = () => {
                 지역소모임
               </p>
             </Link>
-            <Link href='/notice' onClick={onIconClick}>
+            <Link href='/notice/all' onClick={onIconClick}>
               <p className='px-2 leading-10 font-semibold hover:text-white hover:bg-main hover:rounded-md'>
                 공지사항
               </p>

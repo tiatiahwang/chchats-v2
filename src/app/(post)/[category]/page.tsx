@@ -1,6 +1,5 @@
 import WebSideBar from '@/components/WebSideBar';
 import PostCardList from '@/components/post/PostCardList';
-import QnaList from '@/components/qna/QnaList';
 import Skeleton from '@/components/ui/Skeleton';
 import { INFINITE_SCROLL_LIMIT } from '@/config';
 import { db } from '@/lib/db';
@@ -70,14 +69,10 @@ const page = async ({
         </h1>
         <Suspense fallback={<PostListLoading />}>
           <div className='space-y-2'>
-            {currentCategory?.id === 2 ? (
-              <QnaList currentCategory={currentCategory} />
-            ) : (
-              <PostCardList
-                initialPosts={posts}
-                currentCategory={currentCategory}
-              />
-            )}
+            <PostCardList
+              initialPosts={posts}
+              currentCategory={currentCategory}
+            />
           </div>
         </Suspense>
       </div>

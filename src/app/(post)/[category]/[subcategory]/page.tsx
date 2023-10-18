@@ -11,14 +11,18 @@ export const fetchCache = 'force-no-store';
 
 interface PageProps {
   params: {
+    category: string;
     subcategory: string;
   };
 }
 
 const page = async ({
-  params: { subcategory },
+  params: { category, subcategory },
 }: PageProps) => {
   const categories = await getAllCategories();
+  const currentCategory = categories.find(
+    (cate) => cate.ref === category,
+  );
   const currentSubcategory = await db.subcategory.findFirst(
     {
       where: {
@@ -62,6 +66,7 @@ const page = async ({
           <div className='space-y-2'>
             <PostCardList
               initialPosts={posts}
+              currentCategory={currentCategory}
               currentSubcategory={currentSubcategory!}
             />
           </div>

@@ -119,7 +119,7 @@ const subcategories = [
   },
   {
     name: '팔아요',
-    url: '/marekt/sell',
+    url: '/market/sell',
     ref: 'sell',
     isDefault: true,
     categoryId: 3,
