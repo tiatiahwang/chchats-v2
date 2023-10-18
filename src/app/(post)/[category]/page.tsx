@@ -1,4 +1,3 @@
-import Ads from '@/components/Ads';
 import WebSideBar from '@/components/WebSideBar';
 import PostCardList from '@/components/post/PostCardList';
 import Skeleton from '@/components/ui/Skeleton';
@@ -77,7 +76,6 @@ const page = async ({
           </div>
         </Suspense>
       </div>
-      <Ads />
     </>
   );
 };

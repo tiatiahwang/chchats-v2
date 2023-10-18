@@ -1,4 +1,3 @@
-import Ads from '@/components/Ads';
 import WebSideBar from '@/components/WebSideBar';
 import CommentSection from '@/components/comment/CommentSection';
 import PostDetail from '@/components/post/PostDetail';
@@ -104,7 +103,6 @@ const page = async ({ params: { id } }: PageProps) => {
           <CommentSection postId={post.id} />
         </Suspense>
       </div>
-      <Ads />
     </>
   );
 };

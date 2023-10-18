@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useIntersection } from '@mantine/hooks';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { INFINITE_SCROLL_LIMIT } from '@/config';
@@ -15,6 +15,7 @@ import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import { useCustomToast } from '@/hooks/use-custom-toast';
 import { Subcategory } from '@prisma/client';
+import Link from 'next/link';
 
 interface PostCardListProps {
   initialPosts: ExtendedPostWithUser[];
@@ -31,6 +32,9 @@ const PostCardList = ({
   const router = useRouter();
   const { loginToast } = useCustomToast();
   const lastPostRef = useRef<HTMLElement>(null);
+
+  const [selectedSubcategory, setSelectedsubcategory] =
+    useState<number>(currentSubcategory?.id ?? -1);
 
   const { ref, entry } = useIntersection({
     root: lastPostRef.current,
@@ -79,6 +83,40 @@ const PostCardList = ({
 
   return (
     <>
+      {currentCategory && currentCategory.id !== 5 && (
+        <ul className='flex items-center space-x-2 overflow-x-scroll scrollbar-hide py-2'>
+          <Link href={currentCategory.url}>
+            <li
+              className={`${
+                selectedSubcategory === -1
+                  ? 'bg-gray-200'
+                  : 'hover:bg-gray-100'
+              } p-2 rounded-md cursor-pointer inline whitespace-nowrap text-sm md:text-base`}
+            >
+              전체
+            </li>
+          </Link>
+          {currentCategory &&
+            currentCategory.subcategories?.map(
+              (category) => (
+                <Link href={category.url} key={category.id}>
+                  <li
+                    className={`${
+                      selectedSubcategory === category.id
+                        ? 'bg-gray-200'
+                        : 'hover:bg-gray-100'
+                    } p-2 rounded-md cursor-pointer inline whitespace-nowrap text-sm md:text-base`}
+                    onClick={() =>
+                      setSelectedsubcategory(category.id)
+                    }
+                  >
+                    {category.name}
+                  </li>
+                </Link>
+              ),
+            )}
+        </ul>
+      )}
       <div className='flex items-center justify-end'>
         {currentSubcategory?.categoryId === 5 ? (
           <>
