@@ -2,6 +2,7 @@ import Footer from '@/components/Footer';
 import NavBar from '@/components/nav/NavBar';
 import Providers from '@/components/Providers';
 import ToastProvider from '@/components/ToastProvider';
+import { Locale } from '@/i18n.config';
 
 import '@/styles/globals.css';
 import 'react-toastify/dist/ReactToastify.css';
@@ -13,12 +14,16 @@ export const metadata = {
 
 export default function RootLayout({
   children,
+  params,
 }: {
   children: React.ReactNode;
+  params: { lang: Locale };
 }) {
   return (
     <html
-      lang='ko'
+      lang={params.lang}
+      suppressContentEditableWarning={true}
+      suppressHydrationWarning={true}
       className='bg-slate-50 text-slate-900 antialiased light box-border h-full'
     >
       <body
@@ -28,7 +33,7 @@ export default function RootLayout({
       >
         <Providers>
           <ToastProvider>
-            <NavBar />
+            <NavBar lang={params.lang} />
             <div className='max-w-7xl mx-auto h-full pt-12 box-border'>
               {children}
             </div>

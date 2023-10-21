@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { signOut } from 'next-auth/react';
 
-const WebNav = ({ session }: any) => {
+const WebNav = ({ session, text }: any) => {
   const [avatarClicked, setAvatarClicked] = useState(false);
   const onClickAvatar = () =>
     setAvatarClicked(!avatarClicked);
@@ -38,13 +38,13 @@ const WebNav = ({ session }: any) => {
             href='/login'
             className='py-2 px-4 rounded-2xl bg-transparent border border-main text-sm hover:bg-main hover:text-white'
           >
-            로그인
+            {text.login}
           </Link>
           <Link
             href='/join'
             className='py-2 px-4 rounded-2xl bg-main text-white border border-main text-sm hover:bg-mainDark hover:border-mainDark'
           >
-            회원가입
+            {text.join}
           </Link>
         </div>
       )}

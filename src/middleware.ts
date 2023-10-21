@@ -3,8 +3,33 @@ import {
   type NextRequest,
   NextResponse,
 } from 'next/server';
+import { i18n } from './i18n.config';
+import Negotiator from 'negotiator';
+import { match } from '@formatjs/intl-localematcher';
 
 const secret = process.env.JWT_SECRET;
+
+function getLocale(request: NextRequest) {
+  const negotiatorHeaders: Record<string, string> = {};
+  request.headers.forEach(
+    (value, key) => (negotiatorHeaders[key] = value),
+  );
+
+  // @ts-ignore locales are readonly
+  const locales: string[] = i18n.locales;
+  const languages = new Negotiator({
+    headers: negotiatorHeaders,
+  })
+    .languages()
+    .reverse();
+
+  const locale = match(
+    languages,
+    locales,
+    i18n.defaultLocale,
+  );
+  return locale;
+}
 
 export async function middleware(req: NextRequest) {
   // 'next-auth.session-token' 쿠키가 존재할 때
@@ -15,6 +40,24 @@ export async function middleware(req: NextRequest) {
   });
 
   const { pathname } = req.nextUrl;
+
+  const pathnameWithoutLocale = i18n.locales.every(
+    (locale) =>
+      !pathname.startsWith(`/${locale}`) &&
+      pathname !== `/${locale}`,
+  );
+
+  if (pathnameWithoutLocale) {
+    const locale = getLocale(req);
+    return NextResponse.redirect(
+      new URL(
+        `/${locale}${
+          pathname.startsWith('/') ? '' : '/'
+        }${pathname}`,
+        req.url,
+      ),
+    );
+  }
 
   // token이 없는데, 로그인이 필요한 페이지들로 이동하려고 할때 로그인 페이지로 강제 이동
   if (!token) {
