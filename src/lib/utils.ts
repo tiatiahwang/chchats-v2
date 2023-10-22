@@ -1,6 +1,6 @@
 import { db } from './db';
 
-export const getAllCategories = async () => {
+export const getAllCategories = async (lang: string) => {
   const categories = await db.category.findMany({
     where: { isDefault: true },
     include: {

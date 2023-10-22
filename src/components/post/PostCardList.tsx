@@ -18,12 +18,14 @@ import { Subcategory } from '@prisma/client';
 import Link from 'next/link';
 
 interface PostCardListProps {
+  lang: string;
   initialPosts: ExtendedPostWithUser[];
   currentCategory?: ExtendedCategory;
   currentSubcategory?: Subcategory;
 }
 
 const PostCardList = ({
+  lang,
   initialPosts,
   currentCategory,
   currentSubcategory,
@@ -93,7 +95,7 @@ const PostCardList = ({
                   : 'hover:bg-gray-100'
               } p-2 rounded-md cursor-pointer inline whitespace-nowrap text-sm md:text-base`}
             >
-              전체
+              {lang === 'en' ? 'all' : '전체'}
             </li>
           </Link>
           {currentCategory &&
@@ -110,7 +112,9 @@ const PostCardList = ({
                       setSelectedsubcategory(category.id)
                     }
                   >
-                    {category.name}
+                    {lang === 'en'
+                      ? category.eng
+                      : category.name}
                   </li>
                 </Link>
               ),
@@ -129,7 +133,7 @@ const PostCardList = ({
                   );
                 }}
               >
-                글쓰기
+                {lang === 'en' ? 'Post' : '글쓰기'}
               </div>
             ) : null}
           </>
@@ -152,7 +156,7 @@ const PostCardList = ({
               }
             }}
           >
-            글쓰기
+            {lang === 'en' ? 'Post' : '글쓰기'}
           </div>
         )}
       </div>
@@ -186,7 +190,9 @@ const PostCardList = ({
           </>
         ) : (
           <div className='flex w-full justify-center'>
-            아직 남겨진 글이 없습니다.
+            {lang === 'en'
+              ? 'No posts yet.'
+              : '아직 남겨진 글이 없습니다.'}
           </div>
         )}
         {isFetchingNextPage ? (

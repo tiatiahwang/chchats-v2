@@ -24,12 +24,13 @@ export const PostListLoading = () => {
 
 interface PageProps {
   params: {
+    lang: string;
     category: string;
   };
 }
 
 const page = async ({
-  params: { category },
+  params: { lang, category },
 }: PageProps) => {
   const categories = await getAllCategories();
   const currentCategory = categories.find(
@@ -62,14 +63,20 @@ const page = async ({
 
   return (
     <>
-      <WebSideBar categories={categories} />
+      <WebSideBar
+        lang={lang ?? 'en'}
+        categories={categories}
+      />
       <div className='w-full md:px-4'>
         <h1 className='font-bold text-3xl md:text-4xl h-14'>
-          {currentCategory?.name}
+          {lang === 'en'
+            ? currentCategory?.eng
+            : currentCategory?.name}
         </h1>
         <Suspense fallback={<PostListLoading />}>
           <div className='space-y-2'>
             <PostCardList
+              lang={lang ?? 'en'}
               initialPosts={posts}
               currentCategory={currentCategory}
             />

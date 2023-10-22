@@ -122,6 +122,7 @@ model Comment {
 model Category {
   id            Int       @id @default(autoincrement())
   name          String    @unique
+  eng           String    @unique 
   url           String
   description   String?
   ref           String?
@@ -133,6 +134,7 @@ model Category {
 model Subcategory {
   id          Int       @id @default(autoincrement())
   name        String    @unique
+  eng         String    @unique
   url         String
   ref         String?
   isDefault   Boolean   @default(false)

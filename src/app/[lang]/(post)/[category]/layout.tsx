@@ -17,6 +17,7 @@ const Layout = async ({
   if (!isValid) {
     return <NotFound />;
   }
+
   return <div className='flex px-2'>{children}</div>;
 };
 
