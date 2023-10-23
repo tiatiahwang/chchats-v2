@@ -3,5 +3,33 @@
     "login": "Login",
     "join": "Register",
     "search": "search"
+  },
+  "auth": {
+    "subtitle": "Community website for Koreans living in U.S.",
+    "google": {
+      "button": "login with Google",
+      "loading": "loading"
+    },
+    "custom": {
+      "email": "Email",
+      "password": "Password",
+      "button": "Login"
+    },
+    "join": {
+      "email": "Email",
+      "password": "Password",
+      "nickname": "Nickname",
+      "button": "Join"
+    },
+    "bottom": {
+      "loginPage": {
+        "text": "Don't have an account yet?",
+        "link": "Create one."
+      },
+      "joinPage": {
+        "text": "Already have an account?",
+        "link": "Login"
+      }
+    }
   }
 }

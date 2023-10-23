@@ -3,5 +3,33 @@
     "login": "로그인",
     "join": "회원가입",
     "search": "검색"
+  },
+  "auth": {
+    "subtitle": "미주 한인 커뮤니티 사이트 입니다.",
+    "google": {
+      "button": "Google 계정으로 로그인",
+      "loading": "로딩중"
+    },
+    "custom": {
+      "email": "이메일",
+      "password": "비밀번호",
+      "button": "로그인"
+    },
+    "join": {
+      "email": "이메일",
+      "password": "비밀번호",
+      "nickname": "닉네임",
+      "button": "회원가입"
+    },
+    "bottom": {
+      "loginPage": {
+        "text": "아직 계정이 없으신가요?",
+        "link": "회원가입"
+      },
+      "joinPage": {
+        "text": "이미 계정이 있으신가요?",
+        "link": "로그인"
+      }
+    }
   }
 }

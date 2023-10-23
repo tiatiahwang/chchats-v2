@@ -1,9 +1,18 @@
 import GoogleLogIn from '@/components/auth/GoogleLogIn';
 import LogIn from '@/components/auth/LogIn';
+import { Locale } from '@/i18n.config';
+import { getDictionary } from '@/lib/dictionary';
 import Image from 'next/image';
 import Link from 'next/link';
 
-const Page = () => {
+const Page = async ({
+  params,
+}: {
+  params: { lang: Locale };
+}) => {
+  const lang = params.lang ?? 'en';
+  const { auth } = await getDictionary(lang);
+
   return (
     <div className='my-10 md:my-20 mx-4 md:mx-0'>
       <div className='h-full max-w-sm w-full mx-auto flex flex-col items-center justify-center'>
@@ -19,11 +28,11 @@ const Page = () => {
           Welcome to CHCHATS!
         </h1>
         <p className='text-sm text-gray-600'>
-          미주 한인 커뮤니티 사이트 입니다.
+          {auth.subtitle}
         </p>
         <div className='pt-12 w-full'>
           {/* 구글 로그인 */}
-          <GoogleLogIn />
+          <GoogleLogIn text={auth.google} />
           <div className='mt-8'>
             <div className='relative'>
               <div className='absolute w-full border-t' />
@@ -35,15 +44,15 @@ const Page = () => {
             </div>
           </div>
           {/* 커스텀 로그인 */}
-          <LogIn />
+          <LogIn text={auth.custom} />
         </div>
         <div className='text-sm mt-8'>
-          아직 계정이 없으신가요?{' '}
+          {auth.bottom.loginPage.text}{' '}
           <Link
             href='/join'
             className='text-main underline'
           >
-            회원가입
+            {auth.bottom.loginPage.link}
           </Link>
         </div>
       </div>

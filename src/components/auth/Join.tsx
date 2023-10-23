@@ -16,7 +16,16 @@ interface FormProps {
   username: string;
 }
 
-const Join = () => {
+interface JoinProps {
+  text: {
+    email: string;
+    password: string;
+    nickname: string;
+    button: string;
+  };
+}
+
+const Join = ({ text }: JoinProps) => {
   const router = useRouter();
   const {
     register,
@@ -73,7 +82,7 @@ const Join = () => {
       <div>
         <div className='mb-4 space-y-1'>
           <label htmlFor='email' className='text-sm'>
-            이메일
+            {text.email}
           </label>
           <input
             {...register('email')}
@@ -94,7 +103,7 @@ const Join = () => {
         </div>
         <div className='mb-4 space-y-1'>
           <label htmlFor='password' className='text-sm'>
-            비밀번호
+            {text.password}
           </label>
           <div className='flex items-center border rounded-lg p-2'>
             <input
@@ -132,7 +141,7 @@ const Join = () => {
         </div>
         <div className='space-y-1'>
           <label htmlFor='username' className='text-sm'>
-            닉네임
+            {text.nickname}
           </label>
           <input
             {...register('username', {
@@ -162,7 +171,7 @@ const Join = () => {
       )}
       <Button
         type='auth'
-        text='회원가입'
+        text={text.button}
         className='mt-4'
         width='w-full'
         disabled={!isValid || isLoading}

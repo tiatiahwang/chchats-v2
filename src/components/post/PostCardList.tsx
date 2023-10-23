@@ -11,7 +11,7 @@ import {
   ExtendedPostWithUser,
 } from '@/types/db';
 import Image from 'next/image';
-import { usePathname, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import { useCustomToast } from '@/hooks/use-custom-toast';
 import { Subcategory } from '@prisma/client';
