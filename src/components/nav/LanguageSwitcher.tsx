@@ -1,10 +1,10 @@
 'use client';
 
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 const LanguageSwitcher = () => {
+  const router = useRouter();
   const pathname = usePathname();
   const [showDropdown, setShowDropdown] = useState(false);
 
@@ -13,6 +13,11 @@ const LanguageSwitcher = () => {
     const segments = pathname.split('/');
     segments[1] = locale;
     return segments.join('/');
+  };
+
+  const refreshPage = (locale: string) => {
+    const url = redirectedPathname(locale);
+    router.push(url);
   };
 
   return (
@@ -42,19 +47,20 @@ const LanguageSwitcher = () => {
       {showDropdown && (
         <div className='z-50 absolute top-10 bg-white rounded-lg w-full'>
           <ul className='py-2'>
-            <li className='block px-4 py-2 hover:bg-gray-100 cursor-pointer'>
-              <Link href={redirectedPathname('en')}>
-                {pathname.includes('ko')
-                  ? '영어'
-                  : 'English'}
-              </Link>
+            <li
+              className='block px-4 py-2 hover:bg-gray-100 cursor-pointer'
+              onClick={() => refreshPage('en')}
+            >
+              {pathname.includes('ko') ? '영어' : 'English'}
             </li>
-            <li className='block px-4 py-2 hover:bg-gray-100 cursor-pointer'>
-              <Link href={redirectedPathname('ko')}>
-                {pathname.includes('ko')
-                  ? '한국어'
-                  : 'Korean'}
-              </Link>
+
+            <li
+              className='block px-4 py-2 hover:bg-gray-100 cursor-pointer'
+              onClick={() => refreshPage('ko')}
+            >
+              {pathname.includes('ko')
+                ? '한국어'
+                : 'Korean'}
             </li>
           </ul>
         </div>

@@ -38,7 +38,10 @@ export default async function Home({
                   {lang === 'en' ? 'see all' : '전체보기'}
                 </span>
               </Link>
-              <PostList categoryId={category.id} />
+              <PostList
+                lang={lang}
+                categoryId={category.id}
+              />
             </div>
           ))}
         </div>

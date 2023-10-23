@@ -11,7 +11,7 @@ import {
   ExtendedPostWithUser,
 } from '@/types/db';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import { useCustomToast } from '@/hooks/use-custom-toast';
 import { Subcategory } from '@prisma/client';
@@ -32,6 +32,7 @@ const PostCardList = ({
 }: PostCardListProps) => {
   const { data: session } = useSession();
   const router = useRouter();
+
   const { loginToast } = useCustomToast();
   const lastPostRef = useRef<HTMLElement>(null);
 
@@ -87,7 +88,7 @@ const PostCardList = ({
     <>
       {currentCategory && currentCategory.id !== 5 && (
         <ul className='flex items-center space-x-2 overflow-x-scroll scrollbar-hide py-2'>
-          <Link href={currentCategory.url}>
+          <Link href={`/${lang}${currentCategory.url}`}>
             <li
               className={`${
                 selectedSubcategory === -1
@@ -101,7 +102,10 @@ const PostCardList = ({
           {currentCategory &&
             currentCategory.subcategories?.map(
               (category) => (
-                <Link href={category.url} key={category.id}>
+                <Link
+                  href={`/${lang}${category.url}`}
+                  key={category.id}
+                >
                   <li
                     className={`${
                       selectedSubcategory === category.id

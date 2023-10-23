@@ -11,13 +11,14 @@ export const fetchCache = 'force-no-store';
 
 interface PageProps {
   params: {
+    lang: string;
     category: string;
     subcategory: string;
   };
 }
 
 const page = async ({
-  params: { category, subcategory },
+  params: { lang, category, subcategory },
 }: PageProps) => {
   const categories = await getAllCategories();
   const currentCategory = categories.find(
@@ -57,14 +58,24 @@ const page = async ({
 
   return (
     <>
-      <WebSideBar categories={categories} />
+      <WebSideBar
+        lang={lang ?? 'en'}
+        categories={categories}
+      />
       <div className='w-full md:px-4'>
         <h1 className='font-bold text-3xl md:text-4xl h-14'>
-          {currentSubcategory?.name}
+          {lang === 'en'
+            ? `${currentSubcategory?.eng
+                .slice(0, 1)
+                .toUpperCase()}${currentSubcategory?.eng.slice(
+                1,
+              )}`
+            : currentSubcategory?.name}
         </h1>
         <Suspense fallback={<PostListLoading />}>
           <div className='space-y-2'>
             <PostCardList
+              lang={lang ?? 'en'}
               initialPosts={posts}
               currentCategory={currentCategory}
               currentSubcategory={currentSubcategory!}
