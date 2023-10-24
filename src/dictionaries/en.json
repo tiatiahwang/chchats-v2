@@ -84,5 +84,10 @@
       "nocomment": "No comments yet.",
       "noscrap": "No scraps yet."
     }
+  },
+  "search": {
+    "noword": "Please type search word.",
+    "noresult": "No Results.",
+    "result": "search results"
   }
 }

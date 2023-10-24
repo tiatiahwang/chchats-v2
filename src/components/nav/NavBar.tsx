@@ -34,7 +34,7 @@ const NavBar = async ({ lang }: { lang: Locale }) => {
         </div>
         {/* 웹 - 우측 서칭인풋+프로필 */}
         <div className='hidden md:flex md:items-center md:space-x-4'>
-          <Search text={topnav.search} />
+          <Search lang={lang} text={topnav.search} />
           <LanguageSwitcher />
           <WebNav text={topnav} session={session} />
         </div>

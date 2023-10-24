@@ -7,3 +7,9 @@ export type Activities = {
   nocomment: string;
   noscrap: string;
 };
+
+export type Search = {
+  noword: string;
+  noresult: string;
+  result: string;
+};
