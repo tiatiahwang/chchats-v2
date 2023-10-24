@@ -1,7 +1,9 @@
+import { Suspense } from 'react';
 import NewPost from '@/components/post/NewPost';
 import Skeleton from '@/components/ui/Skeleton';
+import { Locale } from '@/i18n.config';
 import { getAllCategories } from '@/lib/utils';
-import { Suspense } from 'react';
+import { getDictionary } from '@/lib/dictionary';
 
 const NewPostLoading = () => {
   return (
@@ -25,10 +27,13 @@ const NewPostLoading = () => {
 };
 
 const Page = async ({
-  params: { category },
+  params: { lang, category },
 }: {
-  params: { category: string };
+  params: { lang: Locale; category: string };
 }) => {
+  const {
+    post: { create },
+  } = await getDictionary(lang ?? 'en');
   const categories = await getAllCategories();
   const currentCategory = categories.find(
     (cate) => cate.ref === category,
@@ -36,6 +41,8 @@ const Page = async ({
   return (
     <Suspense fallback={<NewPostLoading />}>
       <NewPost
+        lang={lang ?? 'en'}
+        text={create}
         categories={categories}
         currentCategory={currentCategory!}
       />

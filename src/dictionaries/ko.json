@@ -31,5 +31,17 @@
         "link": "로그인"
       }
     }
+  },
+  "post": {
+    "create": {
+      "title": "새로운 글 작성하기",
+      "subtitle": "카테고리 선택",
+      "category": "메인 카테고리",
+      "subcategory": "서브 카테고리",
+      "editor": {
+        "title": "제목",
+        "placeholder": "여기에 내용을 입력해 주세요."
+      }
+    }
   }
 }

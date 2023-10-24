@@ -31,5 +31,16 @@
         "link": "Login"
       }
     }
+  },
+  "post": {
+    "create": {
+      "subtitle": "Select Category",
+      "category": "main category",
+      "subcategory": "sub category",
+      "editor": {
+        "title": "Title",
+        "placeholder": "type contents here."
+      }
+    }
   }
 }
