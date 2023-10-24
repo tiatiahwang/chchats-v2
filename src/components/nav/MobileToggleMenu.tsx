@@ -1,18 +1,40 @@
 'use client';
 
 import { useState } from 'react';
-import { Icons } from '../Icons';
 import Link from 'next/link';
 import { signOut, useSession } from 'next-auth/react';
 import Image from 'next/image';
-import Button from '../ui/Button';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 
-const MobileToggleMenu = () => {
+import { Icons } from '@/components/Icons';
+import Button from '@/components/ui/Button';
+import { MobileNav } from '@/types/dictionary';
+
+interface MobileToggleMenuProps {
+  lang: string;
+  text: MobileNav;
+}
+const MobileToggleMenu = ({
+  lang,
+  text,
+}: MobileToggleMenuProps) => {
   const router = useRouter();
+  const pathname = usePathname();
   const { data: session } = useSession();
   const [iconClicked, setIconClicked] = useState(false);
   const onIconClick = () => setIconClicked(!iconClicked);
+
+  const redirectedPathname = (locale: string) => {
+    if (!pathname) return '/';
+    const segments = pathname.split('/');
+    segments[1] = locale;
+    return segments.join('/');
+  };
+
+  const refreshPage = (locale: string) => {
+    const url = redirectedPathname(locale);
+    router.push(url);
+  };
   return (
     <>
       <div
@@ -27,6 +49,7 @@ const MobileToggleMenu = () => {
       </div>
       {iconClicked && (
         <div className='top-[56px] left-0 absolute z-10 w-full shadow-md bg-slate-50'>
+          {/* user info */}
           <div className='border-b px-4 py-6 space-x-4 text-sm'>
             {session?.user ? (
               <div className='flex items-center justify-between'>
@@ -67,7 +90,7 @@ const MobileToggleMenu = () => {
                   </Link> */}
                   <Button
                     type='base'
-                    text='내 계정'
+                    text={text.profile.myaccount}
                     width='w-fit'
                     onClick={() => {
                       router.push('/profile');
@@ -76,7 +99,7 @@ const MobileToggleMenu = () => {
                   />
                   <Button
                     type='base'
-                    text='로그아웃'
+                    text={text.profile.logout}
                     width='w-fit'
                     onClick={() => {
                       signOut({
@@ -93,18 +116,47 @@ const MobileToggleMenu = () => {
                   onClick={onIconClick}
                   className='py-2 px-4 rounded-2xl bg-main text-white hover:bg-mainDark'
                 >
-                  로그인
+                  {text.auth.login}
                 </Link>
                 <Link
                   href='/join'
                   onClick={onIconClick}
                   className='py-2 px-4 rounded-2xl bg-main text-white hover:bg-mainDark'
                 >
-                  회원가입
+                  {text.auth.join}
                 </Link>
               </>
             )}
           </div>
+          {/* language */}
+          <div className='border-b px-4 py-6 space-x-4 text-sm flex items-center justify-between'>
+            <div>
+              {lang === 'en' ? 'Language' : '언어 선택'}
+            </div>
+            <div className='flex space-x-2 items-center'>
+              <div
+                onClick={() => refreshPage('en')}
+                className={`rounded-md p-2 text-sm cursor-pointer ${
+                  pathname.includes('en')
+                    ? 'bg-main text-white hover:bg-mainDark'
+                    : 'border border-main hover:bg-main hover:text-white'
+                }`}
+              >
+                {lang === 'en' ? 'English' : '영어'}
+              </div>
+              <div
+                onClick={() => refreshPage('ko')}
+                className={`border-main rounded-md p-2 text-sm cursor-pointer ${
+                  pathname.includes('ko')
+                    ? 'bg-main text-white hover:bg-mainDark'
+                    : 'border border-main hover:bg-main hover:text-white'
+                }`}
+              >
+                {lang === 'en' ? 'Korean' : '한국어'}
+              </div>
+            </div>
+          </div>
+          {/* categories */}
           <div
             className={`px-2 my-2 ${
               iconClicked ? '' : 'hidden'
@@ -112,27 +164,27 @@ const MobileToggleMenu = () => {
           >
             <Link href='/board' onClick={onIconClick}>
               <p className='px-2 leading-10 font-semibold hover:text-white hover:bg-main hover:rounded-md'>
-                자유게시판
+                {text.category.board}
               </p>
             </Link>
             <Link href='/qna' onClick={onIconClick}>
               <p className='px-2 leading-10 font-semibold hover:text-white hover:bg-main hover:rounded-md'>
-                묻고답하기
+                {text.category.qna}
               </p>
             </Link>
             <Link href='/market' onClick={onIconClick}>
               <p className='px-2 leading-10 font-semibold hover:text-white hover:bg-main hover:rounded-md'>
-                온라인마켓
+                {text.category.market}
               </p>
             </Link>
             <Link href='/region' onClick={onIconClick}>
               <p className='px-2 leading-10 font-semibold hover:text-white hover:bg-main hover:rounded-md'>
-                지역소모임
+                {text.category.region}
               </p>
             </Link>
             <Link href='/notice/all' onClick={onIconClick}>
               <p className='px-2 leading-10 font-semibold hover:text-white hover:bg-main hover:rounded-md'>
-                공지사항
+                {text.category.notice}
               </p>
             </Link>
           </div>

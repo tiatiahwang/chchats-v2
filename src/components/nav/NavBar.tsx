@@ -9,7 +9,7 @@ import { getDictionary } from '@/lib/dictionary';
 import LanguageSwitcher from './LanguageSwitcher';
 
 const NavBar = async ({ lang }: { lang: Locale }) => {
-  const { topnav } = await getDictionary(lang);
+  const { topnav, mobilenav } = await getDictionary(lang);
   const session = await getAuthSession();
 
   return (
@@ -30,7 +30,7 @@ const NavBar = async ({ lang }: { lang: Locale }) => {
         </div>
         {/* 모바일 - 우측 햄버거 아이콘 */}
         <div className='md:hidden'>
-          <MobileToggleMenu />
+          <MobileToggleMenu lang={lang} text={mobilenav} />
         </div>
         {/* 웹 - 우측 서칭인풋+프로필 */}
         <div className='hidden md:flex md:items-center md:space-x-4'>

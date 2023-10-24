@@ -9,6 +9,23 @@
       "logout": "로그아웃"
     }
   },
+  "mobilenav": {
+    "auth": {
+      "login": "로그인",
+      "join": "회원가입"
+    },
+    "profile": {
+      "myaccount": "내 계정",
+      "logout": "로그아웃"
+    },
+    "category": {
+      "board": "자유게시판",
+      "qna": "묻고답하기",
+      "market": "온라인마켓",
+      "region": "지역소모임",
+      "notice": "공지사항"
+    }
+  },
   "auth": {
     "subtitle": "미주 한인 커뮤니티 사이트 입니다.",
     "google": {

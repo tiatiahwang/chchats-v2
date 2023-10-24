@@ -9,6 +9,23 @@
       "logout": "Logout"
     }
   },
+  "mobilenav": {
+    "auth": {
+      "login": "Login",
+      "join": "Register"
+    },
+    "profile": {
+      "myaccount": "My Account",
+      "logout": "Logout"
+    },
+    "category": {
+      "board": "Board",
+      "qna": "Qna",
+      "market": "Market",
+      "region": "Region",
+      "notice": "Notice"
+    }
+  },
   "auth": {
     "subtitle": "Community website for Koreans living in U.S.",
     "google": {
