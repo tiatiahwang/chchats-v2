@@ -1,10 +1,10 @@
 'use client';
 
-import Image from 'next/image';
-import { Icons } from '../Icons';
-import Link from 'next/link';
 import { useState } from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
 import { signOut } from 'next-auth/react';
+import { Icons } from '../Icons';
 
 const WebNav = ({ session, text }: any) => {
   const [avatarClicked, setAvatarClicked] = useState(false);
@@ -60,12 +60,14 @@ const WebNav = ({ session, text }: any) => {
               onClick={onClickAvatar}
             >
               <div className='leading-10 hover:text-main hover:rounded-md border-b-[1px]'>
-                <p className='px-4'>프로필 수정</p>
+                <p className='px-4'>{text.profile.edit}</p>
               </div>
             </Link>
             <Link href='/profile' onClick={onClickAvatar}>
               <div className='leading-10 hover:text-main hover:rounded-md border-b-[1px]'>
-                <p className='px-4'>활동 내역</p>
+                <p className='px-4'>
+                  {text.profile.activity}
+                </p>
               </div>
             </Link>
             <div
@@ -76,7 +78,7 @@ const WebNav = ({ session, text }: any) => {
                 })
               }
             >
-              <p className='px-4'>로그아웃</p>
+              <p className='px-4'>{text.profile.logout}</p>
             </div>
           </div>
         </div>

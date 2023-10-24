@@ -2,7 +2,12 @@
   "topnav": {
     "login": "Login",
     "join": "Register",
-    "search": "search"
+    "search": "search",
+    "profile": {
+      "edit": "Edit Profile",
+      "activity": "Activities",
+      "logout": "Logout"
+    }
   },
   "auth": {
     "subtitle": "Community website for Koreans living in U.S.",
@@ -40,6 +45,34 @@
       "editor": {
         "title": "Title",
         "placeholder": "type contents here."
+      }
+    }
+  },
+  "profile": {
+    "edit": {
+      "info": {
+        "title": "Info",
+        "avatar": "change",
+        "button": "change",
+        "email": "Email",
+        "unchangeable": "unchangeable",
+        "verify": "verify",
+        "verified": "verified",
+        "nickname": "Nickname",
+        "loading": "loading"
+      },
+      "password": {
+        "title": "Password",
+        "current": "Current Password",
+        "new": "New Password",
+        "button": "change",
+        "loading": "loading"
+      },
+      "delete": {
+        "title": "Delete",
+        "agreement": "I understand and agree with the above.",
+        "button": "delete",
+        "loading": "loading"
       }
     }
   }

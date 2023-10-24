@@ -2,7 +2,12 @@
   "topnav": {
     "login": "로그인",
     "join": "회원가입",
-    "search": "검색"
+    "search": "검색",
+    "profile": {
+      "edit": "프로필 수정",
+      "activity": "활동 내역",
+      "logout": "로그아웃"
+    }
   },
   "auth": {
     "subtitle": "미주 한인 커뮤니티 사이트 입니다.",
@@ -34,13 +39,40 @@
   },
   "post": {
     "create": {
-      "title": "새로운 글 작성하기",
       "subtitle": "카테고리 선택",
       "category": "메인 카테고리",
       "subcategory": "서브 카테고리",
       "editor": {
         "title": "제목",
         "placeholder": "여기에 내용을 입력해 주세요."
+      }
+    }
+  },
+  "profile": {
+    "edit": {
+      "info": {
+        "title": "계정 정보",
+        "avatar": "사진 변경",
+        "button": "변경하기",
+        "email": "이메일",
+        "unchangeable": "변경불가",
+        "verify": "인증하기",
+        "verified": "인증완료",
+        "nickname": "닉네임",
+        "loading": "로딩중"
+      },
+      "password": {
+        "title": "비밀번호 변경",
+        "current": "현재 비밀번호",
+        "new": "새로운 비밀번호",
+        "button": "변경하기",
+        "loading": "로딩중"
+      },
+      "delete": {
+        "title": "회원 탈퇴",
+        "agreement": "해당 사항을 숙지하였으며, 동의합니다.",
+        "button": "회원 탈퇴",
+        "loading": "로딩중"
       }
     }
   }

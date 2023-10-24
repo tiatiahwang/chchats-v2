@@ -1,6 +1,8 @@
+import { Suspense } from 'react';
 import ProfileEdit from '@/components/profile/ProfileEdit';
 import Skeleton from '@/components/ui/Skeleton';
-import { Suspense } from 'react';
+import { Locale } from '@/i18n.config';
+import { getDictionary } from '@/lib/dictionary';
 
 const ProfileEditLoading = () => {
   return (
@@ -33,10 +35,18 @@ const ProfileEditLoading = () => {
   );
 };
 
-const Page = async () => {
+const Page = async ({
+  params,
+}: {
+  params: { lang: Locale };
+}) => {
+  const lang = params.lang ?? 'en';
+  const {
+    profile: { edit },
+  } = await getDictionary(lang);
   return (
     <Suspense fallback={<ProfileEditLoading />}>
-      <ProfileEdit />
+      <ProfileEdit lang={lang} text={edit} />
     </Suspense>
   );
 };
