@@ -5,14 +5,16 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import Image from 'next/image';
 import { User } from 'next-auth';
+import { Activities } from '@/types/dictionary';
 
 interface ProfileNavProps {
+  text: Activities;
   user: User & {
     username: string | null;
   };
 }
 
-const ProfileNav = ({ user }: ProfileNavProps) => {
+const ProfileNav = ({ text, user }: ProfileNavProps) => {
   const pathname = usePathname();
 
   return (
@@ -49,21 +51,22 @@ const ProfileNav = ({ user }: ProfileNavProps) => {
               className='p-2 rounded-md bg-main text-white hover:bg-mainDark text-sm'
               href='/profile/edit'
             >
-              프로필 수정
+              {text.button}
             </Link>
           </div>
         </div>
       ) : null}
+      {/* profile nav */}
       <div className='flex items-center justify-start gap-x-6 border-b text-sm my-6 font-medium'>
         <Link href='/profile' className='pb-4'>
           <span
             className={`${
-              pathname.split('/').length === 2
+              pathname.split('/').length === 3
                 ? 'border-b-[3px] border-main text-main'
                 : 'hover:border-b-[3px] hover:border-mainDark hover:text-mainDark'
             } pb-4 px-2`}
           >
-            내가 쓴 글
+            {text.myposts}
           </span>
         </Link>
         <Link href='/profile/mycomment' className='pb-4'>
@@ -74,7 +77,7 @@ const ProfileNav = ({ user }: ProfileNavProps) => {
                 : 'hover:border-b-[3px] hover:border-mainDark hover:text-mainDark'
             } pb-4 px-2`}
           >
-            나의 댓글
+            {text.mycomments}
           </span>
         </Link>
         <Link href='/profile/myscrap' className='pb-4'>
@@ -85,7 +88,7 @@ const ProfileNav = ({ user }: ProfileNavProps) => {
                 : 'hover:border-b-[3px] hover:border-mainDark hover:text-mainDark'
             } pb-4 px-2`}
           >
-            스크랩
+            {text.myscrap}
           </span>
         </Link>
       </div>

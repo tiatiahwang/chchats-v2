@@ -1,11 +1,20 @@
 import MyComment from '@/components/profile/MyComment';
 import ProfileNav from '@/components/profile/ProfileNav';
+import { Locale } from '@/i18n.config';
 import { getAuthSession } from '@/lib/auth';
 import { db } from '@/lib/db';
+import { getDictionary } from '@/lib/dictionary';
 
-const Page = async () => {
+const Page = async ({
+  params,
+}: {
+  params: { lang: Locale };
+}) => {
+  const lang = params.lang ?? 'en';
+  const {
+    profile: { activities },
+  } = await getDictionary(lang);
   const session = await getAuthSession();
-
   const mycomments = await db.comment.findMany({
     where: {
       authorId: session?.user.id,
@@ -41,9 +50,15 @@ const Page = async () => {
   return (
     <div className='w-full px-4'>
       {session?.user ? (
-        <ProfileNav user={session?.user!} />
+        <ProfileNav
+          text={activities}
+          user={session?.user!}
+        />
       ) : null}
-      <MyComment initialComments={mycomments} />
+      <MyComment
+        text={activities}
+        initialComments={mycomments}
+      />
     </div>
   );
 };

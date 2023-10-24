@@ -74,6 +74,15 @@
         "button": "delete",
         "loading": "loading"
       }
+    },
+    "activities": {
+      "button": "Edit Profile",
+      "myposts": "my posts",
+      "mycomments": "my comments",
+      "myscrap": "scrap",
+      "nopost": "No posts yet.",
+      "nocomment": "No comments yet.",
+      "noscrap": "No scraps yet."
     }
   }
 }

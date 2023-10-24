@@ -2,6 +2,7 @@
 
 import { INFINITE_SCROLL_LIMIT } from '@/config';
 import { ExtendedScrap } from '@/types/db';
+import { Activities } from '@/types/dictionary';
 import { useIntersection } from '@mantine/hooks';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import axios from 'axios';
@@ -10,10 +11,11 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useRef } from 'react';
 
 interface MyScrapProps {
+  text: Activities;
   initialScraps: ExtendedScrap[];
 }
 
-const MyScrap = ({ initialScraps }: MyScrapProps) => {
+const MyScrap = ({ text, initialScraps }: MyScrapProps) => {
   const lastPostRef = useRef<HTMLElement>(null);
 
   const { ref, entry } = useIntersection({
@@ -92,7 +94,7 @@ const MyScrap = ({ initialScraps }: MyScrapProps) => {
             </ul>
           ) : (
             <div className='text-sm flex justify-center p-4 w-full'>
-              스크랩 한 글이 없습니다.
+              {text.noscrap}
             </div>
           )}
           {isFetchingNextPage ? (
