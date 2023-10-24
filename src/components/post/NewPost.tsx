@@ -24,6 +24,16 @@ import { nanoid } from 'nanoid';
 import Image from 'next/image';
 
 interface NewpostProps {
+  lang: string;
+  text: {
+    subtitle: string;
+    category: string;
+    subcategory: string;
+    editor: {
+      title: string;
+      placeholder: string;
+    };
+  };
   post?: Post;
   categories: ExtendedCategory[];
   currentCategory: ExtendedCategory;
@@ -33,6 +43,8 @@ interface NewpostProps {
 const TODAY = new Date().toJSON().slice(0, 10);
 
 const NewPost = ({
+  lang,
+  text,
   post,
   categories,
   currentCategory,
@@ -75,7 +87,7 @@ const NewPost = ({
       StarterKit,
       EditorImage,
       Placeholder.configure({
-        placeholder: '여기에 내용을 입력해 주세요.',
+        placeholder: text.editor.placeholder,
         emptyEditorClass: 'is-editor-empty',
       }),
       Link.configure({
@@ -327,10 +339,10 @@ const NewPost = ({
   return (
     <>
       <div className='py-4 space-y-2'>
-        <h3 className='text-base'>카테고리 선택</h3>
+        <h3 className='text-base'>{text.subtitle}</h3>
         <div className='space-y-2 border-y-[1px] py-4'>
           <div className='md:flex md:items-center md:space-x-2 space-y-2 md:space-y-0'>
-            <h3>메인 카테고리</h3>
+            <h3>{text.category}</h3>
             <ul className='flex items-center overflow-x-scroll scrollbar-hide space-x-2'>
               {categories.map((category) => {
                 if (
@@ -350,14 +362,16 @@ const NewPost = ({
                       setSelectedCategory(category)
                     }
                   >
-                    {category.name}
+                    {lang === 'en'
+                      ? category.eng
+                      : category.name}
                   </li>
                 );
               })}
             </ul>
           </div>
           <div className='md:flex md:items-center md:space-x-2 space-y-2 md:space-y-0'>
-            <h3>서브 카테고리</h3>
+            <h3>{text.subcategory}</h3>
             <ul className='flex items-center overflow-x-scroll scrollbar-hide space-x-2'>
               {selectedCategory.subcategories.map(
                 (subcategory) => {
@@ -376,7 +390,9 @@ const NewPost = ({
                         )
                       }
                     >
-                      {subcategory.name}
+                      {lang === 'en'
+                        ? subcategory.eng
+                        : subcategory.name}
                     </li>
                   );
                 },
@@ -389,7 +405,7 @@ const NewPost = ({
         className='pb-4 w-full resize-none overflow-hidden bg-transparent text-xl md:text-3xl font-bold focus:outline-none'
         id='title'
         type='text'
-        placeholder='제목'
+        placeholder={text.editor.title}
         value={title}
         onChange={(e) => setTitle(e.target.value)}
       />

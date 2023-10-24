@@ -14,7 +14,15 @@ interface FormProps {
   password: string;
 }
 
-const LogIn = () => {
+interface LoginProps {
+  text: {
+    email: string;
+    password: string;
+    button: string;
+  };
+}
+
+const LogIn = ({ text }: LoginProps) => {
   const router = useRouter();
   const {
     register,
@@ -59,7 +67,7 @@ const LogIn = () => {
     >
       <div>
         <div className='mb-4 space-y-1'>
-          <label className='text-sm'>이메일</label>
+          <label className='text-sm'>{text.email}</label>
           <input
             {...register('email')}
             id='email'
@@ -79,7 +87,7 @@ const LogIn = () => {
         </div>
         <div className='space-y-1'>
           <label htmlFor='password' className='text-sm'>
-            비밀번호
+            {text.password}
           </label>
           <div className='flex items-center border rounded-lg p-2'>
             <input
@@ -124,7 +132,7 @@ const LogIn = () => {
       )}
       <Button
         type='auth'
-        text='로그인'
+        text={text.button}
         className='mt-4'
         width='w-full'
         disabled={!isValid || isLoading}

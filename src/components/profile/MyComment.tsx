@@ -2,6 +2,7 @@
 
 import { INFINITE_SCROLL_LIMIT } from '@/config';
 import { ExtendedCommentWithPost } from '@/types/db';
+import { Activities } from '@/types/dictionary';
 import { useIntersection } from '@mantine/hooks';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import axios from 'axios';
@@ -10,10 +11,14 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useRef } from 'react';
 
 interface MyCommentProps {
+  text: Activities;
   initialComments: ExtendedCommentWithPost[];
 }
 
-const MyComment = ({ initialComments }: MyCommentProps) => {
+const MyComment = ({
+  text,
+  initialComments,
+}: MyCommentProps) => {
   const lastPostRef = useRef<HTMLElement>(null);
 
   const { ref, entry } = useIntersection({
@@ -92,7 +97,7 @@ const MyComment = ({ initialComments }: MyCommentProps) => {
             </ul>
           ) : (
             <div className='text-sm flex justify-center p-4 w-full'>
-              아직 남기신 댓글이 없습니다.
+              {text.nocomment}
             </div>
           )}
         </>

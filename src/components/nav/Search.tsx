@@ -4,7 +4,12 @@ import { useForm } from 'react-hook-form';
 import { Icons } from '../Icons';
 import { useRouter } from 'next/navigation';
 
-const Search = () => {
+interface SearchProps {
+  lang: string;
+  text: string;
+}
+
+const Search = ({ lang, text }: SearchProps) => {
   const router = useRouter();
   const { register, handleSubmit, setValue } = useForm();
 
@@ -13,14 +18,16 @@ const Search = () => {
       <Icons.search className='w-3.5 h-3.5 text-gray-400' />
       <form
         onSubmit={handleSubmit((e) => {
-          router.push(`/search?keyword=${e.keyword}`);
+          router.push(
+            `/${lang}/search?keyword=${e.keyword}`,
+          );
           setTimeout(() => setValue('keyword', ''), 500);
         })}
       >
         <input
           className='bg-transparent focus:outline-none pl-2 focus:border-main '
           type='text'
-          placeholder='검색'
+          placeholder={text}
           {...register('keyword')}
         />
       </form>

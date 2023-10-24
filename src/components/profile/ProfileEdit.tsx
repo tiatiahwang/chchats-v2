@@ -53,7 +53,7 @@ const ProfileEditLoading = () => {
   );
 };
 
-const ProfileEdit = () => {
+const ProfileEdit = ({ lang, text }: any) => {
   const router = useRouter();
   const { data: session } = useSession();
   const { loginToast } = useCustomToast();
@@ -371,7 +371,7 @@ const ProfileEdit = () => {
     <div className='md:ml-4 md:border p-2 md:p-4 rounded-md'>
       <div className='md:grid md:grid-cols-3 gap-4 sm:space-y-4 md:space-y-0'>
         <div className='md:col-span-1 font-medium md:border-b-[1px] pb-4'>
-          계정 정보
+          {text.info.title}
         </div>
         <div className='bg-slate-100 md:col-span-2 rounded-md p-6 md:p-8'>
           <div className='flex flex-col'>
@@ -402,7 +402,7 @@ const ProfileEdit = () => {
                 htmlFor='avatar'
                 className='text-sm p-2 text-white rounded-md bg-main hover:bg-mainDark cursor-pointer mt-2 w-fit'
               >
-                사진 변경
+                {text.info.avatar}
               </label>
               <input
                 id='avatar'
@@ -419,9 +419,9 @@ const ProfileEdit = () => {
                 htmlFor='email'
                 className='block text-sm font-medium leading-5 text-gray-700'
               >
-                이메일
+                {text.info.email}
                 <span className='text-[10px] ml-1'>
-                  (변경불가)
+                  ({text.info.unchangeable})
                 </span>
               </label>
               <div className='flex flex-col md:flex-row md:justify-between'>
@@ -439,7 +439,7 @@ const ProfileEdit = () => {
                 {session?.user?.provider === 'GOOGLE' && (
                   <div className='flex justify-end items-center sm:w-full md:w-fit'>
                     <div className='bg-gray-300 text-white p-2 rounded-md text-sm cursor-default'>
-                      인증완료
+                      {text.info.verified}
                     </div>
                   </div>
                 )}
@@ -455,7 +455,7 @@ const ProfileEdit = () => {
                         isLoading={false}
                         width='w-fit'
                         className='mt-2'
-                        text='인증하기'
+                        text={text.info.verify}
                       />
                     </div>
                   )}
@@ -467,7 +467,7 @@ const ProfileEdit = () => {
                 htmlFor='username'
                 className='block text-sm font-medium leading-5 text-gray-700'
               >
-                닉네임
+                {text.info.nickname}
               </label>
               <div className='flex flex-col md:flex-row md:justify-between'>
                 <div className='md:w-[85%]'>
@@ -499,7 +499,7 @@ const ProfileEdit = () => {
                     isLoading={isUsernameLoading}
                     width='w-fit'
                     className='mt-2 jutstify-end'
-                    text='변경하기'
+                    text={text.info.button}
                     onClick={onChangeUsername}
                   />
                 </div>
@@ -511,7 +511,7 @@ const ProfileEdit = () => {
         {session?.user?.provider === 'CREDENTIALS' ? (
           <>
             <div className='md:col-span-1 font-medium md:border-b-[1px] py-4 md:py-0'>
-              비밀번호 변경
+              {text.password.title}
             </div>
             <div className='bg-slate-100 md:col-span-2 rounded-md p-6 md:p-8'>
               <div className='space-y-4'>
@@ -520,7 +520,7 @@ const ProfileEdit = () => {
                     htmlFor='currentPassword'
                     className='block text-sm font-medium leading-5 text-gray-700'
                   >
-                    현재 비밀번호
+                    {text.password.current}
                   </label>
                   <div className='flex items-center border-b'>
                     <input
@@ -561,7 +561,6 @@ const ProfileEdit = () => {
                       />
                     )}
                   </div>
-
                   {errors?.currentPassword?.message && (
                     <span className='text-red-500 text-xs leading-8'>
                       {errors.currentPassword.message}
@@ -573,7 +572,7 @@ const ProfileEdit = () => {
                     htmlFor='newPassword'
                     className='block text-sm font-medium leading-5 text-gray-700'
                   >
-                    새로운 비밀번호
+                    {text.password.new}
                   </label>
                   <div className='flex items-center border-b'>
                     <input
@@ -635,7 +634,7 @@ const ProfileEdit = () => {
                   isLoading={isPasswordLoading}
                   width='w-fit'
                   className='mt-2'
-                  text='변경하기'
+                  text={text.password.button}
                   onClick={onChangePassword}
                 />
               </div>
@@ -644,17 +643,28 @@ const ProfileEdit = () => {
         ) : null}
         {/* 회원 탈퇴 */}
         <div className='md:col-span-1 font-medium py-4 md:py-0'>
-          회원 탈퇴
+          {text.delete.title}
         </div>
         <div className='bg-slate-100 md:col-span-2 rounded-md p-6 md:p-8 space-y-6'>
-          {/* TODO: 문구 변경 필요 */}
           <div className='text-gray-400 text-xs md:text-sm border font-medium rounded-md p-2'>
-            회원 탈퇴 후, 계정 복구는 불가능 합니다.
-            <br />
-            작성한 게시물과 댓글은 삭제되지 않고 익명으로
-            처리되며,
-            <br />
-            CHCHATS으로 소유권이 귀속됩니다.
+            {lang === 'en' ? (
+              <>
+                After deleting your account, you will be
+                unable to access any of your activities.
+                <br />
+                Your posts and comments will be remain
+                anonymously.
+              </>
+            ) : (
+              <>
+                회원 탈퇴 후, 계정 복구는 불가능 합니다.
+                <br />
+                작성한 게시물과 댓글은 삭제되지 않고
+                익명으로 처리되며,
+                <br />
+                CHCHATS으로 소유권이 귀속됩니다.
+              </>
+            )}
           </div>
           <div className='md:flex md:items-center md:justify-between'>
             <div className='text-sm space-x-2 flex items-center'>
@@ -666,7 +676,7 @@ const ProfileEdit = () => {
                 onClick={() => setIsChecked(!isChecked)}
               />
               <label htmlFor='delete-account'>
-                해당 사항을 숙지하였으며, 동의합니다.
+                {text.delete.agreement}
               </label>
             </div>
             <div className='flex justify-end items-center sm:w-full md:w-fit'>
@@ -679,7 +689,7 @@ const ProfileEdit = () => {
                     : 'bg-gray-300'
                 }`}
               >
-                회원 탈퇴
+                {text.delete.button}
               </button>
             </div>
           </div>

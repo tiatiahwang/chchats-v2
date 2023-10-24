@@ -1,0 +1,110 @@
+{
+  "topnav": {
+    "login": "Login",
+    "join": "Register",
+    "search": "search",
+    "profile": {
+      "edit": "Edit Profile",
+      "activity": "Activities",
+      "logout": "Logout"
+    }
+  },
+  "mobilenav": {
+    "auth": {
+      "login": "Login",
+      "join": "Register"
+    },
+    "profile": {
+      "myaccount": "My Account",
+      "logout": "Logout"
+    },
+    "category": {
+      "board": "Board",
+      "qna": "Qna",
+      "market": "Market",
+      "region": "Region",
+      "notice": "Notice"
+    }
+  },
+  "auth": {
+    "subtitle": "Community website for Koreans living in U.S.",
+    "google": {
+      "button": "login with Google",
+      "loading": "loading"
+    },
+    "custom": {
+      "email": "Email",
+      "password": "Password",
+      "button": "Login"
+    },
+    "join": {
+      "email": "Email",
+      "password": "Password",
+      "nickname": "Nickname",
+      "button": "Join"
+    },
+    "bottom": {
+      "loginPage": {
+        "text": "Don't have an account yet?",
+        "link": "Create one."
+      },
+      "joinPage": {
+        "text": "Already have an account?",
+        "link": "Login"
+      }
+    }
+  },
+  "post": {
+    "create": {
+      "subtitle": "Select Category",
+      "category": "main category",
+      "subcategory": "sub category",
+      "editor": {
+        "title": "Title",
+        "placeholder": "type contents here."
+      }
+    }
+  },
+  "profile": {
+    "edit": {
+      "info": {
+        "title": "Info",
+        "avatar": "change",
+        "button": "change",
+        "email": "Email",
+        "unchangeable": "unchangeable",
+        "verify": "verify",
+        "verified": "verified",
+        "nickname": "Nickname",
+        "loading": "loading"
+      },
+      "password": {
+        "title": "Password",
+        "current": "Current Password",
+        "new": "New Password",
+        "button": "change",
+        "loading": "loading"
+      },
+      "delete": {
+        "title": "Delete",
+        "agreement": "I understand and agree with the above.",
+        "button": "delete",
+        "loading": "loading"
+      }
+    },
+    "activities": {
+      "button": "Edit Profile",
+      "myposts": "my posts",
+      "mycomments": "my comments",
+      "myscrap": "scrap",
+      "nopost": "No posts yet.",
+      "nocomment": "No comments yet.",
+      "noscrap": "No scraps yet."
+    }
+  },
+  "search": {
+    "noword": "Please type search word.",
+    "noresult": "No Results.",
+    "result": "search results"
+  }
+}

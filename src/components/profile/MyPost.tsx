@@ -2,6 +2,7 @@
 
 import { INFINITE_SCROLL_LIMIT } from '@/config';
 import { ExtendedPost } from '@/types/db';
+import { Activities } from '@/types/dictionary';
 import { useIntersection } from '@mantine/hooks';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import axios from 'axios';
@@ -10,10 +11,11 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useRef } from 'react';
 
 interface MyPostProps {
+  text: Activities;
   initialPosts: ExtendedPost[];
 }
 
-const MyPost = ({ initialPosts }: MyPostProps) => {
+const MyPost = ({ text, initialPosts }: MyPostProps) => {
   const lastPostRef = useRef<HTMLElement>(null);
 
   const { ref, entry } = useIntersection({
@@ -89,7 +91,7 @@ const MyPost = ({ initialPosts }: MyPostProps) => {
             </ul>
           ) : (
             <div className='text-sm flex justify-center w-full p-4'>
-              아직 남기신 글이 없습니다.
+              {text.nopost}
             </div>
           )}
         </>

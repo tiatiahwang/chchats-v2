@@ -1,0 +1,110 @@
+{
+  "topnav": {
+    "login": "로그인",
+    "join": "회원가입",
+    "search": "검색",
+    "profile": {
+      "edit": "프로필 수정",
+      "activity": "활동 내역",
+      "logout": "로그아웃"
+    }
+  },
+  "mobilenav": {
+    "auth": {
+      "login": "로그인",
+      "join": "회원가입"
+    },
+    "profile": {
+      "myaccount": "내 계정",
+      "logout": "로그아웃"
+    },
+    "category": {
+      "board": "자유게시판",
+      "qna": "묻고답하기",
+      "market": "온라인마켓",
+      "region": "지역소모임",
+      "notice": "공지사항"
+    }
+  },
+  "auth": {
+    "subtitle": "미주 한인 커뮤니티 사이트 입니다.",
+    "google": {
+      "button": "Google 계정으로 로그인",
+      "loading": "로딩중"
+    },
+    "custom": {
+      "email": "이메일",
+      "password": "비밀번호",
+      "button": "로그인"
+    },
+    "join": {
+      "email": "이메일",
+      "password": "비밀번호",
+      "nickname": "닉네임",
+      "button": "회원가입"
+    },
+    "bottom": {
+      "loginPage": {
+        "text": "아직 계정이 없으신가요?",
+        "link": "회원가입"
+      },
+      "joinPage": {
+        "text": "이미 계정이 있으신가요?",
+        "link": "로그인"
+      }
+    }
+  },
+  "post": {
+    "create": {
+      "subtitle": "카테고리 선택",
+      "category": "메인 카테고리",
+      "subcategory": "서브 카테고리",
+      "editor": {
+        "title": "제목",
+        "placeholder": "여기에 내용을 입력해 주세요."
+      }
+    }
+  },
+  "profile": {
+    "edit": {
+      "info": {
+        "title": "계정 정보",
+        "avatar": "사진 변경",
+        "button": "변경하기",
+        "email": "이메일",
+        "unchangeable": "변경불가",
+        "verify": "인증하기",
+        "verified": "인증완료",
+        "nickname": "닉네임",
+        "loading": "로딩중"
+      },
+      "password": {
+        "title": "비밀번호 변경",
+        "current": "현재 비밀번호",
+        "new": "새로운 비밀번호",
+        "button": "변경하기",
+        "loading": "로딩중"
+      },
+      "delete": {
+        "title": "회원 탈퇴",
+        "agreement": "해당 사항을 숙지하였으며, 동의합니다.",
+        "button": "회원 탈퇴",
+        "loading": "로딩중"
+      }
+    },
+    "activities": {
+      "button": "프로필 수정",
+      "myposts": "내가 쓴 글",
+      "mycomments": "나의 댓글",
+      "myscrap": "스크랩",
+      "nopost": "아직 남기신 글이 없습니다.",
+      "nocomment": "아직 남기신 댓글이 없습니다.",
+      "noscrap": "스크랩 한 글이 없습니다."
+    }
+  },
+  "search": {
+    "noword": "검색하고자 하는 단어를 입력해 주세요.",
+    "noresult": "검색결과가 없습니다.",
+    "result": "검색결과"
+  }
+}

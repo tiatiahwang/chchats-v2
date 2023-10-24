@@ -4,6 +4,7 @@ const prisma = new PrismaClient();
 const categories = [
   {
     name: '자유게시판',
+    eng: 'Board',
     url: '/board',
     description: '',
     ref: 'board',
@@ -11,6 +12,7 @@ const categories = [
   },
   {
     name: '묻고답하기',
+    eng: 'QnA',
     url: '/qna',
     description: '',
     ref: 'qna',
@@ -18,6 +20,7 @@ const categories = [
   },
   {
     name: '온라인마켓',
+    eng: 'Market',
     url: '/market',
     description: '',
     ref: 'market',
@@ -25,6 +28,7 @@ const categories = [
   },
   {
     name: '지역소모임',
+    eng: 'Region',
     url: '/region',
     description: '',
     ref: 'region',
@@ -32,6 +36,7 @@ const categories = [
   },
   {
     name: '공지사항',
+    eng: 'Notice',
     url: '/notice',
     description: '',
     ref: 'notice',
@@ -42,6 +47,7 @@ const categories = [
 const subcategories = [
   {
     name: '사는얘기',
+    eng: 'talk',
     url: '/board/talk',
     ref: 'talk',
     isDefault: true,
@@ -49,6 +55,7 @@ const subcategories = [
   },
   {
     name: '고민상담',
+    eng: 'consult',
     url: '/board/consult',
     ref: 'consult',
     isDefault: true,
@@ -56,6 +63,7 @@ const subcategories = [
   },
   {
     name: '정보공유',
+    eng: 'share',
     url: '/board/share',
     ref: 'share',
     isDefault: true,
@@ -63,6 +71,7 @@ const subcategories = [
   },
   {
     name: '비자',
+    eng: 'visa',
     url: '/qna/visa',
     ref: 'visa',
     isDefault: true,
@@ -70,6 +79,7 @@ const subcategories = [
   },
   {
     name: '법률',
+    eng: 'law',
     url: '/qna/law',
     ref: 'law',
     isDefault: true,
@@ -77,6 +87,7 @@ const subcategories = [
   },
   {
     name: '건강',
+    eng: 'health',
     url: '/qna/health',
     ref: 'health',
     isDefault: true,
@@ -84,6 +95,7 @@ const subcategories = [
   },
   {
     name: '교육',
+    eng: 'edu',
     url: '/qna/education',
     ref: 'education',
     isDefault: true,
@@ -91,6 +103,7 @@ const subcategories = [
   },
   {
     name: '육아',
+    eng: 'parenting',
     url: '/qna/parenting',
     ref: 'parenting',
     isDefault: true,
@@ -98,6 +111,7 @@ const subcategories = [
   },
   {
     name: '취업',
+    eng: 'job',
     url: '/qna/job',
     ref: 'job',
     isDefault: true,
@@ -105,6 +119,7 @@ const subcategories = [
   },
   {
     name: '부동산',
+    eng: 'estate',
     url: '/qna/estate',
     ref: 'estate',
     isDefault: true,
@@ -112,6 +127,7 @@ const subcategories = [
   },
   {
     name: '기타',
+    eng: 'etc',
     url: '/qna/etc',
     ref: 'etc',
     isDefault: true,
@@ -119,6 +135,7 @@ const subcategories = [
   },
   {
     name: '팔아요',
+    eng: 'sell',
     url: '/market/sell',
     ref: 'sell',
     isDefault: true,
@@ -126,6 +143,7 @@ const subcategories = [
   },
   {
     name: '살게요',
+    eng: 'buy',
     url: '/market/buy',
     ref: 'buy',
     isDefault: true,
@@ -133,13 +151,15 @@ const subcategories = [
   },
   {
     name: '나눔',
-    url: '/market/free',
-    ref: 'free',
+    eng: 'giveaway',
+    url: '/market/giveaway',
+    ref: 'giveaway',
     isDefault: true,
     categoryId: 3,
   },
   {
     name: '렌트',
+    eng: 'rent',
     url: '/market/rent',
     ref: 'rent',
     isDefault: true,
@@ -147,6 +167,7 @@ const subcategories = [
   },
   {
     name: '산호세',
+    eng: 'San Jose',
     url: '/region/sanjose',
     ref: 'sanjose',
     isDefault: true,
@@ -154,6 +175,7 @@ const subcategories = [
   },
   {
     name: '샌프란',
+    eng: 'San Francisco',
     url: '/region/sf',
     ref: 'sf',
     isDefault: true,
@@ -161,6 +183,7 @@ const subcategories = [
   },
   {
     name: 'LA',
+    eng: 'LA',
     url: '/region/la',
     ref: 'la',
     isDefault: true,
@@ -168,6 +191,7 @@ const subcategories = [
   },
   {
     name: '공지사항',
+    eng: 'all',
     url: '/notice/all',
     ref: 'all',
     isDefault: true,

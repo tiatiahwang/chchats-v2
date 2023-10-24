@@ -2,10 +2,14 @@ import { db } from '@/lib/db';
 import PostBox from './PostBox';
 
 interface PostListProps {
+  lang: string;
   categoryId: number;
 }
 
-const PostList = async ({ categoryId }: PostListProps) => {
+const PostList = async ({
+  lang,
+  categoryId,
+}: PostListProps) => {
   const posts = await db.post.findMany({
     where: {
       categoryId,
@@ -46,7 +50,11 @@ const PostList = async ({ categoryId }: PostListProps) => {
           </div>
         ))
       ) : (
-        <div>아직 남겨진 글이 없습니다.</div>
+        <div>
+          {lang === 'en'
+            ? 'No posts yet.'
+            : '아직 남겨진 글이 없습니다.'}
+        </div>
       )}
     </div>
   );

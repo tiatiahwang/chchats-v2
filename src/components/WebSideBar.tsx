@@ -10,10 +10,12 @@ interface category extends Category {
 }
 
 interface WebSideBarProps {
+  lang: string;
   categories: category[];
 }
 
 const WebSideBar: FC<WebSideBarProps> = ({
+  lang,
   categories,
 }) => {
   const router = useRouter();
@@ -51,7 +53,11 @@ const WebSideBar: FC<WebSideBarProps> = ({
                     router.push(`${category.url}`);
                   }}
                 >
-                  <span>{category.name}</span>
+                  <span>
+                    {lang === 'en'
+                      ? category.eng
+                      : category.name}
+                  </span>
                   {onHoverIndex === category.id && (
                     <Icons.chevRight className='h-4 w-4 absolute -right-2' />
                   )}
@@ -70,7 +76,9 @@ const WebSideBar: FC<WebSideBarProps> = ({
                         }}
                       >
                         <div className='px-4 hover:bg-mainLight py-2'>
-                          {subcategory.name}
+                          {lang === 'en'
+                            ? subcategory.eng
+                            : subcategory.name}
                         </div>
                       </div>
                     ),

@@ -5,7 +5,14 @@ import { Icons } from '../Icons';
 import { signIn } from 'next-auth/react';
 import { toast } from 'react-toastify';
 
-const GoogleLogIn = () => {
+interface GoogleLoginProps {
+  text: {
+    button: string;
+    loading: string;
+  };
+}
+
+const GoogleLogIn = ({ text }: GoogleLoginProps) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const onClickGoogleLogin = async () => {
@@ -34,7 +41,7 @@ const GoogleLogIn = () => {
     >
       <Icons.google className='w-4 h-4' />
       <span className={`${isLoading ? 'text-white' : ''}`}>
-        {isLoading ? '로딩중' : 'Google 계정으로 로그인'}
+        {isLoading ? text.loading : text.button}
       </span>
     </button>
   );
