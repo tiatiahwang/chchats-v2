@@ -43,7 +43,7 @@ export async function middleware(req: NextRequest) {
 
   const pathnameWithoutLocale = i18n.locales.every(
     (locale) =>
-      !pathname.startsWith(`/${locale}`) &&
+      !pathname.startsWith(`/${locale}/`) &&
       pathname !== `/${locale}`,
   );
 

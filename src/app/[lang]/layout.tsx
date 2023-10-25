@@ -12,6 +12,8 @@ export const metadata = {
   description: '미국 거주하는 한인 커뮤니티',
 };
 
+export const dynamic = 'force-dynamic';
+
 export default function RootLayout({
   children,
   params,
