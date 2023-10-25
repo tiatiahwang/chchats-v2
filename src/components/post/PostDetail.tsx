@@ -249,6 +249,7 @@ const PostDetail = ({
       </div>
       {showModal && (
         <Modal
+          lang={lang}
           isLoading={deleteLoading}
           text='정말 삭제하시겠어요?'
           open={showModal}

@@ -1,8 +1,11 @@
+import { Suspense } from 'react';
+
 import NewPost from '@/components/post/NewPost';
 import Skeleton from '@/components/ui/Skeleton';
+import { Locale } from '@/i18n.config';
 import { db } from '@/lib/db';
+import { getDictionary } from '@/lib/dictionary';
 import { getAllCategories } from '@/lib/utils';
-import { Suspense } from 'react';
 
 const EditPostLoading = () => {
   return (
@@ -27,6 +30,7 @@ const EditPostLoading = () => {
 
 interface PageProps {
   params: {
+    lang: Locale;
     category: string;
     subcategory: string;
     id: string;
@@ -34,8 +38,11 @@ interface PageProps {
 }
 
 const Page = async ({
-  params: { id, category, subcategory },
+  params: { lang, id, category, subcategory },
 }: PageProps) => {
+  const {
+    post: { create },
+  } = await getDictionary(lang ?? 'en');
   const categories = await getAllCategories();
   const currentCategory = categories.find(
     (cate) => cate.ref === category,
@@ -54,6 +61,8 @@ const Page = async ({
   return (
     <Suspense fallback={<EditPostLoading />}>
       <NewPost
+        lang={lang ?? 'en'}
+        text={create}
         post={post}
         categories={categories}
         currentCategory={currentCategory!}
