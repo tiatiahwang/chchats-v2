@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom';
 import Button from './Button';
 
 export interface ModalProps {
-  lang: string;
+  lang?: string;
   text: string;
   open: boolean;
   onClose: () => void;
@@ -14,7 +14,7 @@ export interface ModalProps {
 }
 
 const Modal = ({
-  lang,
+  lang = '',
   text,
   open,
   onClose,
