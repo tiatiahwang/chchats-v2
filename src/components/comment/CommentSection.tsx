@@ -72,12 +72,14 @@ const CommentSection = async ({
                 key={comment.id}
                 className='flex flex-col'
               >
+                {/* TODO: lang */}
                 <div className='mb-2 border-t-[1px]'>
                   <CommentList
                     comment={comment}
                     postId={postId}
                     formattedTime={formatTime(
                       comment.createdAt,
+                      'en',
                     )}
                   />
                 </div>
@@ -87,11 +89,13 @@ const CommentSection = async ({
                       key={reply.id}
                       className='ml-2 pl-4 border-l-2'
                     >
+                      {/* TODO: lang */}
                       <CommentList
                         comment={reply}
                         postId={postId}
                         formattedTime={formatTime(
                           reply.createdAt,
+                          'en',
                         )}
                         isReply={true}
                       />

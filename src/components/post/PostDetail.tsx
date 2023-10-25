@@ -200,7 +200,10 @@ const PostDetail = ({
               <span className='px-1'>•</span>
               <span>{formattedTime}</span>
               <span className='px-1'>•</span>
-              <span>조회수 {post.viewCount}</span>
+              <span>
+                {lang === 'en' ? 'views' : '조회수'}{' '}
+                {post.viewCount}
+              </span>
             </div>
           </div>
           <div className='flex items-center space-x-2'>

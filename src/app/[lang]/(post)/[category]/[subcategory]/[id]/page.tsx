@@ -80,7 +80,10 @@ const page = async ({
           <PostDetail
             lang={lang}
             post={post}
-            formattedTime={formatTime(post?.createdAt!)}
+            formattedTime={formatTime(
+              post?.createdAt!,
+              lang,
+            )}
             isScrapped={
               session?.user
                 ? Boolean(
