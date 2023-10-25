@@ -17,12 +17,14 @@ const PostList = async ({
     include: {
       category: {
         select: {
+          eng: true,
           name: true,
           ref: true,
         },
       },
       subcategory: {
         select: {
+          eng: true,
           name: true,
           ref: true,
         },
@@ -46,7 +48,7 @@ const PostList = async ({
             key={post.id}
             className='flex items-center space-x-2 w-full'
           >
-            <PostBox post={post} />
+            <PostBox lang={lang} post={post} />
           </div>
         ))
       ) : (

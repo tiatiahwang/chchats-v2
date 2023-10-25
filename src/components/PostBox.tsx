@@ -5,6 +5,7 @@ import { Icons } from './Icons';
 import { ExtendedPost } from '@/types/db';
 
 interface PostBoxProps {
+  lang: string;
   post: ExtendedPost & {
     _count: {
       comments: number;
@@ -12,26 +13,29 @@ interface PostBoxProps {
   };
 }
 
-const PostBox = ({ post }: PostBoxProps) => {
+const PostBox = ({ lang, post }: PostBoxProps) => {
   const router = useRouter();
+
   return (
     <>
       <div
         onClick={() => {
           router.refresh();
           router.push(
-            `${post.category.ref}/${post.subcategory.ref}`,
+            `/${lang}/${post.category.ref}/${post.subcategory.ref}`,
           );
         }}
         className='text-[10px] border px-1 rounded-md text-main hover:bg-main hover:border-main hover:text-white cursor-pointer'
       >
-        {post.subcategory.name}
+        {lang === 'en'
+          ? post.subcategory.eng
+          : post.subcategory.name}
       </div>
       <div
         onClick={() => {
           router.refresh();
           router.push(
-            `/${post.category.ref}/${post.subcategory.ref}/${post.id}`,
+            `/${lang}/${post.category.ref}/${post.subcategory.ref}/${post.id}`,
           );
         }}
         className='flex flex-1 justify-between items-center hover:text-main cursor-pointer'

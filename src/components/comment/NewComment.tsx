@@ -1,27 +1,31 @@
 'use client';
 
-import Image from 'next/image';
-import { Icons } from '../Icons';
-import Button from '../ui/Button';
-import { toast } from 'react-toastify';
-import { CommentCreateRequest } from '@/lib/validator/comment';
-import { useMutation } from '@tanstack/react-query';
 import axios, { AxiosError } from 'axios';
-import { useRouter } from 'next/navigation';
 import { Session } from 'next-auth';
+import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 import { useState } from 'react';
+import { toast } from 'react-toastify';
+import { useMutation } from '@tanstack/react-query';
+
+import { Icons } from '@/components/Icons';
+import Button from '@/components/ui/Button';
 import { useCustomToast } from '@/hooks/use-custom-toast';
+import { CommentCreateRequest } from '@/lib/validator/comment';
+import { Comment } from '@/types/dictionary';
 
 interface NewCommentProps {
   postId: string;
   replyToId?: string;
   session: Session | null;
+  text: Comment;
 }
 
 const NewComment = ({
   postId,
   replyToId,
   session,
+  text,
 }: NewCommentProps) => {
   const router = useRouter();
   const { loginToast } = useCustomToast();
@@ -72,7 +76,7 @@ const NewComment = ({
             className='hover:text-main text-sm py-4'
             onClick={() => loginToast()}
           >
-            댓글 쓰기
+            {text.addcomment}
           </button>
         </div>
       ) : (
@@ -96,7 +100,7 @@ const NewComment = ({
             {/* 댓글 작성 */}
             <textarea
               className='text-sm bg-transparent placeholder:text-sm whitespace-pre-line resize-none rounded-md flex-1 focus:outline-none border-[1px] p-2'
-              placeholder='좋은 영향을 주고 받는 댓글을 남겨주세요 :)'
+              placeholder={text.placeholder}
               value={input}
               onChange={(e) => setInput(e.target.value)}
               rows={3}
@@ -109,7 +113,8 @@ const NewComment = ({
               disabled={isLoading}
               isLoading={isLoading}
               width='w-fit'
-              text='작성하기'
+              text={text.add}
+              loadingText={text.loading}
               onClick={() => {
                 if (input.length === 0) {
                   return toast.warning(

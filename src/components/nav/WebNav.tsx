@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { signOut } from 'next-auth/react';
 import { Icons } from '../Icons';
 
-const WebNav = ({ session, text }: any) => {
+const WebNav = ({ session, text, lang }: any) => {
   const [avatarClicked, setAvatarClicked] = useState(false);
   const onClickAvatar = () =>
     setAvatarClicked(!avatarClicked);
@@ -35,13 +35,13 @@ const WebNav = ({ session, text }: any) => {
       ) : (
         <div className='space-x-4'>
           <Link
-            href='/login'
+            href={`/${lang}/login`}
             className='py-2 px-4 rounded-2xl bg-transparent border border-main text-sm hover:bg-main hover:text-white'
           >
             {text.login}
           </Link>
           <Link
-            href='/join'
+            href={`/${lang}/join`}
             className='py-2 px-4 rounded-2xl bg-main text-white border border-main text-sm hover:bg-mainDark hover:border-mainDark'
           >
             {text.join}

@@ -200,7 +200,10 @@ const PostDetail = ({
               <span className='px-1'>•</span>
               <span>{formattedTime}</span>
               <span className='px-1'>•</span>
-              <span>조회수 {post.viewCount}</span>
+              <span>
+                {lang === 'en' ? 'views' : '조회수'}{' '}
+                {post.viewCount}
+              </span>
             </div>
           </div>
           <div className='flex items-center space-x-2'>
@@ -251,10 +254,14 @@ const PostDetail = ({
         <Modal
           lang={lang}
           isLoading={deleteLoading}
-          text='정말 삭제하시겠어요?'
+          text={
+            lang === 'en'
+              ? 'Are you sure to delete this post?'
+              : '정말 삭제하시겠어요?'
+          }
           open={showModal}
           onClose={() => setShowModal(false)}
-          buttonText='삭제'
+          buttonText={lang === 'en' ? 'Delete' : '삭제'}
           className='bg-red-400 hover:bg-red-500 px-4'
           handleButton={() =>
             deletePost({ postId: post.id })

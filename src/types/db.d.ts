@@ -8,10 +8,12 @@ import {
 
 export type ExtendedPost = Post & {
   category: {
+    eng: string;
     name: string;
     ref: string | null;
   };
   subcategory: {
+    eng: string;
     name: string;
     ref: string | null;
   };

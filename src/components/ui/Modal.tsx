@@ -41,7 +41,7 @@ const Modal = ({
         }}
       >
         <div className='bg-white min-w-[300px] p-8 flex flex-col items-center rounded-md space-y-8'>
-          <div className='fon-medium'>{text}</div>
+          <div className='font-medium'>{text}</div>
           <div className='space-x-4'>
             <Button
               type='transparent'

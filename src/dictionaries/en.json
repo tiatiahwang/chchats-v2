@@ -114,5 +114,14 @@
     "noword": "Please type search word.",
     "noresult": "No Results.",
     "result": "search results"
+  },
+  "comment": {
+    "title": "comments",
+    "placeholder": "Leave comments here.",
+    "edit": "Edit",
+    "add": "Add",
+    "cancel": "Cancle",
+    "loading": "loading",
+    "addcomment": "Add Comment"
   }
 }
