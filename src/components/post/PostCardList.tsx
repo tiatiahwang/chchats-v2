@@ -149,13 +149,13 @@ const PostCardList = ({
                 return loginToast();
               }
 
-              if (currentCategory) {
+              if (selectedSubcategory !== -1) {
                 router.push(
-                  `${currentCategory?.url}/create`,
+                  `${currentSubcategory?.url}/create`,
                 );
               } else {
                 router.push(
-                  `${currentSubcategory?.url}/create`,
+                  `${currentCategory?.url}/create`,
                 );
               }
             }}
