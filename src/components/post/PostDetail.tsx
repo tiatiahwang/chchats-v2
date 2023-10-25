@@ -1,18 +1,19 @@
 'use client';
 
-import { useSession } from 'next-auth/react';
-import Image from 'next/image';
-import { Icons } from '../Icons';
-import { Post, Vote, VoteType } from '@prisma/client';
-import { useMutation } from '@tanstack/react-query';
 import axios, { AxiosError } from 'axios';
-import { useCustomToast } from '@/hooks/use-custom-toast';
-import { toast } from 'react-toastify';
-import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import Modal from '../ui/Modal';
+import { toast } from 'react-toastify';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 import Link from 'next/link';
-import PostVote from './PostVote';
+import { useMutation } from '@tanstack/react-query';
+import { Post, Vote, VoteType } from '@prisma/client';
+
+import { Icons } from '@/components/Icons';
+import Modal from '@/components/ui/Modal';
+import PostVote from '@/components/post/PostVote';
+import { useCustomToast } from '@/hooks/use-custom-toast';
 
 interface ExtendedPost extends Post {
   author: {
@@ -21,10 +22,12 @@ interface ExtendedPost extends Post {
     image: string | null;
   };
   category: {
+    eng: string;
     name: string;
     ref: string | null;
   };
   subcategory: {
+    eng: string;
     name: string;
     ref: string | null;
   };
@@ -32,6 +35,7 @@ interface ExtendedPost extends Post {
 }
 
 interface PostDetailProps {
+  lang: string;
   post: ExtendedPost;
   formattedTime: string;
   isScrapped: boolean;
@@ -42,6 +46,7 @@ interface APIRequest {
 }
 
 const PostDetail = ({
+  lang,
   post,
   formattedTime,
   isScrapped,
@@ -147,19 +152,23 @@ const PostDetail = ({
         {post.categoryId !== 5 && (
           <>
             <Link
-              href={`/${post.category.ref}`}
+              href={`/${lang}/${post.category.ref}`}
               className='hover:text-main'
             >
-              {post.category.name}
+              {lang === 'en'
+                ? post.category.eng
+                : post.category.name}
             </Link>{' '}
             {'>'}{' '}
           </>
         )}
         <Link
-          href={`/${post.category.ref}/${post.subcategory.ref}`}
+          href={`/${lang}/${post.category.ref}/${post.subcategory.ref}`}
           className='hover:text-main'
         >
-          {post.subcategory.name}
+          {lang === 'en'
+            ? post.subcategory.eng
+            : post.subcategory.name}
         </Link>
       </div>
       {/* 유저정보 및 글 */}

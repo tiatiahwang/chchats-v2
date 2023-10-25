@@ -3,6 +3,7 @@ import CommentSection from '@/components/comment/CommentSection';
 import PostDetail from '@/components/post/PostDetail';
 import NotFound from '@/components/ui/NotFound';
 import Skeleton from '@/components/ui/Skeleton';
+import { Locale } from '@/i18n.config';
 import { getAuthSession } from '@/lib/auth';
 import { db } from '@/lib/db';
 import { formatTime, getAllCategories } from '@/lib/utils';
@@ -11,13 +12,11 @@ import { Suspense } from 'react';
 export const dynamic = 'force-dynamic';
 export const fetchCache = 'force-no-store';
 
-interface PageProps {
-  params: {
-    id: string;
-  };
-}
-
-const page = async ({ params: { id } }: PageProps) => {
+const page = async ({
+  params: { lang, id },
+}: {
+  params: { lang: Locale; id: string };
+}) => {
   const session = await getAuthSession();
   const categories = await getAllCategories();
 
@@ -29,12 +28,14 @@ const page = async ({ params: { id } }: PageProps) => {
       votes: true,
       category: {
         select: {
+          eng: true,
           name: true,
           ref: true,
         },
       },
       subcategory: {
         select: {
+          eng: true,
           name: true,
           ref: true,
         },
@@ -65,7 +66,7 @@ const page = async ({ params: { id } }: PageProps) => {
 
   return (
     <>
-      <WebSideBar categories={categories} />
+      <WebSideBar lang={lang} categories={categories} />
       <div className='w-full md:mx-4 px-4'>
         <Suspense
           fallback={
@@ -77,6 +78,7 @@ const page = async ({ params: { id } }: PageProps) => {
           }
         >
           <PostDetail
+            lang={lang}
             post={post}
             formattedTime={formatTime(post?.createdAt!)}
             isScrapped={
