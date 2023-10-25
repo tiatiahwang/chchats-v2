@@ -1,24 +1,28 @@
 'use client';
 
-import { useState } from 'react';
-import Button from '../ui/Button';
-import { useRouter } from 'next/navigation';
+import axios, { AxiosError } from 'axios';
 import { useSession } from 'next-auth/react';
-import { useCustomToast } from '@/hooks/use-custom-toast';
+import { useRouter } from 'next/navigation';
+import Image from 'next/image';
+import { useState } from 'react';
+import { toast } from 'react-toastify';
 import { useMutation } from '@tanstack/react-query';
+
+import { Icons } from '@/components/Icons';
+import Button from '@/components/ui/Button';
+import Modal from '@/components/ui/Modal';
+import { useCustomToast } from '@/hooks/use-custom-toast';
 import {
   CommentCreateRequest,
   CommentDeleteRequest,
   CommentEditRequest,
 } from '@/lib/validator/comment';
-import axios, { AxiosError } from 'axios';
-import { toast } from 'react-toastify';
-import Image from 'next/image';
-import { Icons } from '../Icons';
-import Modal from '../ui/Modal';
 import { ExtendedCommentWithUser } from '@/types/db';
+import { Comment } from '@/types/dictionary';
 
 interface CommentListProps {
+  lang: string;
+  text: Comment;
   comment: ExtendedCommentWithUser;
   postId: string;
   formattedTime?: string;
@@ -26,6 +30,8 @@ interface CommentListProps {
 }
 
 const CommentList = ({
+  lang,
+  text,
   comment,
   postId,
   formattedTime,
@@ -240,7 +246,7 @@ const CommentList = ({
             <Button
               type='transparent'
               width='w-fit'
-              text='취소'
+              text={text.cancel}
               className='border-none rounded-md hover:bg-gray-400'
               onClick={() => setIsEditing((prev) => !prev)}
             />
@@ -249,7 +255,7 @@ const CommentList = ({
               disabled={editLoading}
               isLoading={editLoading}
               width='w-fit'
-              text='수정하기'
+              text={text.edit}
               onClick={() => {
                 if (editInput.length === 0) {
                   return toast.warning(
@@ -276,7 +282,7 @@ const CommentList = ({
             className='hover:text-main cursor-pointer'
             onClick={handleReply}
           >
-            댓글 쓰기
+            {text.addcomment}
           </span>
         ) : null}
         {isReplying ? (
@@ -297,7 +303,7 @@ const CommentList = ({
               )}
               <textarea
                 className='text-sm bg-transparent placeholder:text-sm whitespace-pre-line resize-none rounded-md flex-1 focus:outline-none border-[1px] p-2'
-                placeholder='좋은 영향을 주고 받는 댓글을 남겨주세요 :)'
+                placeholder={text.placeholder}
                 value={replyInput}
                 onChange={(e) =>
                   setReplyInput(e.target.value)
@@ -309,7 +315,7 @@ const CommentList = ({
               <Button
                 type='transparent'
                 width='w-fit'
-                text='취소'
+                text={text.cancel}
                 className='border-none rounded-md hover:bg-gray-400'
                 onClick={() =>
                   setIsReplying((prev) => !prev)
@@ -320,7 +326,7 @@ const CommentList = ({
                 disabled={isLoading}
                 isLoading={isLoading}
                 width='w-fit'
-                text='작성하기'
+                text={text.add}
                 onClick={() => {
                   if (!replyInput) {
                     return toast.warning(
@@ -343,11 +349,16 @@ const CommentList = ({
       </div>
       {showModal && (
         <Modal
-          text='정말 삭제하시겠어요?'
+          lang={lang}
+          text={
+            lang === 'en'
+              ? 'Are you sure to delete this comment?'
+              : '정말 삭제하시겠어요?'
+          }
           open={showModal}
           onClose={() => setShowModal(false)}
-          buttonText='삭제'
-          className='bg-red-400 hover:bg-red-500'
+          buttonText={lang === 'en' ? 'Delete' : '삭제'}
+          className='bg-red-400 hover:bg-red-500 px-4'
           handleButton={handleDelete}
           isLoading={deleteLoading}
         />

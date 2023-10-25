@@ -6,6 +6,7 @@ import Skeleton from '@/components/ui/Skeleton';
 import { Locale } from '@/i18n.config';
 import { getAuthSession } from '@/lib/auth';
 import { db } from '@/lib/db';
+import { getDictionary } from '@/lib/dictionary';
 import { formatTime, getAllCategories } from '@/lib/utils';
 import { Suspense } from 'react';
 
@@ -17,6 +18,7 @@ const page = async ({
 }: {
   params: { lang: Locale; id: string };
 }) => {
+  const { comment } = await getDictionary(lang ?? 'en');
   const session = await getAuthSession();
   const categories = await getAllCategories();
 
@@ -105,7 +107,11 @@ const page = async ({
             </div>
           }
         >
-          <CommentSection postId={post.id} />
+          <CommentSection
+            lang={lang}
+            text={comment}
+            postId={post.id}
+          />
         </Suspense>
       </div>
     </>

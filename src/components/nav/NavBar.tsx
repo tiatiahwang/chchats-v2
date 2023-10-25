@@ -36,7 +36,11 @@ const NavBar = async ({ lang }: { lang: Locale }) => {
         <div className='hidden md:flex md:items-center md:space-x-4'>
           <Search lang={lang} text={topnav.search} />
           <LanguageSwitcher />
-          <WebNav text={topnav} session={session} />
+          <WebNav
+            lang={lang}
+            text={topnav}
+            session={session}
+          />
         </div>
       </div>
     </div>

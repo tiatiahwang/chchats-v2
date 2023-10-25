@@ -114,5 +114,14 @@
     "noword": "검색하고자 하는 단어를 입력해 주세요.",
     "noresult": "검색결과가 없습니다.",
     "result": "검색결과"
+  },
+  "comment": {
+    "title": "개의 댓글",
+    "placeholder": "좋은 영향을 주고 받는 댓글을 남겨주세요 :)",
+    "edit": "수정하기",
+    "add": "작성하기",
+    "cancel": "취소",
+    "loading": "로딩중",
+    "addcomment": "댓글 쓰기"
   }
 }

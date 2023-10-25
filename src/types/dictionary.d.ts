@@ -58,3 +58,13 @@ export type Activities = {
   nocomment: string;
   noscrap: string;
 };
+
+export type Comment = {
+  title: string;
+  placeholder: string;
+  edit: string;
+  add: string;
+  cancel: string;
+  loading: string;
+  addcomment: string;
+};
