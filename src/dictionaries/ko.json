@@ -35,13 +35,15 @@
     "custom": {
       "email": "이메일",
       "password": "비밀번호",
-      "button": "로그인"
+      "button": "로그인",
+      "loading": "로딩중"
     },
     "join": {
       "email": "이메일",
       "password": "비밀번호",
       "nickname": "닉네임",
-      "button": "회원가입"
+      "button": "회원가입",
+      "loading": "로딩중"
     },
     "bottom": {
       "loginPage": {
@@ -62,7 +64,9 @@
       "editor": {
         "title": "제목",
         "placeholder": "여기에 내용을 입력해 주세요."
-      }
+      },
+      "button": "작성하기",
+      "loading": "로딩중"
     }
   },
   "profile": {
@@ -89,7 +93,11 @@
         "title": "회원 탈퇴",
         "agreement": "해당 사항을 숙지하였으며, 동의합니다.",
         "button": "회원 탈퇴",
-        "loading": "로딩중"
+        "loading": "로딩중",
+        "modal": {
+          "confirm": "정말 탈퇴하시겠어요?",
+          "button": "확인"
+        }
       }
     },
     "activities": {

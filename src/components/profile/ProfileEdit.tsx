@@ -636,6 +636,7 @@ const ProfileEdit = ({ lang, text }: any) => {
                   className='mt-2'
                   text={text.password.button}
                   onClick={onChangePassword}
+                  loadingText={text.password.loading}
                 />
               </div>
             </div>
@@ -697,10 +698,11 @@ const ProfileEdit = ({ lang, text }: any) => {
       </div>
       {showModal && (
         <Modal
-          text='정말 탈퇴하시겠어요?'
+          lang={lang}
+          text={text.delete.modal.confirm}
           open={showModal}
           onClose={() => setShowModal(false)}
-          buttonText='확인'
+          buttonText={text.delete.modal.button}
           isLoading={deleteLoading}
           className='bg-red-400 hover:bg-red-500 px-4'
           handleButton={() => deleteAccount()}

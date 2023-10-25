@@ -9,6 +9,7 @@ import { UserJoinValidator } from '@/lib/validator/auth';
 import { Icons } from '../Icons';
 import Button from '../ui/Button';
 import { toast } from 'react-toastify';
+import { Join } from '@/types/dictionary';
 
 interface FormProps {
   email: string;
@@ -17,12 +18,7 @@ interface FormProps {
 }
 
 interface JoinProps {
-  text: {
-    email: string;
-    password: string;
-    nickname: string;
-    button: string;
-  };
+  text: Join;
 }
 
 const Join = ({ text }: JoinProps) => {
@@ -177,6 +173,7 @@ const Join = ({ text }: JoinProps) => {
         disabled={!isValid || isLoading}
         isLoading={isLoading}
         id='form-submit'
+        loadingText={text.loading}
       />
     </form>
   );

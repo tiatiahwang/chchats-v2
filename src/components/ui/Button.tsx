@@ -7,6 +7,7 @@ interface ButtonProps {
   isLoading?: boolean;
   text: string;
   id?: string;
+  loadingText?: string;
 }
 
 const textSize = {
@@ -34,6 +35,7 @@ const Button = ({
   isLoading = false,
   text,
   id = '',
+  loadingText = '',
 }: ButtonProps) => {
   const disalbedStyle =
     !disabled && !isLoading && type !== 'transparent'
@@ -81,7 +83,7 @@ const Button = ({
               fill='#138808'
             />
           </svg>
-          <span className='text-sm'>로딩중</span>
+          <span className='text-sm'>{loadingText}</span>
         </>
       ) : (
         <span>{text}</span>

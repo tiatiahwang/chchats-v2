@@ -3,6 +3,7 @@ import { createPortal } from 'react-dom';
 import Button from './Button';
 
 export interface ModalProps {
+  lang: string;
   text: string;
   open: boolean;
   onClose: () => void;
@@ -13,6 +14,7 @@ export interface ModalProps {
 }
 
 const Modal = ({
+  lang,
   text,
   open,
   onClose,
@@ -44,7 +46,7 @@ const Modal = ({
             <Button
               type='transparent'
               width='w-fit'
-              text='취소'
+              text={lang === 'en' ? 'Cancel' : '취소'}
               className='border-none rounded-md hover:bg-gray-400 px-4'
               onClick={onClose}
             />
