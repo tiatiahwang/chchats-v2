@@ -32,10 +32,10 @@ export async function GET(req: Request) {
           select: { id: true, username: true },
         },
         category: {
-          select: { name: true, ref: true },
+          select: { eng: true, name: true, ref: true },
         },
         subcategory: {
-          select: { name: true, ref: true },
+          select: { eng: true, name: true, ref: true },
         },
       },
       orderBy: {

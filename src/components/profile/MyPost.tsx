@@ -1,21 +1,27 @@
 'use client';
 
-import { INFINITE_SCROLL_LIMIT } from '@/config';
-import { ExtendedPost } from '@/types/db';
-import { Activities } from '@/types/dictionary';
-import { useIntersection } from '@mantine/hooks';
-import { useInfiniteQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef } from 'react';
+import { useIntersection } from '@mantine/hooks';
+import { useInfiniteQuery } from '@tanstack/react-query';
+
+import { INFINITE_SCROLL_LIMIT } from '@/config';
+import { ExtendedPost } from '@/types/db';
+import { Activities } from '@/types/dictionary';
 
 interface MyPostProps {
+  lang: string;
   text: Activities;
   initialPosts: ExtendedPost[];
 }
 
-const MyPost = ({ text, initialPosts }: MyPostProps) => {
+const MyPost = ({
+  lang,
+  text,
+  initialPosts,
+}: MyPostProps) => {
   const lastPostRef = useRef<HTMLElement>(null);
 
   const { ref, entry } = useIntersection({
@@ -79,12 +85,16 @@ const MyPost = ({ text, initialPosts }: MyPostProps) => {
                 if (index === posts.length - 1) {
                   return (
                     <li key={post.id} ref={ref}>
-                      <MyPostCard post={post} />
+                      <MyPostCard lang={lang} post={post} />
                     </li>
                   );
                 } else {
                   return (
-                    <MyPostCard key={post.id} post={post} />
+                    <MyPostCard
+                      key={post.id}
+                      lang={lang}
+                      post={post}
+                    />
                   );
                 }
               })}
@@ -115,8 +125,15 @@ const MyPost = ({ text, initialPosts }: MyPostProps) => {
 
 export default MyPost;
 
-const MyPostCard = ({ post }: { post: ExtendedPost }) => {
+const MyPostCard = ({
+  post,
+  lang,
+}: {
+  post: ExtendedPost;
+  lang: string;
+}) => {
   const router = useRouter();
+
   return (
     <div
       key={post.id}
@@ -129,10 +146,12 @@ const MyPostCard = ({ post }: { post: ExtendedPost }) => {
             className='hover:text-main cursor-pointer'
             onClick={() => {
               router.refresh();
-              router.push(`/${post.category.ref}`);
+              router.push(`/${lang}/${post.category.ref}`);
             }}
           >
-            {post.category.name}
+            {lang === 'en'
+              ? post.category.eng
+              : post.category.name}
           </div>
           <span>{` > `}</span>
           <div
@@ -140,11 +159,13 @@ const MyPostCard = ({ post }: { post: ExtendedPost }) => {
             onClick={() => {
               router.refresh();
               router.push(
-                `/${post.category.ref}/${post.subcategory.ref}`,
+                `/${lang}/${post.category.ref}/${post.subcategory.ref}`,
               );
             }}
           >
-            {post.subcategory.name}
+            {lang === 'en'
+              ? post.subcategory.eng
+              : post.subcategory.name}
           </div>
         </div>
         {/* 글 작성 시간 */}
@@ -158,7 +179,7 @@ const MyPostCard = ({ post }: { post: ExtendedPost }) => {
         onClick={() => {
           router.refresh();
           router.push(
-            `/${post.category.ref}/${post.subcategory.ref}/${post.id}`,
+            `/${lang}/${post.category.ref}/${post.subcategory.ref}/${post.id}`,
           );
         }}
       >

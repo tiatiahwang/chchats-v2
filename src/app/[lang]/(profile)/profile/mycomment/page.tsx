@@ -25,12 +25,14 @@ const Page = async ({
           title: true,
           category: {
             select: {
+              eng: true,
               name: true,
               ref: true,
             },
           },
           subcategory: {
             select: {
+              eng: true,
               name: true,
               ref: true,
             },
@@ -56,6 +58,7 @@ const Page = async ({
         />
       ) : null}
       <MyComment
+        lang={lang}
         text={activities}
         initialComments={mycomments}
       />
