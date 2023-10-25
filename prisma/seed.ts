@@ -47,7 +47,7 @@ const categories = [
 const subcategories = [
   {
     name: '사는얘기',
-    eng: 'talk',
+    eng: 'Talk',
     url: '/board/talk',
     ref: 'talk',
     isDefault: true,
@@ -55,7 +55,7 @@ const subcategories = [
   },
   {
     name: '고민상담',
-    eng: 'consult',
+    eng: 'Consult',
     url: '/board/consult',
     ref: 'consult',
     isDefault: true,
@@ -63,15 +63,15 @@ const subcategories = [
   },
   {
     name: '정보공유',
-    eng: 'share',
-    url: '/board/share',
-    ref: 'share',
+    eng: 'Info',
+    url: '/board/info',
+    ref: 'info',
     isDefault: true,
     categoryId: 1,
   },
   {
     name: '비자',
-    eng: 'visa',
+    eng: 'Visa',
     url: '/qna/visa',
     ref: 'visa',
     isDefault: true,
@@ -79,7 +79,7 @@ const subcategories = [
   },
   {
     name: '법률',
-    eng: 'law',
+    eng: 'Law',
     url: '/qna/law',
     ref: 'law',
     isDefault: true,
@@ -87,7 +87,7 @@ const subcategories = [
   },
   {
     name: '건강',
-    eng: 'health',
+    eng: 'Health',
     url: '/qna/health',
     ref: 'health',
     isDefault: true,
@@ -95,7 +95,7 @@ const subcategories = [
   },
   {
     name: '교육',
-    eng: 'edu',
+    eng: 'Edu',
     url: '/qna/education',
     ref: 'education',
     isDefault: true,
@@ -103,7 +103,7 @@ const subcategories = [
   },
   {
     name: '육아',
-    eng: 'parenting',
+    eng: 'Parenting',
     url: '/qna/parenting',
     ref: 'parenting',
     isDefault: true,
@@ -111,7 +111,7 @@ const subcategories = [
   },
   {
     name: '취업',
-    eng: 'job',
+    eng: 'Job',
     url: '/qna/job',
     ref: 'job',
     isDefault: true,
@@ -119,7 +119,7 @@ const subcategories = [
   },
   {
     name: '부동산',
-    eng: 'estate',
+    eng: 'Estate',
     url: '/qna/estate',
     ref: 'estate',
     isDefault: true,
@@ -127,7 +127,7 @@ const subcategories = [
   },
   {
     name: '기타',
-    eng: 'etc',
+    eng: 'Etc',
     url: '/qna/etc',
     ref: 'etc',
     isDefault: true,
@@ -135,7 +135,7 @@ const subcategories = [
   },
   {
     name: '팔아요',
-    eng: 'sell',
+    eng: 'Sell',
     url: '/market/sell',
     ref: 'sell',
     isDefault: true,
@@ -143,7 +143,7 @@ const subcategories = [
   },
   {
     name: '살게요',
-    eng: 'buy',
+    eng: 'Buy',
     url: '/market/buy',
     ref: 'buy',
     isDefault: true,
@@ -151,15 +151,15 @@ const subcategories = [
   },
   {
     name: '나눔',
-    eng: 'giveaway',
-    url: '/market/giveaway',
-    ref: 'giveaway',
+    eng: 'Free',
+    url: '/market/free',
+    ref: 'free',
     isDefault: true,
     categoryId: 3,
   },
   {
     name: '렌트',
-    eng: 'rent',
+    eng: 'Rent',
     url: '/market/rent',
     ref: 'rent',
     isDefault: true,
@@ -191,7 +191,7 @@ const subcategories = [
   },
   {
     name: '공지사항',
-    eng: 'all',
+    eng: 'Notice',
     url: '/notice/all',
     ref: 'all',
     isDefault: true,

@@ -33,12 +33,14 @@ export async function GET(req: Request) {
             title: true,
             category: {
               select: {
+                eng: true,
                 name: true,
                 ref: true,
               },
             },
             subcategory: {
               select: {
+                eng: true,
                 name: true,
                 ref: true,
               },

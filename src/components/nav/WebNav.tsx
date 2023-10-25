@@ -1,15 +1,17 @@
 'use client';
 
-import { useState } from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
 import { signOut } from 'next-auth/react';
-import { Icons } from '../Icons';
+import Link from 'next/link';
+import { useState } from 'react';
+
+import { Icons } from '@/components/Icons';
 
 const WebNav = ({ session, text, lang }: any) => {
   const [avatarClicked, setAvatarClicked] = useState(false);
   const onClickAvatar = () =>
     setAvatarClicked(!avatarClicked);
+
   return (
     <div className='cursor-pointer relative'>
       {session?.user ? (

@@ -25,12 +25,14 @@ const Page = async ({
           title: true,
           category: {
             select: {
+              eng: true,
               name: true,
               ref: true,
             },
           },
           subcategory: {
             select: {
+              eng: true,
               name: true,
               ref: true,
             },
@@ -49,7 +51,11 @@ const Page = async ({
       {session?.user ? (
         <ProfileNav text={activities} user={session.user} />
       ) : null}
-      <MyScrap text={activities} initialScraps={myscraps} />
+      <MyScrap
+        lang={lang}
+        text={activities}
+        initialScraps={myscraps}
+      />
     </div>
   );
 };

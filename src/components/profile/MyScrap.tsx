@@ -11,11 +11,16 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useRef } from 'react';
 
 interface MyScrapProps {
+  lang: string;
   text: Activities;
   initialScraps: ExtendedScrap[];
 }
 
-const MyScrap = ({ text, initialScraps }: MyScrapProps) => {
+const MyScrap = ({
+  lang,
+  text,
+  initialScraps,
+}: MyScrapProps) => {
   const lastPostRef = useRef<HTMLElement>(null);
 
   const { ref, entry } = useIntersection({
@@ -79,13 +84,17 @@ const MyScrap = ({ text, initialScraps }: MyScrapProps) => {
                 if (index === scraps.length - 1) {
                   return (
                     <li key={scrap.postId} ref={ref}>
-                      <MyScrapCard scrap={scrap} />
+                      <MyScrapCard
+                        lang={lang}
+                        scrap={scrap}
+                      />
                     </li>
                   );
                 } else {
                   return (
                     <MyScrapCard
                       key={scrap.postId}
+                      lang={lang}
                       scrap={scrap}
                     />
                   );
@@ -119,8 +128,10 @@ const MyScrap = ({ text, initialScraps }: MyScrapProps) => {
 export default MyScrap;
 
 const MyScrapCard = ({
+  lang,
   scrap,
 }: {
+  lang: string;
   scrap: ExtendedScrap;
 }) => {
   const router = useRouter();
@@ -133,10 +144,14 @@ const MyScrapCard = ({
             className='hover:text-main cursor-pointer'
             onClick={() => {
               router.refresh();
-              router.push(`/${scrap.post.category.ref}`);
+              router.push(
+                `/${lang}/${scrap.post.category.ref}`,
+              );
             }}
           >
-            {scrap.post.category.name}
+            {lang === 'en'
+              ? scrap.post.category.eng
+              : scrap.post.category.name}
           </div>
           <span>{` > `}</span>
           <div
@@ -144,11 +159,13 @@ const MyScrapCard = ({
             onClick={() => {
               router.refresh();
               router.push(
-                `/${scrap.post.category.ref}/${scrap.post.subcategory.ref}`,
+                `/${lang}/${scrap.post.category.ref}/${scrap.post.subcategory.ref}`,
               );
             }}
           >
-            {scrap.post.subcategory.name}
+            {lang === 'en'
+              ? scrap.post.subcategory.eng
+              : scrap.post.subcategory.name}
           </div>
         </div>
         {/* 댓글 작성 시간 */}
@@ -158,22 +175,33 @@ const MyScrapCard = ({
       </div>
       {/* 댓글 내용 */}
       <div>
-        <span
+        <p
           className='text-sm font-medium hover:text-main cursor-pointer'
           onClick={() => {
             router.refresh();
             router.push(
-              `/${scrap.post.category.ref}/${scrap.post.subcategory.ref}/${scrap.postId}`,
+              `/${lang}/${scrap.post.category.ref}/${scrap.post.subcategory.ref}/${scrap.postId}`,
             );
           }}
         >
           {scrap.post.title}
-        </span>
-        <span className='text-xs'>
+        </p>
+        <p className='text-xs leading-5'>
           {' '}
-          게시글을 <span className='text-main'>스크랩</span>
-          하셨어요.
-        </span>
+          {lang === 'en' ? (
+            <span>
+              You{' '}
+              <span className='text-main'>scrapped</span>{' '}
+              this post.
+            </span>
+          ) : (
+            <span>
+              이 게시글을{' '}
+              <span className='text-main'>스크랩</span>
+              하셨어요.
+            </span>
+          )}
+        </p>
       </div>
     </div>
   );

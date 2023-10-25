@@ -57,10 +57,12 @@ export type ExtendedCommentWithPost = Comment & {
   post: {
     title: string;
     category: {
+      eng: string;
       name: string;
       ref: string | null;
     };
     subcategory: {
+      eng: string;
       name: string;
       ref: string | null;
     };
@@ -71,10 +73,12 @@ export type ExtendedScrap = Scrap & {
   post: {
     title: string;
     category: {
+      eng: string;
       name: string;
       ref: string | null;
     };
     subcategory: {
+      eng: string;
       name: string;
       ref: string | null;
     };

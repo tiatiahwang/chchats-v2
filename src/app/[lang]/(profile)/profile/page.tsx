@@ -23,12 +23,14 @@ const Page = async ({
     include: {
       category: {
         select: {
+          eng: true,
           name: true,
           ref: true,
         },
       },
       subcategory: {
         select: {
+          eng: true,
           name: true,
           ref: true,
         },
@@ -46,7 +48,11 @@ const Page = async ({
       {session?.user ? (
         <ProfileNav text={activities} user={session.user} />
       ) : null}
-      <MyPost text={activities} initialPosts={myposts} />
+      <MyPost
+        lang={lang}
+        text={activities}
+        initialPosts={myposts}
+      />
     </div>
   );
 };

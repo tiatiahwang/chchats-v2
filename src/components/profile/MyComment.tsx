@@ -1,21 +1,24 @@
 'use client';
 
-import { INFINITE_SCROLL_LIMIT } from '@/config';
-import { ExtendedCommentWithPost } from '@/types/db';
-import { Activities } from '@/types/dictionary';
-import { useIntersection } from '@mantine/hooks';
-import { useInfiniteQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef } from 'react';
+import { useIntersection } from '@mantine/hooks';
+import { useInfiniteQuery } from '@tanstack/react-query';
+
+import { INFINITE_SCROLL_LIMIT } from '@/config';
+import { ExtendedCommentWithPost } from '@/types/db';
+import { Activities } from '@/types/dictionary';
 
 interface MyCommentProps {
+  lang: string;
   text: Activities;
   initialComments: ExtendedCommentWithPost[];
 }
 
 const MyComment = ({
+  lang,
   text,
   initialComments,
 }: MyCommentProps) => {
@@ -82,13 +85,17 @@ const MyComment = ({
                 if (index === comments.length - 1) {
                   return (
                     <li key={comment.id} ref={ref}>
-                      <MyCommentCard comment={comment} />
+                      <MyCommentCard
+                        lang={lang}
+                        comment={comment}
+                      />
                     </li>
                   );
                 } else {
                   return (
                     <MyCommentCard
                       key={comment.id}
+                      lang={lang}
                       comment={comment}
                     />
                   );
@@ -123,8 +130,10 @@ export default MyComment;
 
 const MyCommentCard = ({
   comment,
+  lang,
 }: {
   comment: ExtendedCommentWithPost;
+  lang: string;
 }) => {
   const router = useRouter();
   return (
@@ -139,10 +148,14 @@ const MyCommentCard = ({
             className='hover:text-main cursor-pointer'
             onClick={() => {
               router.refresh();
-              router.push(`/${comment.post.category.ref}`);
+              router.push(
+                `${lang}/${comment.post.category.ref}`,
+              );
             }}
           >
-            {comment.post.category.name}
+            {lang === 'en'
+              ? comment.post.category.eng
+              : comment.post.category.name}
           </div>
           <span>{` > `}</span>
           <div
@@ -150,11 +163,13 @@ const MyCommentCard = ({
             onClick={() => {
               router.refresh();
               router.push(
-                `/${comment.post.category.ref}/${comment.post.subcategory.ref}`,
+                `/${lang}/${comment.post.category.ref}/${comment.post.subcategory.ref}`,
               );
             }}
           >
-            {comment.post.subcategory.name}
+            {lang === 'en'
+              ? comment.post.subcategory.eng
+              : comment.post.subcategory.name}
           </div>
         </div>
         {/* 댓글 작성 시간 */}
@@ -164,22 +179,33 @@ const MyCommentCard = ({
       </div>
       {/* 댓글 내용 */}
       <div>
-        <span
+        <p
           className='text-sm font-medium hover:text-main cursor-pointer'
           onClick={() => {
             router.refresh();
             router.push(
-              `/${comment.post.category.ref}/${comment.post.subcategory.ref}/${comment.postId}`,
+              `/${lang}/${comment.post.category.ref}/${comment.post.subcategory.ref}/${comment.postId}`,
             );
           }}
         >
           {comment.post.title}
-        </span>
-        <span className='text-xs'>
+        </p>
+        <p className='text-xs leading-5'>
           {' '}
-          게시글에 <span className='text-main'>댓글</span>을
-          남기셨어요.
-        </span>
+          {lang === 'en' ? (
+            <span>
+              You leave{' '}
+              <span className='text-main'>the comment</span>{' '}
+              to this post.
+            </span>
+          ) : (
+            <span>
+              이 게시글에{' '}
+              <span className='text-main'>댓글</span>을
+              남기셨어요.
+            </span>
+          )}
+        </p>
       </div>
     </div>
   );
