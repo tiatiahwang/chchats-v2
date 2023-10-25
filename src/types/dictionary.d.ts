@@ -1,13 +1,3 @@
-export type Activities = {
-  button: string;
-  myposts: string;
-  mycomments: string;
-  myscrap: string;
-  nopost: string;
-  nocomment: string;
-  noscrap: string;
-};
-
 export type Search = {
   noword: string;
   noresult: string;
@@ -30,4 +20,41 @@ export type MobileNav = {
     region: string;
     notice: string;
   };
+};
+
+export type Login = {
+  email: string;
+  password: string;
+  button: string;
+  loading: string;
+};
+
+export type Join = {
+  email: string;
+  password: string;
+  nickname: string;
+  button: string;
+  loading: string;
+};
+
+export type CreatePost = {
+  subtitle: string;
+  category: string;
+  subcategory: string;
+  editor: {
+    title: string;
+    placeholder: string;
+  };
+  button: string;
+  loading: string;
+};
+
+export type Activities = {
+  button: string;
+  myposts: string;
+  mycomments: string;
+  myscrap: string;
+  nopost: string;
+  nocomment: string;
+  noscrap: string;
 };

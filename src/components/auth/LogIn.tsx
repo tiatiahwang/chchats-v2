@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { Icons } from '../Icons';
 import Button from '../ui/Button';
+import { Login } from '@/types/dictionary';
 
 interface FormProps {
   email: string;
@@ -15,11 +16,7 @@ interface FormProps {
 }
 
 interface LoginProps {
-  text: {
-    email: string;
-    password: string;
-    button: string;
-  };
+  text: Login;
 }
 
 const LogIn = ({ text }: LoginProps) => {
@@ -138,6 +135,7 @@ const LogIn = ({ text }: LoginProps) => {
         disabled={!isValid || isLoading}
         isLoading={isLoading}
         id='form-submit'
+        loadingText={text.loading}
       />
     </form>
   );

@@ -22,18 +22,11 @@ import Button from '../ui/Button';
 import Link from '@tiptap/extension-link';
 import { nanoid } from 'nanoid';
 import Image from 'next/image';
+import { CreatePost } from '@/types/dictionary';
 
 interface NewpostProps {
   lang: string;
-  text: {
-    subtitle: string;
-    category: string;
-    subcategory: string;
-    editor: {
-      title: string;
-      placeholder: string;
-    };
-  };
+  text: CreatePost;
   post?: Post;
   categories: ExtendedCategory[];
   currentCategory: ExtendedCategory;
@@ -413,7 +406,8 @@ const NewPost = ({
       <Button
         type='base'
         isLoading={createLoading || editLoading}
-        text='작성하기'
+        text={text.button}
+        loadingText={text.loading}
         onClick={handleSubmit}
         width='w-fit'
         className='my-4'
