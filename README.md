@@ -2,7 +2,10 @@
 
 > Community website for Koreans living in the U.S.
 
-### 💚 [CHCHATS website](https://www.chchats.com/)
+> https://www.chchats.com
+
+### 💚 CHCHATS Preview
+<img width="1351" alt="chchats" src="https://github.com/tiatiahwang/onlyForImgUrl/assets/90431155/16b152f5-562c-472b-b66c-b251a2ee3b8e">
 
 ### 💚 Features
 * CHCHATS uses `@tiptap/react` package for the text editor.
