@@ -29,7 +29,7 @@ export type Login = {
   loading: string;
 };
 
-export type Join = {
+export type JoinType = {
   email: string;
   password: string;
   nickname: string;
