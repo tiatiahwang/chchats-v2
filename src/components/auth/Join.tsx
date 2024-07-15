@@ -9,7 +9,7 @@ import { UserJoinValidator } from '@/lib/validator/auth';
 import { Icons } from '../Icons';
 import Button from '../ui/Button';
 import { toast } from 'react-toastify';
-import { Join } from '@/types/dictionary';
+import { JoinType } from '@/types/dictionary';
 
 interface FormProps {
   email: string;
@@ -18,7 +18,7 @@ interface FormProps {
 }
 
 interface JoinProps {
-  text: Join;
+  text: JoinType;
 }
 
 const Join = ({ text }: JoinProps) => {
@@ -49,14 +49,11 @@ const Join = ({ text }: JoinProps) => {
       });
 
       if (data === 'OK') {
-        toast.success(
-          '회원가입 완료!\n잠시 후 로그인 화면으로 이동합니다.',
-          {
-            hideProgressBar: true,
-            autoClose: 1000,
-            className: 'text-sm whitespace-pre-line',
-          },
-        );
+        toast.success('회원가입 완료!\n잠시 후 로그인 화면으로 이동합니다.', {
+          hideProgressBar: true,
+          autoClose: 1000,
+          className: 'text-sm whitespace-pre-line',
+        });
         setTimeout(() => router.push('/login'), 2500);
       }
     } catch (error) {
@@ -70,11 +67,7 @@ const Join = ({ text }: JoinProps) => {
   };
 
   return (
-    <form
-      id='form-submit'
-      onSubmit={handleSubmit(onValid)}
-      className='space-y-8'
-    >
+    <form id='form-submit' onSubmit={handleSubmit(onValid)} className='space-y-8'>
       <div>
         <div className='mb-4 space-y-1'>
           <label htmlFor='email' className='text-sm'>
@@ -85,17 +78,11 @@ const Join = ({ text }: JoinProps) => {
             id='email'
             type='email'
             className={`w-full bg-transparent border rounded-lg p-2 outline-none ${
-              errors?.email
-                ? 'border-red-500'
-                : 'focus:border-main'
+              errors?.email ? 'border-red-500' : 'focus:border-main'
             }`}
             aria-invalid={Boolean(errors.email)}
           />
-          {errors?.email?.message && (
-            <span className='text-red-500 text-sm'>
-              {errors.email.message}
-            </span>
-          )}
+          {errors?.email?.message && <span className='text-red-500 text-sm'>{errors.email.message}</span>}
         </div>
         <div className='mb-4 space-y-1'>
           <label htmlFor='password' className='text-sm'>
@@ -107,33 +94,23 @@ const Join = ({ text }: JoinProps) => {
               id='password'
               type={showPassword ? 'text' : 'password'}
               className={`w-full bg-transparent outline-none ${
-                errors?.password
-                  ? 'border-red-500'
-                  : 'focus:border-main'
+                errors?.password ? 'border-red-500' : 'focus:border-main'
               }`}
               aria-invalid={Boolean(errors.password)}
             />
             {showPassword ? (
               <Icons.eye
                 className='w-4 h-4 text-gray-400 cursor-pointer'
-                onClick={() =>
-                  setShowPassword((prev) => !prev)
-                }
+                onClick={() => setShowPassword((prev) => !prev)}
               />
             ) : (
               <Icons.eyeSlash
                 className='w-4 h-4 text-gray-400 cursor-pointer'
-                onClick={() =>
-                  setShowPassword((prev) => !prev)
-                }
+                onClick={() => setShowPassword((prev) => !prev)}
               />
             )}
           </div>
-          {errors?.password?.message && (
-            <span className='text-red-500 text-sm'>
-              {errors.password.message}
-            </span>
-          )}
+          {errors?.password?.message && <span className='text-red-500 text-sm'>{errors.password.message}</span>}
         </div>
         <div className='space-y-1'>
           <label htmlFor='username' className='text-sm'>
@@ -146,17 +123,11 @@ const Join = ({ text }: JoinProps) => {
             id='username'
             type='text'
             className={`w-full bg-transparent border rounded-lg p-2 outline-none ${
-              errors?.username
-                ? 'border-red-500'
-                : 'focus:border-main'
+              errors?.username ? 'border-red-500' : 'focus:border-main'
             }`}
             aria-invalid={Boolean(errors.username)}
           />
-          {errors?.username?.message && (
-            <span className='text-red-500 text-sm'>
-              {errors.username.message}
-            </span>
-          )}
+          {errors?.username?.message && <span className='text-red-500 text-sm'>{errors.username.message}</span>}
         </div>
       </div>
       {errorMessage && (
