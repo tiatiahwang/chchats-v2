@@ -45,20 +45,13 @@ interface APIRequest {
   postId: string;
 }
 
-const PostDetail = ({
-  lang,
-  post,
-  formattedTime,
-  isScrapped,
-}: PostDetailProps) => {
+const PostDetail = ({ lang, post, formattedTime, isScrapped }: PostDetailProps) => {
   const { data: session } = useSession();
   const router = useRouter();
   const { loginToast } = useCustomToast();
 
-  const [toggleScrap, setToggleScrap] =
-    useState<boolean>(isScrapped);
-  const [showModal, setShowModal] =
-    useState<boolean>(false);
+  const [toggleScrap, setToggleScrap] = useState<boolean>(isScrapped);
+  const [showModal, setShowModal] = useState<boolean>(false);
 
   let _votesAmount: number = 0;
   let _currentVote: VoteType | null | undefined = undefined;
@@ -70,51 +63,13 @@ const PostDetail = ({
       return acc;
     }, 0);
 
-    _currentVote = session?.user
-      ? post.votes.find(
-          (vote) => vote.userId === session?.user.id,
-        )?.type
-      : null;
+    _currentVote = session?.user ? post.votes.find((vote) => vote.userId === session?.user.id)?.type : null;
   }
 
-  const { mutate: deletePost, isLoading: deleteLoading } =
-    useMutation({
-      mutationFn: async ({ postId }: APIRequest) => {
-        const payload: APIRequest = { postId };
-        const { data } = await axios.delete(
-          '/api/posts/delete',
-          { data: payload },
-        );
-        return data;
-      },
-      onError: (error) => {
-        if (error instanceof AxiosError) {
-          if (error.response?.status === 401) {
-            return loginToast();
-          }
-        }
-        return toast.error(
-          '알 수 없는 오류가 발생했습니다.\n잠시 후 다시 시도해 주세요.',
-          {
-            className: 'text-sm whitespace-pre-line',
-          },
-        );
-      },
-      onSuccess: (data) => {
-        if (data === 'OK') {
-          setShowModal(false);
-          router.push('/');
-        }
-      },
-    });
-
-  const { mutate: scrapPost } = useMutation({
+  const { mutate: deletePost, isLoading: deleteLoading } = useMutation({
     mutationFn: async ({ postId }: APIRequest) => {
       const payload: APIRequest = { postId };
-      const { data } = await axios.post(
-        '/api/posts/scrap',
-        payload,
-      );
+      const { data } = await axios.delete('/api/posts/delete', { data: payload });
       return data;
     },
     onError: (error) => {
@@ -123,12 +78,33 @@ const PostDetail = ({
           return loginToast();
         }
       }
-      return toast.error(
-        '알 수 없는 오류가 발생했습니다.\n잠시 후 다시 시도해 주세요.',
-        {
-          className: 'text-sm whitespace-pre-line',
-        },
-      );
+      return toast.error('알 수 없는 오류가 발생했습니다.\n잠시 후 다시 시도해 주세요.', {
+        className: 'text-sm whitespace-pre-line',
+      });
+    },
+    onSuccess: (data) => {
+      if (data === 'OK') {
+        setShowModal(false);
+        router.push('/');
+      }
+    },
+  });
+
+  const { mutate: scrapPost } = useMutation({
+    mutationFn: async ({ postId }: APIRequest) => {
+      const payload: APIRequest = { postId };
+      const { data } = await axios.post('/api/posts/scrap', payload);
+      return data;
+    },
+    onError: (error) => {
+      if (error instanceof AxiosError) {
+        if (error.response?.status === 401) {
+          return loginToast();
+        }
+      }
+      return toast.error('알 수 없는 오류가 발생했습니다.\n잠시 후 다시 시도해 주세요.', {
+        className: 'text-sm whitespace-pre-line',
+      });
     },
     onSuccess: (data) => {
       setToggleScrap((prev) => !prev);
@@ -144,31 +120,21 @@ const PostDetail = ({
       }
     },
   });
-
+  console.log(session);
   return (
     <>
       {/* 상단 - 카테고리  */}
       <div className='text-gray-400 text-sm'>
         {post.categoryId !== 5 && (
           <>
-            <Link
-              href={`/${lang}/${post.category.ref}`}
-              className='hover:text-main'
-            >
-              {lang === 'en'
-                ? post.category.eng
-                : post.category.name}
+            <Link href={`/${lang}/${post.category.ref}`} className='hover:text-main'>
+              {lang === 'en' ? post.category.eng : post.category.name}
             </Link>{' '}
             {'>'}{' '}
           </>
         )}
-        <Link
-          href={`/${lang}/${post.category.ref}/${post.subcategory.ref}`}
-          className='hover:text-main'
-        >
-          {lang === 'en'
-            ? post.subcategory.eng
-            : post.subcategory.name}
+        <Link href={`/${lang}/${post.category.ref}/${post.subcategory.ref}`} className='hover:text-main'>
+          {lang === 'en' ? post.subcategory.eng : post.subcategory.name}
         </Link>
       </div>
       {/* 유저정보 및 글 */}
@@ -194,15 +160,12 @@ const PostDetail = ({
             </div>
             {/* 닉네임/글작성시간/조회수 */}
             <div className='text-gray-500'>
-              <span className='pl-2'>
-                {post.author.username}
-              </span>
+              <span className='pl-2'>{post.author.username}</span>
               <span className='px-1'>•</span>
               <span>{formattedTime}</span>
               <span className='px-1'>•</span>
               <span>
-                {lang === 'en' ? 'views' : '조회수'}{' '}
-                {post.viewCount}
+                {lang === 'en' ? 'views' : '조회수'} {post.viewCount}
               </span>
             </div>
           </div>
@@ -212,60 +175,40 @@ const PostDetail = ({
               <>
                 <Icons.edit
                   className='w-6 h-6 hover:text-main cursor-pointer'
-                  onClick={() =>
-                    router.push(
-                      `/${post.category.ref}/${post.subcategory.ref}/${post.id}/edit`,
-                    )
-                  }
+                  onClick={() => router.push(`/${post.category.ref}/${post.subcategory.ref}/${post.id}/edit`)}
                 />
-                <Icons.delete
-                  className='w-6 h-6 hover:text-main cursor-pointer'
-                  onClick={() => setShowModal(true)}
-                />
+                <Icons.delete className='w-6 h-6 hover:text-main cursor-pointer' onClick={() => setShowModal(true)} />
               </>
             )}
-            <Icons.scrap
-              className={`w-6 h-6 cursor-pointer ${
-                toggleScrap
-                  ? 'text-main fill-main hover:fill-mainDark hover:text-mainDark'
-                  : 'fill-none hover:text-main'
-              }`}
-              onClick={() => scrapPost({ postId: post.id })}
-            />
+            {session?.user && (
+              <Icons.scrap
+                className={`w-6 h-6 cursor-pointer ${
+                  toggleScrap
+                    ? 'text-main fill-main hover:fill-mainDark hover:text-mainDark'
+                    : 'fill-none hover:text-main'
+                }`}
+                onClick={() => scrapPost({ postId: post.id })}
+              />
+            )}
           </div>
         </div>
         {/* 글 제목 */}
-        <h1 className='text-4xl font-bold py-8'>
-          {post.title}
-        </h1>
+        <h1 className='text-4xl font-bold py-8'>{post.title}</h1>
         {/* 글 내용 */}
-        <div
-          className='text-base leading-8 post-detail'
-          dangerouslySetInnerHTML={{ __html: post.content }}
-        />
+        <div className='text-base leading-8 post-detail' dangerouslySetInnerHTML={{ __html: post.content }} />
         {/* 글 추천/반대 */}
-        <PostVote
-          postId={post.id}
-          initialVoteAmount={_votesAmount}
-          initialVote={_currentVote}
-        />
+        <PostVote postId={post.id} initialVoteAmount={_votesAmount} initialVote={_currentVote} />
       </div>
       {showModal && (
         <Modal
           lang={lang}
           isLoading={deleteLoading}
-          text={
-            lang === 'en'
-              ? 'Are you sure to delete this post?'
-              : '정말 삭제하시겠어요?'
-          }
+          text={lang === 'en' ? 'Are you sure to delete this post?' : '정말 삭제하시겠어요?'}
           open={showModal}
           onClose={() => setShowModal(false)}
           buttonText={lang === 'en' ? 'Delete' : '삭제'}
           className='bg-red-400 hover:bg-red-500 px-4'
-          handleButton={() =>
-            deletePost({ postId: post.id })
-          }
+          handleButton={() => deletePost({ postId: post.id })}
         />
       )}
     </>
